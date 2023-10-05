@@ -1,0 +1,555 @@
+from .serializers import *
+from .models import *
+
+from rest_framework import status, permissions, generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+# API for User
+class RestaurantHotAPI(generics.ListAPIView, generics.RetrieveAPIView):
+    queryset = Restaurant.objects.filter(is_hot=True)
+    serializer_class = RestaurantSerializers
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'rid'
+
+    def get(self, request, *args, **kwargs):
+        rid = kwargs.get('rid')
+        if rid is None:
+            queryset = self.get_queryset()
+            serialize = self.serializer_class(queryset, many=True, context={'request': request})
+
+            return Response({'success': True,
+                             'message': 'Get list restaurant hot successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+        else:
+            instance = self.get_object()
+            serialize = RestaurantSerializers(instance, context={'request': request})
+            return Response({'success': True,
+                             'message': 'Get detail restaurant hot successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+
+
+class RestaurantAPI(generics.ListAPIView, generics.RetrieveAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializers
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'rid'
+
+    def get(self, request, *args, **kwargs):
+        rid = kwargs.get('rid')
+        if rid is None:
+            queryset = self.get_queryset()
+            serialize = self.serializer_class(queryset, many=True, context={'request': request})
+            return Response({'success': True,
+                             'message': 'Get list restaurants successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+        else:
+            instance = self.get_object()
+            serialize = RestaurantSerializers(instance, context={'request': request})
+            return Response({'success': True,
+                             'message': 'Get detail restaurant successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+
+
+class DishesHotAPI(generics.ListAPIView, generics.RetrieveAPIView):
+    queryset = Dish.objects.filter(featured=True)
+    serializer_class = DishesSerializers
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'did'
+
+    def get(self, request, *args, **kwargs):
+        did = kwargs.get('did')
+        if did is None:
+            query_set = self.get_queryset()
+            serialize = self.serializer_class(query_set, context={'request': request}, many=True)
+            return Response({'success': True,
+                             'message': 'Get list dish featured successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+        else:
+            instance = self.get_object()
+            serialize = DishesSerializers(instance, context={'request': request})
+            return Response({'success': True,
+                             'message': 'Get detail dish featured successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+
+
+class DishesAPI(generics.ListAPIView, generics.RetrieveAPIView):
+    queryset = Dish.objects.all()
+    serializer_class = DishesSerializers
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'did'
+
+    def get(self, request, *args, **kwargs):
+        did = kwargs.get('did')
+        if did is None:
+            query_set = self.get_queryset()
+            serialize = self.serializer_class(query_set, context={'request': request}, many=True)
+            return Response({'success': True,
+                             'message': 'Get list dish successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+        else:
+            instance = self.get_object()
+            serialize = DishesSerializers(instance, context={'request': request})
+            return Response({'success': True,
+                             'message': 'Get detail dish successfully.',
+                             'data': serialize.data
+                             }, status=status.HTTP_200_OK)
+
+
+class CategoryAPI(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializers
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        query_set = self.get_queryset()
+        serialize = self.serializer_class(query_set, many=True, context={'request': request})
+        return Response({'success': True,
+                         'message': 'Get category successfully.',
+                         'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def dish_by_category(request, *args, **kwargs):
+    category = Category.objects.get(cid=kwargs.get('cid'))
+    restaurant = Restaurant.objects.get(rid=kwargs.get('rid'))
+    data = Dish.objects.filter(category=category, restaurant=restaurant)
+    serialize = DishesSerializers(data, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get dishes successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def dishes_of_restaurant(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    dishes = Dish.objects.filter(restaurant=restaurant, featured=True)
+    serialize = DishesSerializers(dishes, many=True, context={'request': request})
+
+    return Response({'success': True,
+                     'message': 'Get dishes successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def list_like(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    data = Wishlist.objects.filter(user=user)
+    serialize = WishlistSerializers(data, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get restaurant successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_order(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    tid = request.POST.get('tid')
+    table = Table.objects.get(tid=tid)
+    serialize = OrderSerializers(data=request.data, context={'request': request})
+    if serialize.is_valid():
+        serialize.save(user=user, table=table)
+        return Response({'success': True,
+                         'message': 'Order restaurant successfully.',
+                         'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+    else:
+        return Response({'success': False,
+                         'message': 'Error!'
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_order_item(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    order = Order.objects.get(oid=oid)
+    serialize = OrderItemSerializers(data=request.data, context={'request': request})
+    if serialize.is_valid():
+        serialize.save(order=order)
+        return Response({'success': True,
+                         'message': 'Successfully.',
+                         }, status=status.HTTP_200_OK)
+    else:
+        return Response({'success': False,
+                         'message': 'Error!'
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def order_detail(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    order = Order.objects.get(oid=oid)
+    order_item = OrderItem.objects.filter(order=order)
+    serialize = OrderItemSerializers(order_item, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get detail order successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def search_restaurant(request, *args, **kwargs):
+    q = request.POST.get('q')
+    restaurants = Restaurant.objects.filter(title__contains=q)
+    serialize = RestaurantSerializers(restaurants, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Search restaurant successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_like(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    rid = request.POST.get('rid')
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
+    if not wishlist.exists():
+        Wishlist.objects.create(user=user, restaurant=restaurant)
+        return Response({'success': True,
+                         'message': 'Add like successfully.'
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Added previously!'
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def delete_like(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    rid = request.POST.get('rid')
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
+    if wishlist.exists():
+        wishlist.delete()
+        return Response({'success': True,
+                         'message': 'Delete like successfully.'
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Like not exists!'
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def edit_profile(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    address = Address.objects.get(uid=uid)
+    user.image = request.FILES.get('image')
+    user.phone = request.POST.get('phone')
+    user.full_name = request.POST.get('full_name')
+    user.verified = True
+    address.address = request.POST.get('address')
+    address.save();
+    user.save()
+    return Response({'success': True,
+                     'message': 'Edit profile successfully.'
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def list_order(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    orders = Order.objects.filter(user=user)
+    serialize = OrderSerializers(orders, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get list order successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def cancel_order(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    try:
+        order = Order.objects.get(oid=oid)
+        order.delete()
+        return Response({'success': True,
+                         'message': 'Cancel order successfully.'
+                         }, status=status.HTTP_200_OK)
+    except:
+        return Response({'success': False,
+                         'message': 'Order not exists!'
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def search_dishes(request):
+    q = request.POST.get('q')
+    dishes = Dish.objects.filter(title__contains=q)
+    serialize = DishesSerializers(dishes, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Search dishes successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def send_chat():
+    pass
+
+
+@api_view(['POST'])
+def receive_chat():
+    pass
+
+
+@api_view(['POST'])
+def notify_chat():
+    pass
+
+
+@api_view(['POST'])
+def add_review():
+    pass
+
+
+@api_view(['POST'])
+def contact_us(request, *args, **kwargs):
+    serialize = ContactUsSerializers(data=request.data)
+    if serialize.is_valid():
+        serialize.save()
+        return Response({'success': True,
+                         'message': 'Send response successfully.',
+                         'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Send response fail.'
+                     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def list_table(request, *args, **kwargs):
+    rid = kwargs.get('rid');
+    restaurant = Restaurant.objects.get(rid=rid)
+    tables = Table.objects.filter(restaurant=restaurant)
+    serialize = TableSerializers(tables, many=True)
+    return Response({'success': True,
+                     'message': 'Get success.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+# API for Restaurant
+@api_view(['POST'])
+def add_restaurant(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    serialize = RestaurantSerializers(data=request.data, context={'request': request})
+    if serialize.is_valid():
+        serialize.save(user=user)
+        return Response({'success': True,
+                         'message': 'Add restaurant successfully.',
+                         'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+
+    return Response({'success': False,
+                     'message': 'Add restaurant fail.',
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_category(request, *args, **kwargs):
+    serialize = CategorySerializers(data=request.data)
+    if serialize.is_valid():
+        serialize.save()
+        return Response({'success': True,
+                         'message': 'Add category successfully.',
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Add category fail.',
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def delete_category(request, *args, **kwargs):
+    cid = kwargs.get('cid')
+    try:
+        category = Category.objects.get(cid=cid)
+        category.delete()
+        return Response({'success': True,
+                         'message': 'Delete category successfully.'
+                         }, status=status.HTTP_200_OK)
+    except:
+        return Response({'success': False,
+                         'message': 'Category not exists!',
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_category(request, *args, **kwargs):
+    cid = kwargs.get('cid')
+    category = Category.objects.get(cid=cid)
+    category.title = request.data.get('title')
+    category.image = request.FILES.get('image')
+    category.save()
+    return Response({'success': True,
+                     'message': 'Update category successfully.',
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def wishlist_restaurant(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    wishlist = Wishlist.objects.filter(restaurant=restaurant)
+    serialize = WishlistRestaurantSerializers(wishlist, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get wishlist successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_address():
+    pass
+
+
+@api_view(['POST'])
+def review_restaurant():
+    pass
+
+
+@api_view(['POST'])
+def add_dish(request):
+    rid = request.data.get('rid')
+    cid = request.data.get('cid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    category = Category.objects.get(cid=cid)
+    serialize = DishesSerializers(data=request.data, context={'request': request})
+    if serialize.is_valid(raise_exception=True):
+        serialize.save(restaurant=restaurant, category=category)
+        return Response({'success': True,
+                         'message': 'Add dish successfully.',
+                         'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Add dish fail.'
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def delete_dish(request, *args, **kwargs):
+    did = kwargs.get('did')
+    try:
+        dish = Dish.objects.get(did=did)
+        dish.delete()
+        return Response({'success': True,
+                         'message': 'Delete dish successfully.'
+                         }, status=status.HTTP_200_OK)
+    except:
+        return Response({'success': False,
+                         'message': 'Delete dish fail.'
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_dish(request, *args, **kwargs):
+    did = kwargs.get('did')
+    try:
+        dish = Dish.objects.get(did=did)
+        dish.title = request.data.get('title')
+        dish.image = request.FILES.get('image')
+        dish.description = request.data.get('description')
+        dish.price = request.data.get('price')
+        dish.old_price = request.data.get('old_price')
+        dish.specifications = request.data.get('specifications')
+        dish.product_status = request.data.get('product_status')
+        dish.featured = request.data.get('featured')
+        dish.digital = request.data.get('digital')
+        dish.save()
+        return Response({'success': True,
+                         'message': 'Update dish successfully.'
+                         }, status=status.HTTP_200_OK)
+    except:
+        return Response({'success': False,
+                         'message': 'Update dish fail.'
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def order_restaurant(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    order = Order.objects.filter(restaurant=restaurant)
+    serialize = OrderSerializers(order, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get order successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_table(request):
+    rid = request.data.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    serialize = TableSerializers(data=request.data, context={'request': request})
+    if serialize.is_valid(raise_exception=True):
+        serialize.save(restaurant=restaurant)
+        return Response({'success': True,
+                         'message': 'Add table successfully.',
+                         'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Add table fail.'
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_table(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    tables = Table.objects.filter(restaurant=restaurant)
+    serialize = TableSerializers(tables, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get table successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_table(request, *args, **kwargs):
+    tid = kwargs.get('tid')
+    try:
+        table = Table.objects.get(tid=tid)
+        table.title = request.data.get('title')
+        table.save()
+        return Response({'success': True,
+                         'message': 'Update table successfully.'
+                         }, status=status.HTTP_200_OK)
+    except:
+        return Response({'success': False,
+                         'message': 'Update table fail.'
+                         }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def delete_table(request, *args, **kwargs):
+    tid = kwargs.get('tid')
+    try:
+        table = Table.objects.get(tid=tid)
+        table.delete()
+        return Response({'success': True,
+                         'message': 'Delete table successfully.'
+                         }, status=status.HTTP_200_OK)
+    except:
+        return Response({'success': False,
+                         'message': 'Delete table fail.'
+                         }, status=status.HTTP_200_OK)

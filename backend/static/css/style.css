@@ -1,0 +1,130 @@
+html{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f3f3;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+p{
+    margin: 0;
+}
+
+.container {
+    background-color: #ec8282;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container img {
+    width: 80px;
+    margin-right: 10px;
+}
+
+.container .status{
+    padding: 10px 15px;
+    display: flex;
+    background: white;
+    border-radius: 5px;
+    color: green;
+    align-items: center;
+}
+
+.container .status h3{
+    margin: 0;
+}
+
+.container .restaurant {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-left: 30px;
+}
+
+.container .restaurant h3{
+    color: #1e5c1e;
+}
+
+.container .restaurant img{
+    width: 70px;
+    margin-right: 10px;
+}
+
+.container form {
+    width: 300px;
+    padding: 30px 30px 15px 30px;
+    background: white;
+}
+
+.container .title {
+    display: block;
+    text-align: center;
+    font-size: 25px;
+    color: black;
+    font-weight: 600;
+}
+
+.container ul {
+    width: 100%;
+}
+
+.container ul li {
+    width: 100%;
+    display: block;
+}
+
+.container .list .item p{
+    font-size: 18px;
+    color: black;
+    padding: 5px 0 8px;
+    text-align: left;
+}
+
+.container .list .item input {
+    display: block;
+    width: calc(100% - 10px);
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    height: 26px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+#submit {
+    width: 100%;
+    border: none;
+    height: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    background: #eb5757;
+    border-radius: 5px;
+}
+
+.container .list a{
+    font-size: 16px;
+    color: rgb(228, 250, 85);
+    display: block;
+    padding: 10px 0 0 0;
+}

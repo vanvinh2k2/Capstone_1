@@ -1,0 +1,120 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static jazzmin %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block content_title %} {% trans 'Dashboard' %} {% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+        <li class="breadcrumb-item">{% trans 'Dashboard' %}</li>
+    </ol>
+{% endblock %}
+
+{% block extrastyle %} 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="item-tk num-client">
+                    <div class="content-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="content-item">
+                        <p class="title">Client count</p>
+                        <p>{{num_client}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="item-tk num-invoice">
+                    <div class="content-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="content-item">
+                        <p class="title">Invoice quantity</p>
+                        <p>{{num_order}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="item-tk num-restaurant">
+                    <div class="content-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="content-item">
+                        <p class="title">Restaurant count</p>
+                        <p>{{num_restaurant}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="item-tk num-message">
+                    <div class="content-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="content-item">
+                        <p class="title">Support messages</p>
+                        <p>{{num_support}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                <canvas id="myChart"></canvas>
+                <script>
+                    const ctx = document.getElementById('myChart');
+                    const datas =  [100, 150, 56, 78, 214, 43, 168, 111, 29, 47, 11, 56];
+                    const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Orders',
+                                data: datas,
+                                borderWidth: 1,
+                                ackgroundColor: '#7fad39'
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <canvas id="myChart2"></canvas>
+                <script>
+                    const ctx2 = document.getElementById('myChart2');
+                    const datas2 =  [100, 150, 56, 78, 214];
+                    const labels2 = [1, 2, 3, 4, 5];
+                    new Chart(ctx2, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels2,
+                            datasets: [{
+                                label: 'Orders',
+                                data: datas2,
+                                borderWidth: 1,
+                                backgroundColor: ['#fcc79e', '#beefd2', '#ffddfb', '#cdecff', '#fff5bc']
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+{% endblock %}
