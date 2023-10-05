@@ -1,0 +1,39 @@
+.history__order{
+    h3{
+        margin: 15px 0 10px;
+    }
+    &__content{
+        table{
+            width: 100%;
+            thead tr{
+                border: 1px solid #ccc;
+                background: var(--color_restaurant);
+                .torder__status, .torder__actions{
+                    text-align: center;
+                }
+                th{
+                    padding: 10px;
+                }
+            }
+            tbody tr{
+                border: 1px solid #ccc;
+                td{
+                    padding: 10px;
+                    i.fa-check-circle{
+                        color: forestgreen;
+                    }
+                    i.fa-times-circle{
+                        color: red;
+                    }
+                    i.fa-eye{
+                        color: #3fec3f;
+                    }
+                    
+                }
+                .order__action, .order__statuspaid{
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

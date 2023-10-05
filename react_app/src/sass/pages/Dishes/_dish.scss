@@ -1,0 +1,49 @@
+.menu__dish{
+    h3{
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        margin-top: 15px;
+    }
+
+    .featured__item__sale{
+        display: flex;
+        justify-content: space-between;
+    }
+    .featured__item__price{
+        display: flex;
+        justify-content: space-between;
+        &_1{
+            font: 15pz;
+            color: #ccc;
+            text-decoration: line-through;
+        }
+        &_2{
+            font-size: 18px;
+            font-weight: 600;
+            margin-right: 15px;
+            color: var(--color_button);
+        }
+    }
+    .featured__item__view{
+        display: flex;
+    }
+    .featured__item__by{
+        display: flex;
+        justify-content: space-between;
+        &__title{
+            margin-left: 10px;
+        }
+    }
+    .featured__item button{
+        border: none;
+        width: 100%;
+        padding: 10px 0;
+        margin:  0 10px 10px;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 5px;
+        background: var(--color_button);
+    }
+}

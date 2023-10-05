@@ -1,0 +1,88 @@
+.login{
+    padding: 30px 45px;
+	margin-bottom: 20px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    &__content{
+        width: 480px;
+        min-width: 320px;
+        padding: 20px 30px;
+        border-radius: 5px;
+        background: whitesmoke;
+    }
+    .item a{
+        margin-top: 10px;
+        margin-bottom: 5px;
+        color: #198754;
+        display: block;
+    }
+    &__other{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        a{
+            color: #198754;
+            margin-left: 5px;
+        }
+    }
+}
+
+.login p{
+	margin: 0;
+    margin-top: 15px;
+    font-size: 18px;
+    font-family: emoji;
+    margin-bottom: 5px;
+}
+
+.login__content.forget{
+    margin: 50px 0;
+}
+
+.login input{
+	width: 100%;
+    border: 1px solid #ccc;
+    height: 40px;
+    font-size: 17px;
+	font-family: fangsong;
+    padding: 0 10px;
+	border-radius: 3px;
+}
+
+.login span{
+	text-align: center;
+    display: block;
+    font-size: 17px;
+    margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.login button{
+	display: block;
+    width: 100%;
+    margin-top: 5px;
+	color: white;
+    outline: none;
+    border: none;
+    background: var(--color_button);
+    padding: 7px 0;
+    border-radius: 5px;
+    font-family: auto;
+    font-size: 18px;
+    font-style: unset;
+    font-weight: 600;
+}
+
+.login .title { 
+	font-size: 24px;
+	margin-top: 0;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.login button p{
+	margin: 0;
+	padding: 0 0 0 10px;
+}
+

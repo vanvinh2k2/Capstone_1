@@ -1,0 +1,194 @@
+@media only screen and (min-width: 1200px) {
+	.container {
+		max-width: 1170px;
+	}
+}
+
+/* Medium Device = 1200px */
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	.header__menu ul li {
+		margin-right: 45px;
+	}
+	.hero__search__form {
+		width: 100%;
+	}
+}
+
+/* Tablet Device = 768px */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.header__logo span, .header__menu{
+		display: none;
+	}
+	.header__bottom{
+		display: none !important;
+	}
+
+	.login, .signup{
+		margin-top: 75px;
+	}
+	.humberger__open {
+		display: block !important;
+		font-size: 22px;
+		color: #1c1c1c;
+		height: 35px;
+		width: 35px;
+		line-height: 33px;
+		text-align: center;
+		border: 1px solid #1c1c1c;
+		cursor: pointer;
+		position: absolute;
+		right: 15px;
+    top: 20px;
+	}
+	.header .container {
+		position: relative;
+	}
+  
+	.humberger__menu__wrapper {
+		width: 300px;
+		background: #ffffff;
+		position: fixed;
+		left: -300px;
+		top: 0;
+		height: 100%;
+		overflow-y: auto;
+		z-index: 99;
+		padding: 30px;
+		padding-top: 50px;
+		opacity: 0;
+		display: block !important;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	}
+  
+	.hero__item{
+		margin-top: 90px !important;
+	}
+	
+	.humberger__menu__overlay {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		content: "";
+		z-index: 98;
+		visibility: hidden;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	}
+	.humberger__menu__overlay.active {
+		visibility: visible;
+	}
+	.header__cart, .header__contact{
+		display: none;
+	}
+	
+}
+
+/* Wide Mobile = 480px */
+
+@media only screen and (max-width: 767px) {
+	.hero__search__form{
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.hero__item{
+		margin-top: 5px;
+	}
+	.login, .signup{
+		margin-top: 140px;
+	}
+	.header__bottom{
+		display: none !important;
+	}
+	.header__menu{
+		display: none;
+	}
+	.site-btn{
+		padding: 13px 15px 12px;
+	}
+
+	.header__cart{
+		display: none;
+	}
+	.hero__item{
+		margin-top: 155px !important;
+	}
+	.humberger__open {
+		display: block !important;
+		font-size: 22px;
+		color: #1c1c1c;
+		height: 35px;
+		width: 35px;
+		line-height: 33px;
+		text-align: center;
+		border: 1px solid #1c1c1c;
+		cursor: pointer;
+		position: absolute;
+		right: 15px;
+		top: 22px;
+	}
+	.header .container {
+		position: relative;
+	}
+	.humberger__menu__wrapper {
+		width: 300px;
+		background: #ffffff;
+		position: fixed;
+		left: -300px;
+		top: 0;
+		height: 100%;
+		overflow-y: auto;
+		z-index: 99;
+		padding: 30px;
+		padding-top: 50px;
+		opacity: 0;
+		display: block;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	}
+	.humberger__menu__overlay {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		content: "";
+		z-index: 98;
+		visibility: hidden;
+		-webkit-transition: all, 0.6s;
+		-moz-transition: all, 0.6s;
+		-ms-transition: all, 0.6s;
+		-o-transition: all, 0.6s;
+		transition: all, 0.6s;
+	}
+	.humberger__menu__overlay.active {
+		visibility: visible;
+	}
+	
+}
+
+/* Small Device = 320px */
+
+@media only screen and (max-width: 479px) {
+	.featured__controls ul li {
+		margin-bottom: 10px;
+	}
+	.header__cart{
+		display: none;
+	}
+}

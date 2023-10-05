@@ -1,0 +1,51 @@
+.contact{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 45px 50px 45px;
+    &__container{
+        width: 500px;
+        padding: 25px 30px;
+        background: whitesmoke;
+        border-radius: 10px;
+    }
+    &__title{
+        h3{
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+    }
+    &__content{
+        display: flex;
+        flex-direction: column;
+        input{
+            height: 40px;
+            margin-bottom: 10px;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            font-size: 17px;
+            font-family: fangsong;
+            border-radius: 3px;
+        }
+        label{
+            margin: 0;
+            font-size: 18px;
+            font-family: emoji;
+            margin-bottom: 5px;
+        }
+        textarea{
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            font-size: 17px;
+            font-family: fangsong;
+            border-radius: 3px;
+        }
+        button{
+            width: 100px;
+            margin: 0 auto;
+        }
+    }
+}

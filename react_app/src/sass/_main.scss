@@ -1,0 +1,38 @@
+@import './base/base';
+@import './base/utilities';
+@import './base/_responsive.scss';
+
+@import './components/Footer/footer.scss';
+@import './components/Header/header.scss';
+@import './components/NotFound/notfound';
+@import './components/Header/headermenu';
+
+@import './pages/Signup/signup';
+@import './pages/Login/login';
+@import './pages/Home/banner';
+@import './pages/Home/restaurant';
+@import './pages/Home/restauranthot';
+@import './pages/Home/pagniation';
+
+@import './pages/DetailRestaurant/inforres';
+@import './pages/DetailRestaurant/order';
+@import './pages/DetailRestaurant/specaility';
+
+@import './pages/Dishes/dish';
+@import './pages/Dishes/fillter';
+
+@import './pages/DetailOrder/detailorder';
+
+@import './pages/Bill/billorder';
+@import './pages/Bill/billuser';
+
+@import './pages/SearchAI/searchai';
+
+@import './pages/Account/account';
+
+@import './pages/Contact/contact';
+
+@import './pages/HistoryOrder/historyorder';
+
+@import './pages/DetailHistory/detailhistory';
+@import './pages/LikeRestaurant/likeres';

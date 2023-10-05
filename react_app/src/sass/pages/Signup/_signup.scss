@@ -1,0 +1,111 @@
+.signup{
+    padding: 30px 45px;
+	margin-bottom: 20px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    &__content{
+        width: 480px;
+        min-width: 320px;
+        padding: 20px 30px;
+        border-radius: 5px;
+        background: whitesmoke;
+    }
+    .item a{
+        margin-top: 10px;
+        margin-bottom: 5px;
+        color: #198754;
+        display: block;
+    }
+    &__other{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        a{
+            color: #198754;
+            margin-left: 5px;
+        }
+    }
+}
+
+.signup p{
+	margin: 0;
+    margin-top: 15px;
+    font-size: 18px;
+    font-family: emoji;
+    margin-bottom: 5px;
+}
+
+.signup input{
+	width: 100%;
+    border: 1px solid #ccc;
+    height: 40px;
+    font-size: 17px;
+	font-family: fangsong;
+    padding: 0 10px;
+	border-radius: 3px;
+}
+
+.signup span{
+	text-align: center;
+    display: block;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+.signup button{
+	display: flex;
+    width: 100%;
+    margin-top: 10px;
+	color: white;
+    outline: none;
+    border: none;
+    background: var(--color_button);
+    padding: 7px 0;
+    border-radius: 5px;
+    font-family: auto;
+    font-size: 18px;
+    font-style: unset;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup button.google, .signup button.facebook{
+    background-color: var(--color_main-bottom);
+}
+
+.signup .title { 
+	font-size: 24px;
+	margin-top: 0;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.signup button p{
+	margin: 0;
+	padding: 0 0 0 10px;
+}
+
+.signup__content button {
+    span{
+        margin: 0;
+        color: #666;
+    }
+    img{
+        width: 28px;
+        height: 28px;
+        margin-right: 10px;
+    }
+}
+
+.signup .signup__other{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span{
+        margin: 0;
+    }
+}
+

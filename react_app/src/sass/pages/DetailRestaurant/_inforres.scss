@@ -1,0 +1,86 @@
+.product__details{
+    margin-top: 15px;
+    h3{
+        margin-bottom: 10px;
+        margin-top: 5px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    img{
+        min-width: 100%;
+        border-radius: 5px;
+    }
+    &__text{
+        margin-left: 20px;
+        h3{
+            font-weight: 600;
+            font-size: 24px;
+        }
+        h4{
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .product-evaluate{
+            display: flex;
+        }
+        .product-infor{
+            display: flex;
+            margin-top: 10px;
+            align-items: center;
+            justify-content: left;
+            b{
+                margin-right: 15px;
+                width: 150px;
+                display: block;
+                font-weight: 600;
+            }
+            i{
+                margin-left: 5px;
+                color: red;
+            }
+            i.fa-comment-dots{
+                font-size: 25px;
+                color: rgb(63, 63, 197);
+                cursor: pointer;
+                margin-left: 0;
+            }
+            .product-rate{
+                i{
+                    margin-left: 5px;
+                    color: yellow;
+                }
+            }
+            .share{
+                i{
+                    font-size: 25px;
+                    margin-right: 10px;
+                    cursor: pointer;
+                }
+                i.fa-facebook{
+                    color: rgb(63, 63, 197);
+                    margin-left: 0;
+                }
+                i.fa-instagram{
+                    color: rgb(156, 86, 86);
+                }
+                i.fa-twitter{
+                    color: rgb(63, 63, 197);
+                }
+            }
+        }
+        .product-infor.content-text{
+            display: block;
+            p{
+                margin: 0 0 4px;
+            }
+        }
+    }
+}
+
+.prevent{
+    width: 1px;
+    background-color: #999;
+    height: 16px;
+    margin: 0 10px;
+}

@@ -1,0 +1,56 @@
+.the_bill{
+    h3{
+        margin: 15px 0 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+}
+
+.bill__content{
+    .bill__item{
+        display: flex;
+        justify-content: space-between;
+        p{
+            margin-bottom: 5px;
+        }
+        &__title{
+            color: black;
+            min-width: 150px;
+            font-weight: 500;
+        }
+        &__content{
+            margin-left: 15px;
+        }
+    }
+}
+
+.bill_user, .bill_restaurant{
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.left{
+    text-align: left !important;
+}
+
+.center{
+    text-align: center!important;
+    color: var(--color_button);
+    margin-bottom: 15px;
+}
+
+.bill{
+    background: #faf6f6;
+    padding: 25px 20px;
+    border-radius: 5px;
+    h2{
+        font-size: 28px;
+        margin-bottom: 25px;
+    }
+}
+
+.line{
+    margin: 0;
+}

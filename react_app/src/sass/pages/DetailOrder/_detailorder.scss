@@ -1,0 +1,43 @@
+.order__restaurant__dish__detail__content{
+    h3{
+        border-bottom: none;
+        text-align: left;
+        margin-bottom: 5px;
+        padding-bottom: 0;
+    }
+}
+
+.order__restaurant__dish__detail{
+    min-width: 500px;
+}
+
+.order__restaurant__content{
+    .item2{
+        display: flex;
+        .title{
+            min-width: 80px;
+            font-weight: 500;
+            color: black;
+        }
+        .content{
+            flex: 1;
+            margin-left: 10px;
+        }
+    }
+}
+
+.order__restaurant__cost{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 0;
+    .title__total{
+        font-size: 16px;
+        color: black;
+        font-weight: 600;
+    }
+    .content_total{
+        color: green;
+        font-size: 20px;
+        font-weight: 700;
+    }
+}

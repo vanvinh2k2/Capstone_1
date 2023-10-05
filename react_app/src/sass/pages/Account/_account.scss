@@ -1,0 +1,93 @@
+
+.account h3{
+	margin: 15px 0 5px 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.account .account-menu ul{
+	list-style: none;
+}
+
+.account .account-menu ul li{
+	border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 5px;
+	margin: 10px 0;
+	cursor: pointer;
+	color: gray;
+}
+
+.account .account-menu ul li a{
+	color: gray;
+}
+
+.account .account-menu ul li.active a{
+	color: white;
+}
+
+.account .account-menu ul li.active{
+	background: var(--color_button); 
+	color: white;
+}
+
+.account .account-menu ul li:hover{
+	background-color: #ccc;
+}
+
+.account .account-menu ul li i{
+	margin-right: 10px;
+}
+
+.account .account-content .profile-list{
+	display: flex;
+    flex-direction: column;
+}
+
+.account .account-content .profile-item{
+	display: flex;
+	margin-bottom: 15px;
+}
+
+.account .account-content .profile-item p{
+	width: 100px;
+	margin: 0;
+}
+
+.account .account-content .profile-item input{
+	width: 78%;
+    height: 40px;
+	padding: 0 10px;
+	border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+.account .account-content .profile-item #img-choice{
+	border: none;
+	padding: 0;
+}
+
+.account .account-content #profile-content h3{
+	text-align: center;
+}
+
+.account .account-content .img-profile{
+	width: 150px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.account .account-content button i{
+	margin-right: 5px;
+}
+
+.account .account-content .tab{
+	display: none;
+}
+
+.account .account-content .tab.active{
+	display: block;
+}

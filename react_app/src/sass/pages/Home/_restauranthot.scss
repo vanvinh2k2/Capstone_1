@@ -1,0 +1,25 @@
+.featured__item__slider{
+    background-color: aqua;
+    margin: 0 10px;
+}
+
+.slider{
+    margin: 0 -20px;
+}
+
+.featured__item_all{
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    height: 100%;
+    background-color: var(--color_restaurant);
+    margin: 10px;
+}
+.HotProduct h3{
+    font-size: 16px;
+    font-weight: 600;
+    padding: 20px 0 0 0;
+}
+
+.featured__item_all:hover .featured__item__pic .featured__item__pic__hover {
+    bottom: 20px;
+  }

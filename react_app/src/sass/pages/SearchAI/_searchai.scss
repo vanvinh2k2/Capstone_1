@@ -1,0 +1,52 @@
+.searchai{
+    h3{
+        font-size: 16px;
+        margin: 15px 0 10px;
+    }
+    &__input{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &__img{
+            height: 300px;
+            width: 300px;
+            background: whitesmoke;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+        button{
+            margin-top: 15px;
+            position: relative;
+            height: 35px;
+            overflow: hidden;
+            color: aliceblue;
+            input{
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+        
+    }
+    &__information{
+        .item{
+            display: flex;
+            &__title{
+                color: black;
+                min-width: 150px;
+            }
+            &__content{
+                margin-left: 10px;
+            }
+            p{
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
