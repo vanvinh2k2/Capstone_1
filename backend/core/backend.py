@@ -1,10 +1,15 @@
 from .serializers import *
 from .models import *
+from django.http import HttpRequest
 
 from rest_framework import status, permissions, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+def get_base_url(request):
+    absolute_url = HttpRequest.build_absolute_uri(request)
+    base_url = absolute_url.split(request.get_full_path())[0]
+    return base_url
 
 # API for User
 class RestaurantHotAPI(generics.ListAPIView, generics.RetrieveAPIView):
@@ -220,10 +225,14 @@ def add_like(request, *args, **kwargs):
     user = User.objects.get(id=uid)
     restaurant = Restaurant.objects.get(rid=rid)
     wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
+    
     if not wishlist.exists():
         Wishlist.objects.create(user=user, restaurant=restaurant)
+        wishlist = Wishlist.objects.filter(user=user)
+        serialize = WishlistSerializers(wishlist, many=True, context={'request': request})
         return Response({'success': True,
-                         'message': 'Add like successfully.'
+                         'message': 'Add like successfully.',
+                         'data': serialize.data
                          }, status=status.HTTP_200_OK)
     return Response({'success': False,
                      'message': 'Added previously!'
@@ -239,8 +248,11 @@ def delete_like(request, *args, **kwargs):
     wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
     if wishlist.exists():
         wishlist.delete()
+        wishlist = Wishlist.objects.filter(user=user)
+        serialize = WishlistSerializers(wishlist, many=True, context={'request': request})
         return Response({'success': True,
-                         'message': 'Delete like successfully.'
+                         'message': 'Delete like successfully.',
+                         'data': serialize.data
                          }, status=status.HTTP_200_OK)
     return Response({'success': False,
                      'message': 'Like not exists!'
@@ -251,17 +263,68 @@ def delete_like(request, *args, **kwargs):
 def edit_profile(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
-    address = Address.objects.get(uid=uid)
-    user.image = request.FILES.get('image')
-    user.phone = request.POST.get('phone')
-    user.full_name = request.POST.get('full_name')
+    address = Address.objects.get(user=user)
+    
+    if 'image' in request.FILES and request.FILES['image']:
+        user.image = request.FILES['image']
+    elif not user.image:
+        user.image = user.image
+    
+    if 'phone' in request.POST and request.POST['phone']:
+        user.phone = request.POST.get('phone')
+    
+    if 'full_name' in request.POST and request.POST['full_name']:
+        user.full_name = request.POST.get('full_name')
     user.verified = True
-    address.address = request.POST.get('address')
-    address.save();
+
+    if 'address' in request.POST and request.POST['address']:
+        address.address = request.POST.get('address')
+    address.save()
     user.save()
-    return Response({'success': True,
-                     'message': 'Edit profile successfully.'
-                     }, status=status.HTTP_200_OK)
+    
+    response_data = {
+        'success': True,
+        'message': 'Edit profile successfully.',
+        'data': {
+            'id': user.id,
+            'username': user.username,
+            'full_name': user.full_name,
+            'email': user.email,
+            'phone': user.phone,
+            'is_active': user.is_active,
+            'date_joined': user.date_joined,
+            'address': address.address,
+            'verified': user.verified,
+            'avatar': get_base_url(request) + (user.image.url if user.image else ''),
+        }
+    }
+    
+    return Response(response_data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_profile(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    try:
+        user = User.objects.get(id=uid)
+        address = Address.objects.get(user=user)
+        return Response({'success': True,
+                        'message': 'Get profile successfully.',
+                        'data': {
+                            'id': user.id,
+                            'username': user.username,
+                            'full_name': user.full_name,
+                            'email': user.email,
+                            'phone': user.phone,
+                            'is_active': user.is_active,
+                            'date_joined': user.date_joined,
+                            'address': address.address,
+                            'verified': user.verified,
+                            'avatar': get_base_url(request) + user.image.url,
+                        }
+                        }, status=status.HTTP_200_OK)
+    except: return Response({'success': False,
+                        'message': 'User is not exist!'
+                        }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

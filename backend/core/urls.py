@@ -6,7 +6,7 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     order_detail, search_restaurant, delete_like, edit_profile, list_order, search_dishes, \
     cancel_order, contact_us, add_restaurant, add_category, delete_category, update_category, \
     wishlist_restaurant, add_dish, delete_dish, update_dish, order_restaurant, add_table, \
-    get_table, update_table, delete_table, list_table
+    get_table, update_table, delete_table, list_table, get_profile
 
 urlpatterns = [
     path('', index, name='index'),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/search-restaurant/', search_restaurant, name='search-restaurant'),
     path('api/search-dish/', search_dishes, name='search-dish'),
     path('api/edit-profile/<uid>/', edit_profile, name='edit-profile'),
+    path('api/get-profile/<uid>/', get_profile, name='get-profile'),
     path('api/list-order/<uid>/', list_order, name='list-order'),
     path('api/cancel-order/<oid>/', cancel_order, name='cancel-order'),
     path('api/contact-us/', contact_us, name='contact-us'),
