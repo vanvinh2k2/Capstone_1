@@ -13,11 +13,11 @@ function LikeRestaurant() {
     }, [])
 
     async function handelDelete(e){
-        alert(e.currentTarget.getAttribute('value'))
         const action = await deleteLike(
             localStorage.getItem("iduser"),
             e.currentTarget.getAttribute('value')
         );
+        console.log(action)
         dispatch(action);
     }
     return ( 
@@ -40,7 +40,7 @@ function LikeRestaurant() {
                         <tbody>
                             {likes.map((like, index)=>{
                                 return(
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{like.restaurant?like.restaurant.rid: ""}</td>
                                         <td><span>{like.restaurant?like.restaurant.title: ""}</span></td>
                                         <td><img src={`${like.restaurant?like.restaurant.image: ""}`}/></td>
@@ -48,8 +48,8 @@ function LikeRestaurant() {
                                         <td>{like.restaurant?like.restaurant.time_open: ""}</td>
                                         <td>{like.restaurant?like.restaurant.time_close: ""}</td>
                                         <td>
-                                            <a href={`/detail-restaurant/${like.restaurant?like.restaurant.rid: ""}/`}><i class="fas fa-eye"></i></a>
-                                            <i class="fas fa-trash" value={like.restaurant?like.restaurant.rid: ""} onClick={handelDelete}></i>
+                                            <a href={`/detail-restaurant/${like.restaurant?like.restaurant.rid: ""}/`}><i className="fas fa-eye"></i></a>
+                                            <i className="fas fa-trash" value={like.restaurant?like.restaurant.rid: ""} onClick={handelDelete}></i>
                                         </td>
                                     </tr>
                                 )

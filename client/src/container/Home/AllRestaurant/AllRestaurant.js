@@ -17,7 +17,6 @@ function AllRestaurant() {
     }, [])
 
     async function handelLike(e){
-        alert()
         const action = await postLike(
             localStorage.getItem("iduser"),
             e.currentTarget.getAttribute('value')
@@ -43,7 +42,7 @@ function AllRestaurant() {
                                     <div className="featured__item__pic">
                                         <img src={restaurant.image}/>
                                         <ul className="featured__item__pic__hover">
-                                            <li value={restaurant.id} onClick={handelLike}><a><i className="fa fa-heart"></i></a></li>
+                                            <li value={restaurant.rid} onClick={handelLike}><a><i className="fa fa-heart"></i></a></li>
                                             <li><a href={`/detail-restaurant/${restaurant.rid}`}><i className="fa fa-eye"></i></a></li>
                                         </ul>
                                     </div>

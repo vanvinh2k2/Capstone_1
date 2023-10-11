@@ -109,10 +109,9 @@ export const listLike = async(uid) => {
 }
 
 export const postLike = async(uid, rid)=>{
-    const body = JSON.stringify({rid})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/add-like/${uid}/`, body, config)
-        if(res.data.success == true){
+        const res = await axios.get(`http://127.0.0.1:8000/api/add-like/${uid}/${rid}/`, config)
+        if(res.data.success === true){
             alert(res.data.message)
             return {
                 type: POST_LIKE,
@@ -128,15 +127,14 @@ export const postLike = async(uid, rid)=>{
     } catch(e){
         return {
             type: GET_ERROR,
-            payload: "ERROR!"
+            payload: e
         }
     }
 }
 
 export const deleteLike = async(uid, rid)=>{
-    const body = JSON.stringify({rid})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/delete-like/${uid}/`, body, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/delete-like/${uid}/${rid}/`, config)
         if(res.data.success == true){
             alert(res.data.message)
             return {

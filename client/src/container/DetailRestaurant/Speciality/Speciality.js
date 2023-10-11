@@ -81,7 +81,6 @@ function Speciality() {
                                                 <span>Sale: </span>
                                                 <span className="featured__item__sale_1">10%</span>
                                             </div>
-                                            
                                             <div className="featured__item__price">
                                                 <span>Price: </span>
                                                 <div>

@@ -218,10 +218,11 @@ def search_restaurant(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def add_like(request, *args, **kwargs):
     uid = kwargs.get('uid')
-    rid = request.POST.get('rid')
+    rid = kwargs.get('rid')
+    print(uid, rid)
     user = User.objects.get(id=uid)
     restaurant = Restaurant.objects.get(rid=rid)
     wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
@@ -239,10 +240,10 @@ def add_like(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def delete_like(request, *args, **kwargs):
     uid = kwargs.get('uid')
-    rid = request.POST.get('rid')
+    rid = kwargs.get('rid')
     user = User.objects.get(id=uid)
     restaurant = Restaurant.objects.get(rid=rid)
     wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)

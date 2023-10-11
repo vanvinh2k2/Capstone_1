@@ -22,7 +22,7 @@ const publicRouter = [
     {path: '/sign-up', component: SignUp},
     {path: '/detail-restaurant/:rid', component: DetailRestaurant},
     {path: '/detail-dish/:did', component: DetailDish},
-    {path: '/detail-order', component: DetailOrder},
+    {path: '/detail-order/:rid', component: DetailOrder},
     {path: '/dish', component: Dish},
     {path: '/bill', component: Bill},
     {path: '/search-ai', component: SearchAI},
