@@ -149,6 +149,32 @@ class Order(models.Model):
         return self.oid
 
 
+class OrderCart(models.Model):
+    ocid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
+    full_name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=15)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    time_from = models.TimeField()
+    time_to = models.TimeField()
+    number_people = models.IntegerField(default=2)
+    restaurant  = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_ordercart')
+
+    class Meta:
+        verbose_name_plural = "Order Carts"
+    
+    def __str__(self):
+        return self.ocid
+
+class OrderCartItem(models.Model):
+    ordercart = models.ForeignKey(OrderCart, on_delete=models.CASCADE)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        verbose_name_plural = "Order Carts Item"
+
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     invoice_no = models.CharField(max_length=200)

@@ -6,7 +6,9 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     order_detail, search_restaurant, delete_like, edit_profile, list_order, search_dishes, \
     cancel_order, contact_us, add_restaurant, add_category, delete_category, update_category, \
     wishlist_restaurant, add_dish, delete_dish, update_dish, order_restaurant, add_table, \
-    get_table, update_table, delete_table, list_table, get_profile
+    get_table, update_table, delete_table, list_table, get_profile, get_order_cart_res,\
+    add_order_cart, delete_order_cart, update_order_cart
+    # update_order_cart_item, delete_order_cart_item
 
 urlpatterns = [
     path('', index, name='index'),
@@ -36,6 +38,13 @@ urlpatterns = [
     path('api/cancel-order/<oid>/', cancel_order, name='cancel-order'),
     path('api/contact-us/', contact_us, name='contact-us'),
     path('api/list-table/<rid>/', list_table, name='list-table'),
+    path('api/order-cart/<uid>/<rid>/', get_order_cart_res, name='order-cart'),
+    path('api/add-order-cart/<uid>/<rid>/', add_order_cart, name='add-order-cart'),
+    path('api/delete-order-cart/<uid>/<rid>/', delete_order_cart, name='delete-order-cart'),
+    path('api/update-order-cart/<uid>/<rid>/', update_order_cart, name='update-order-cart'),
+    # path('api/update-order-cart-item/<ocid>/<did>/', update_order_cart_item, name='update-order-cart-item'),
+    # path('api/add-order-cart-item/<ocid>/', add_order_cart_item, name='add-order-cart-item'),
+    # path('api/delete-order-cart-item/<ocid>/<did>/', delete_order_cart_item, name='delete-order-cart-item'),
 
     # For Restaurant
     path('api/add-restaurant/<uid>/', add_restaurant, name='add-restaurant'),

@@ -1,6 +1,7 @@
 from .serializers import *
 from .models import *
 from django.http import HttpRequest
+import json
 
 from rest_framework import status, permissions, generics
 from rest_framework.decorators import api_view
@@ -409,6 +410,145 @@ def list_table(request, *args, **kwargs):
                      'message': 'Get success.',
                      'data': serialize.data
                      }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_order_cart_res(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    uid = kwargs.get('uid')
+    try:
+        restaurant = Restaurant.objects.get(rid=rid)
+        user = User.objects.get(id=uid)
+        order_cart = OrderCart.objects.get(restaurant=restaurant, user=user)
+        serialize = OrderCartSerializers(order_cart);
+        order_cart_item = OrderCartItem.objects.filter(ordercart=order_cart);
+        serialize2 = OrderCartItemsSerializers(order_cart_item, many=True, context={'request': request});
+        return Response({'success': True,
+                        'message': 'Get success.',
+                        'data': {
+                            "order": serialize.data,
+                            "orderDetail": serialize2.data
+                        }
+                        }, status=status.HTTP_200_OK)
+    except: return Response({'success': False,
+                        'message': 'Get fail.',
+                        }, status=status.HTTP_200_OK)
+    
+
+@api_view(['POST'])
+def add_order_cart(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    uid = kwargs.get('uid')
+    items = request.data.get("items")
+    tid = request.data.get('tid')
+    table = Table.objects.get(tid=tid)
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    serialize = OrderCartSerializers(data=request.data, context={'request': request})
+    if serialize.is_valid():
+        order_cart = serialize.save(user=user, table=table, restaurant=restaurant)
+        for item in items:
+            dish = Dish.objects.get(did=item['did'])
+            OrderCartItem.objects.create(
+                ordercart=order_cart,
+                dish=dish,
+                quantity=item['quantity']
+            )
+        order_cart_item = OrderCartItem.objects.filter(ordercart=order_cart);
+        serialize2 = OrderCartItemsSerializers(order_cart_item, many=True, context={'request': request});
+
+        return Response({'success': True,
+                         'message': 'Order restaurant successfully.',
+                        #  'data': serialize.data
+                        'data': {
+                            "order": serialize.data,
+                            "orderDetail": serialize2.data
+                        }
+                         }, status=status.HTTP_200_OK)
+    else:
+        return Response({'success': False,
+                         'message': 'Error!'
+                         }, status=status.HTTP_200_OK)
+    
+    
+# @api_view(['POST'])
+# def update_order_cart_item(request, *args, **kwargs):
+#     ocid = kwargs.get('ocid')
+#     ordercart = OrderCart.objects.get(ocid=ocid)
+#     did = kwargs.get('did')
+#     dish = Dish.objects.get(did=did)
+#     ordercart_items = OrderCartItem.objects.get(ordercart=ordercart, dish=dish)
+#     ordercart_items.quantity = request.POST.get('quantity')
+#     ordercart_items.save()
+#     return Response({'success': True,
+#                          'message': 'Update successfully.'
+#                          }, status=status.HTTP_200_OK)
+
+
+# @api_view(['GET'])
+# def delete_order_cart_item(request, *args, **kwargs):
+#     ocid = kwargs.get('ocid')
+#     did = kwargs.get('did')
+#     ordercart = OrderCart.objects.get(ocid=ocid)
+#     dish = Dish.objects.get(did=did)
+#     ordercart_items = OrderCartItem.objects.get(ordercart=ordercart, dish=dish)
+#     ordercart_items.delete()
+#     return Response({'success': True,
+#                          'message': 'Delete successfully.'
+#                          }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_order_cart(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    uid = kwargs.get('uid')
+    tid = request.data.get('tid')
+    table = Table.objects.get(tid=tid)
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    order_cart = OrderCart.objects.get(user=user, restaurant=restaurant)
+    order_cart.table = table
+    order_cart.full_name = request.data.get('full_name')
+    order_cart.phone = request.data.get('phone')
+    order_cart.time_from = request.data.get('time_from')
+    order_cart.time_to = request.data.get('time_to')
+    order_cart.number_people = request.data.get('number_people')
+    items = request.data.get('items')
+    order_cart.save();
+    serialize = OrderCartSerializers(order_cart)
+
+    ordercart_items = OrderCartItem.objects.filter(ordercart=order_cart)
+    ordercart_items.delete()
+    for item in items:
+        dish = Dish.objects.get(did=item['did'])
+        OrderCartItem.objects.create(
+            ordercart=order_cart,
+            dish=dish,
+            quantity=item['quantity']
+        )
+    order_cart_item = OrderCartItem.objects.filter(ordercart=order_cart);
+    serialize2 = OrderCartItemsSerializers(order_cart_item, many=True, context={'request': request});
+
+    return Response({'success': True,
+                     'message': 'Update successfully.',
+                     'data': {
+                        "order": serialize.data,
+                        "orderDetail": serialize2.data
+                    }
+                    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def delete_order_cart(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid);
+    order_cart = OrderCart.objects.filter(user=user, restaurant=restaurant);
+    order_cart.delete()
+    return Response({'success': True,
+                         'message': 'Delete successfully.'
+                         }, status=status.HTTP_200_OK)
 
 
 # API for Restaurant

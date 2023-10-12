@@ -80,3 +80,18 @@ class AddressSerializers(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = "__all__"
+
+class OrderCartSerializers(serializers.ModelSerializer):
+    restaurant = RestaurantSerializers(read_only=True)
+    user = UserSerializers(read_only=True)
+    table = TableSerializers(read_only=True)
+    class Meta:
+        model = OrderCart
+        fields = "__all__"
+
+class OrderCartItemsSerializers(serializers.ModelSerializer):
+    OrderCartSerializers = RestaurantSerializers(read_only=True)
+    dish = DishesSerializers(read_only=True)
+    class Meta:
+        model = OrderCartItem
+        fields = "__all__"

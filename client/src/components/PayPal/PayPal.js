@@ -31,9 +31,9 @@ const ButtonWrapper = ({ currency, showSpinner, amount }) => {
                         purchase_units: [
                             {
                                 amount: { currency_code: currency, value: amount},
-                                payee: {
-                                    email_address: 'nguoi-nhan@example.com', // Địa chỉ email của người nhận
-                                },
+                                // payee: {
+                                //     email_address: 'nguoi-nhan@example.com', // Địa chỉ email của người nhận
+                                // },
                             }
                         ]
                     }).then(orderId => orderId)

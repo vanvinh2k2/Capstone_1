@@ -4,7 +4,7 @@ import {
     GET_DISH_DETAIL,
     GET_DISHES_HOT,
     GET_DISH_OF_RES,
-    GET_DISH_OF_RES_CAT,
+    // GET_DISH_OF_RES_CAT,
 } from "../action/types";
 
 const initialState = {
@@ -38,11 +38,11 @@ export default function(state=initialState, action){
                 ...state,
                 dishes_res : payload
             }
-        case GET_DISH_OF_RES_CAT:
-            return {
-                ...state,
-                dishes_res_cat : payload
-            }
+        // case GET_DISH_OF_RES_CAT:
+        //     return {
+        //         ...state,
+        //         dishes_res_cat : payload
+        //     }
         case GET_ERROR: 
         default: return state
     }

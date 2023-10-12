@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect, useState } from 'react';
 import { getTable, getCategory } from '../../../action/restaurant';
-import { getDishesOfResCat } from '../../../action/dish';
+import { getDishesOfRestaurant } from '../../../action/dish';
 import {useParams} from 'react-router-dom'
-import { addClient, deleteOrder, updateOrder, addOrder } from '../../../action/order';
+import { updateOrderCart, addOrderCart, getOrderCart } from '../../../action/order';
 import { useNavigate} from 'react-router-dom'
 
 function OrderRestaurant(props) {
@@ -12,56 +12,46 @@ function OrderRestaurant(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {rid} = useParams();
-    const order_dish = useSelector(state=>state.order.order_dish)
-    const order_user = useSelector(state=>state.order.order_user)
-    const dishes = useSelector(state=>state.dish.dishes_res_cat);
+    const orderCart = useSelector(state=>state.order.orderCart)
+    const disheAll = useSelector(state=>state.dish.dishes_res);
+    const [dishes, setDishes] = useState([]);
     const [quantity, setQuantity] = useState(Array.from({ length: dishes.length }, () => 1));
     const [stick, setStick] = useState([]);
     const [cid, setCid] = useState("0");
-    const [orderDish, setOrderDish] = useState({
-        invoice_no: "",
-        did: "",
-        item: "",
-        image: null,
-        quantity: 0,
-        price: 0,
-        total: 0,
-        category: ""
-    })
+    const [orderItems, setOrderItems] = useState([]);
     const [orderUser, setOrderUser] = useState({
-        name: "",
+        full_name: "",
         phone: "",
-        table: "",
+        tid: "",
         time_from: "",
         time_to: "",
-        people: "",
-        deposit: "",
+        number_people: ""
     })
 
-    useEffect(() => {
+    useEffect(()=>{
+        async function getordercart(){
+            const action = await getOrderCart(localStorage.getItem('iduser'), rid);
+            dispatch(action)
+        }
+        getordercart();
+    }, [dispatch])
+
+    useEffect(()=>{
         const initialQuantity = Array.from({ length: dishes.length }, () => 1);
         const initialStick = Array.from({ length: dishes.length }, () => 0);
-        if (order_dish && order_dish.length > 0) {
-            for (const orderItem of order_dish) {
-                const dishIndex = dishes.findIndex(dish => dish.did === orderItem.did);
-                if (dishIndex !== -1) {
-                    initialQuantity[dishIndex] = Number(orderItem.quantity);
-                    initialStick[dishIndex] = 1;
+        // console.log("ok",orderItems)
+        for(let i=0;i<dishes.length;i++){
+            for(let j=0;j<orderItems.length;j++){
+                if(dishes[i].did ===orderItems[j].did){
+                    initialQuantity[i] = Number(orderItems[j].quantity);
+                    initialStick[i] = 1;
                 }
             }
         }
+        
         setQuantity(initialQuantity);
         setStick(initialStick);
-        setOrderUser(order_user)
-    }, [dishes, order_user]);
-
-    useEffect(()=>{
-        async function getDishOfCat(){
-            const action = await getDishesOfResCat(rid, cid)
-            dispatch(action);
-        }
-        getDishOfCat();    
-    }, [cid])
+    }, [dishes])
 
     useEffect(()=>{
         async function getcategory(){
@@ -74,25 +64,79 @@ function OrderRestaurant(props) {
             dispatch(action);
         }
 
+        async function getDishs(){
+            const action = await getDishesOfRestaurant(rid)
+            dispatch(action);
+        }
+
+        getDishs();
         gettable();
         getcategory();
     }, [])
+
+    useEffect(()=>{
+        setDishes(disheAll)
+    }, [disheAll])
+
+    useEffect(()=>{
+        if (orderCart && orderCart.order){
+            setOrderUser({
+                ...orderUser, 
+                full_name: orderCart.order.full_name,
+                phone: orderCart.order.phone,
+                tid: orderCart.order.table.tid,
+                time_from: orderCart.order.time_from,
+                time_to: orderCart.order.time_to,
+                number_people: orderCart.order.number_people
+            })
+        }
+        if (orderCart && orderCart.orderDetail && orderCart.orderDetail.length > 0) {
+            // console.log(orderCart.orderDetail, dishes)
+            let newOrderItems = [];
+            for (let i = 0; i < dishes.length; i++) {
+                for (let j = 0; j < orderCart.orderDetail.length; j++) {
+                    if (dishes[i].did === orderCart.orderDetail[j].dish.did) {
+                        const newOrderItem = {
+                            did: dishes[i].did,
+                            quantity: orderCart.orderDetail[j].quantity
+                        };
+                        newOrderItems.push(newOrderItem);
+                    }
+                }
+            }
+            setOrderItems(newOrderItems);
+        }
+    }, [orderCart])
+
+    useEffect(()=>{
+        setDishes([]);
+        if(cid === "0"){
+            let newDishes = [...disheAll];
+            setDishes(newDishes);
+        }else{
+            let newDishes = [];
+            disheAll.map((item, index)=>{
+                if(item.category.cid === cid){
+                    newDishes.push(item);
+                    setDishes(newDishes);
+                }
+            })
+        }
+    }, [cid])
 
     function handelChange(e){
         setOrderUser({...orderUser, [e.target.name]: e.target.value})
     }
 
     const handelAdd = (dish, index)=>{
-        orderDish.did = dish.did;
-        orderDish.item = dish.title;
-        orderDish.image = dish.image;
-        orderDish.price = dish.price;
-        orderDish.category = dish.category.cid;
-        orderDish.quantity = quantity[index];
-        orderDish.total = dish.price * quantity[index];
+        let newOrderItems = [...orderItems];
+        const newOrderItem = {
+            did: dish.did,
+            quantity: quantity[index]
+        };
+        newOrderItems.push(newOrderItem);
+        setOrderItems(newOrderItems);
         setStick({...stick, [index]: 1})
-        const action = addOrder(orderDish);
-        dispatch(action);
     }
 
     function handelQuantity(index, e){
@@ -100,28 +144,32 @@ function OrderRestaurant(props) {
         newQuantity[index] = e.target.value;
         setQuantity(newQuantity);
         const did = e.currentTarget.getAttribute("id-dish");
-        for(let i=0;i<order_dish.length;i++){
-            if(order_dish[i].did === did){
-                let update = {...order_dish[i]}
-                update.quantity = e.target.value;
-                update.total = e.target.value * update.price;
-                const action = updateOrder(update);
-                dispatch(action);
+        let newOrderItems = [...orderItems]
+        for(let i=0;i<newOrderItems.length;i++){
+            if(newOrderItems[i].did === did){
+                newOrderItems[i].quantity = e.target.value;
+                setOrderItems(newOrderItems);
             }
         }
     }
 
+    // useEffect(()=>{
+    //     console.log(quantity);
+    // }, [quantity])
+
     const handelDelete = (dish, index)=>{
         setStick({...stick, [index]: 0})
-        const action = deleteOrder(dish);
-        dispatch(action);
+        let delOrderItems = [...orderItems]
+        delOrderItems = delOrderItems.filter(item=>item.did !== dish.did)
+        setOrderItems(delOrderItems);
     }
 
     function checkInput(){
-        if(order_dish.length<=0){
+        if(orderItems.length<=0){
             alert("Please choice Dishes!");
             return false;
-        }else if(orderUser.name === ""){
+        }else
+        if(orderUser.name === ""){
             alert("Please input Name!");
             return false;
         }else if(orderUser.people === ""){
@@ -143,11 +191,31 @@ function OrderRestaurant(props) {
         return true;
     }
 
-    function handelSubmit(e){
+    const handelSubmit = async(e)=>{
         e.preventDefault();
         if(checkInput() === true){
-            const action = addClient(orderUser)
-            dispatch(action);
+            if(orderCart.length<=0){
+                const action = await addOrderCart(
+                    orderUser, 
+                    orderItems,
+                    localStorage.getItem('iduser'),
+                    rid
+                );
+                // console.log(action);
+                dispatch(action)
+            }else{
+                // console.log(orderItems, orderUser)
+                const action = await updateOrderCart(
+                    orderUser, 
+                    orderItems,
+                    localStorage.getItem('iduser'),
+                    rid
+                );
+                // console.log(action);
+                dispatch(action)
+            }
+            setOrderItems([]);
+            setOrderUser({});
             navigate("/detail-order/"+rid);
         }
     }
@@ -166,7 +234,7 @@ function OrderRestaurant(props) {
                                     <h3>Reserve Table</h3>
                                     <div className="item">
                                         <p>Name</p>
-                                        <input type="text" value={orderUser.name} onChange={handelChange} name='name'/>
+                                        <input type="text" value={orderUser.full_name} onChange={handelChange} name='full_name'/>
                                     </div>
                                     <div className="item">
                                         <p>Phone Number</p>
@@ -174,7 +242,7 @@ function OrderRestaurant(props) {
                                     </div>
                                     <div className="item">
                                         <p>Table</p>
-                                        <select value={orderUser.table} onChange={handelChange} name='table'>
+                                        <select value={orderUser.tid} onChange={handelChange} name='tid'>
                                             <option value="0">Choice Table</option>
                                             {tables.map((table, index)=>{
                                                 return(
@@ -193,7 +261,7 @@ function OrderRestaurant(props) {
                                     </div>
                                     <div className="item">
                                         <p>Number of People</p>
-                                        <input type="text" value={orderUser.people} onChange={handelChange} name='people'/>
+                                        <input type="text" value={orderUser.number_people} onChange={handelChange} name='number_people'/>
                                     </div>
                                 </div>
                             </div>

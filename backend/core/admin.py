@@ -42,6 +42,14 @@ class TableAdmin(admin.ModelAdmin):
     list_display = ['tid', 'title']
 
 
+class CartOrderAdmin(admin.ModelAdmin):
+    list_display = ['ocid', 'full_name', 'phone', 'table', 'number_people']
+
+
+class CartOrderItemAdmin(admin.ModelAdmin):
+    list_display = ['ordercart', 'dish', 'quantity']
+
+
 # Register your models here.
 admin.site.register(Dish, DishAdmin)
 admin.site.register(Category, CategoryAdmin)
@@ -53,3 +61,5 @@ admin.site.register(Wishlist, WishlistAdmin)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(ChatMessage, ChatMessageAdmin)
 admin.site.register(Table, TableAdmin)
+admin.site.register(OrderCart, CartOrderAdmin)
+admin.site.register(OrderCartItem, CartOrderItemAdmin)
