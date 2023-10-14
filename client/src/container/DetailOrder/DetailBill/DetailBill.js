@@ -12,7 +12,7 @@ function DetailBill(props) {
     const dispatch = useDispatch();
     const orderDetail = props.orderDetail;
     // const {orderDetail, order} = useSelector(state=>state.order.orderCart)
-    const order = props.orderDetail;
+    const order = props.order;
     const [hide, setHide] = useState([]);
     const [orderDish, setOrderDish] = useState([]);
     const [sumPrice, setSumPrice] = useState(0);
@@ -60,7 +60,7 @@ function DetailBill(props) {
         const newOrderDish = [...orderDish];
         newOrderDish[index].quantity = quantity;
         setOrderDish(newOrderDish);
-        const did = e.currentTarget.getAttribute("id-dish");
+        // const did = e.currentTarget.getAttribute("id-dish");
         // for(let i=0;i<orderDetail.length;i++){
         //     if(orderDetail[i].did === did){
         //         let update = {...orderDetail[i]}
@@ -116,7 +116,10 @@ function DetailBill(props) {
                         <p className="content_total">{sumPrice*30/100}$</p>
                     </div>
                     <p><b>Note: </b>You need to pay a deposit to confirm the order</p>
-                    <PayPal amount={1000}/>
+                    <PayPal amount={sumPrice*30/100} pee={"sb-4sokb27585707@business.example.com"} 
+                        payload ={{
+                            order: order, orderDetail: orderDish, deposit: sumPrice*30/100, price: sumPrice, rid: rid
+                    }}/>
                 </div>
             </div>
         </div>

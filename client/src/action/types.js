@@ -27,12 +27,15 @@ export const GET_DISH_OF_RES = 'GET_DISH_OF_RES';
 
 export const ADD_ORDER_CART = 'ADD_ORDER_CART';
 export const GET_ORDER_CART = 'GET_ORDER_CART';
-// export const DELETE_ORDER = 'DELETE_ORDER';
+export const ADD_ORDER = 'ADD_ORDER';
 export const UPDATE_ORDER_CART = 'UPDATE_ORDER_CART';
-// export const ADD_CLIENT = 'ADD_CLIENT';
+export const GET_ORDER_HISTORY = "GET_ORDER_HISTORY"
+export const SEARCH_AI = 'SEARCH_AI';
 
 // export const ADD_ORDER_ITEM = 'ADD_ORDER_ITEM';
 // export const GET_ORDER_ITEM = 'GET_ORDER_ITEM';
 // export const DELETE_ORDER = 'DELETE_ORDER';
 // export const UPDATE_ORDER = 'UPDATE_ORDER';
 // export const ADD_CLIENT = 'ADD_CLIENT';
+
+export const GET_BILL = 'GET_BILL';

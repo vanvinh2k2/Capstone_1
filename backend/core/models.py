@@ -179,7 +179,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     invoice_no = models.CharField(max_length=200)
     item = models.CharField(max_length=200)
-    image = models.ImageField(upload_to=order_dish_directory_path)
+    image = models.CharField(max_length=400)
     quantity = models.IntegerField(default=0)
     price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
     total = models.DecimalField(decimal_places=2, max_digits=50, default=2)
@@ -189,7 +189,7 @@ class OrderItem(models.Model):
         verbose_name_plural = "Order Items"
 
     def order_image(self):
-        return mark_safe('<img src="%s" width="50" height="50"/>' % (self.image.url))
+        return mark_safe('<img src="%s" width="50" height="50"/>' % (self.image))
 
 
 class RestaurantReview(models.Model):

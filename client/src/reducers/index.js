@@ -4,6 +4,7 @@ import restaurant from './restaurant';
 import dish from './dish';
 import account from './account';
 import order from './order';
+import bill from './bill';
 
 export default combineReducers({
     auth,
@@ -11,4 +12,5 @@ export default combineReducers({
     dish,
     account,
     order,
+    bill,
 });

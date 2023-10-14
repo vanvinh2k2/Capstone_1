@@ -1,6 +1,6 @@
 import AllRestaurant from './AllRestaurant/AllRestaurant'
 import Banner from './Banner/Banner'
-import Pagniation from './Pagniation/Pagniation'
+import Pagniation from '../../components/Pagniation/Pagniation'
 import RestaurantHot from './RestaurantHot/RestaurantHot'
 
 function Home() {

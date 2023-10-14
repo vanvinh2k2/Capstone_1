@@ -30,7 +30,6 @@ export const getRestaurantHot= async()=>{
             payload: "ERROR!"
         }
     }
-
 }
 
 export const getRestaurant= async()=>{

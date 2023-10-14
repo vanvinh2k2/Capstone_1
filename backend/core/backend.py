@@ -164,12 +164,26 @@ def list_like(request, *args, **kwargs):
 @api_view(['POST'])
 def add_order(request, *args, **kwargs):
     uid = kwargs.get('uid')
+    rid = kwargs.get('rid')
     user = User.objects.get(id=uid)
-    tid = request.POST.get('tid')
+    tid = request.data.get('tid')
     table = Table.objects.get(tid=tid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    items = request.data.get("items");
     serialize = OrderSerializers(data=request.data, context={'request': request})
-    if serialize.is_valid():
-        serialize.save(user=user, table=table)
+
+    if serialize.is_valid(raise_exception=True):
+        order = serialize.save(user=user, table=table, restaurant=restaurant)
+        for item in items:
+            OrderItem.objects.create(
+                order=order,
+                invoice_no="invoice_no_%s" %(order.id),
+                item=item['item'],
+                quantity=item['quantity'],
+                image=item['image'],
+                price=item['price'],
+                total=item['total']
+            )
         return Response({'success': True,
                          'message': 'Order restaurant successfully.',
                          'data': serialize.data
@@ -180,32 +194,20 @@ def add_order(request, *args, **kwargs):
                          }, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-def add_order_item(request, *args, **kwargs):
-    oid = kwargs.get('oid')
-    order = Order.objects.get(oid=oid)
-    serialize = OrderItemSerializers(data=request.data, context={'request': request})
-    if serialize.is_valid():
-        serialize.save(order=order)
-        return Response({'success': True,
-                         'message': 'Successfully.',
-                         }, status=status.HTTP_200_OK)
-    else:
-        return Response({'success': False,
-                         'message': 'Error!'
-                         }, status=status.HTTP_200_OK)
-
-
-@api_view(['GET'])
-def order_detail(request, *args, **kwargs):
-    oid = kwargs.get('oid')
-    order = Order.objects.get(oid=oid)
-    order_item = OrderItem.objects.filter(order=order)
-    serialize = OrderItemSerializers(order_item, many=True, context={'request': request})
-    return Response({'success': True,
-                     'message': 'Get detail order successfully.',
-                     'data': serialize.data
-                     }, status=status.HTTP_200_OK)
+# @api_view(['POST'])
+# def add_order_item(request, *args, **kwargs):
+#     oid = kwargs.get('oid')
+#     order = Order.objects.get(oid=oid)
+#     serialize = OrderItemSerializers(data=request.data, context={'request': request})
+#     if serialize.is_valid():
+#         serialize.save(order=order)
+#         return Response({'success': True,
+#                          'message': 'Successfully.',
+#                          }, status=status.HTTP_200_OK)
+#     else:
+#         return Response({'success': False,
+#                          'message': 'Error!'
+#                          }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -327,6 +329,18 @@ def get_profile(request, *args, **kwargs):
     except: return Response({'success': False,
                         'message': 'User is not exist!'
                         }, status=status.HTTP_200_OK)
+    
+
+@api_view(['GET'])
+def order_detail(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    order = Order.objects.get(oid=oid)
+    order_item = OrderItem.objects.filter(order=order)
+    serialize = OrderItemSerializers(order_item, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get detail order successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -339,6 +353,22 @@ def list_order(request, *args, **kwargs):
                      'message': 'Get list order successfully.',
                      'data': serialize.data
                      }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def bill_order(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    order = Order.objects.get(oid=oid)
+    orders = OrderItem.objects.filter(order=order)
+    serialize = OrderSerializers(order)
+    serialize2 = OrderItemSerializers(orders, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get list order successfully.',
+                     'data': {
+                         'order': serialize.data,
+                         'orderItems': serialize2.data
+                     }
+                    }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

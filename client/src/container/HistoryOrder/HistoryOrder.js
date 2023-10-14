@@ -1,6 +1,19 @@
 import AllRestaurant from '../Home/AllRestaurant/AllRestaurant'
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { getOrderHistory } from '../../action/bill';
 
 function HistoryOrder() {
+    const dispatch = useDispatch();
+    const orderHistory = useSelector(state=>state.bill.orderHistory);
+
+    useEffect(()=>{
+        async function getorderHistory(){
+            const action = await getOrderHistory();
+            dispatch(action);
+        }
+        getorderHistory();
+    },[])
     return ( 
         <>
         <div className="container">
@@ -15,53 +28,32 @@ function HistoryOrder() {
                                 <tr>
                                     <th>Orders</th>
                                     <th>Date</th>
-                                    <th>Status</th>
-                                    <th className="torder__status">Paid Status</th>
+                                    <th>Status Order</th>
+                                    <th>Number People</th>
                                     <th>Total</th>
                                     <th className="torder__actions">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>INVOICE-NO-4</td>
-                                    <td className="order__date"><span>20/10/2023</span></td>
-                                    <td className="order__status"><span>ok</span></td>
-                                        <td className="order__statuspaid"><i className="fas fa-check-circle"></i></td>
-                                        {/* <td className="order-statuspaid"><i className="fas fa-times-circle" style="color: red;"></i></td> */}
-                                    
-                                    <td className="order__total"><span>$200</span></td>
-                                    <td className="order__action"><a href=""><i className="fas fa-eye"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>INVOICE-NO-3</td>
-                                    <td className="order__date"><span>20/10/2023</span></td>
-                                    <td className="order__status"><span>ok</span></td>
-                                        {/* <td className="order__statuspaid"><i className="fas fa-check-circle"></i></td> */}
-                                        <td className="order__statuspaid"><i className="fas fa-times-circle"></i></td>
-                                    
-                                    <td className="order__total"><span>$200</span></td>
-                                    <td className="order__action"><a href=""><i className="fas fa-eye"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>INVOICE-NO-2</td>
-                                    <td className="order__date"><span>20/10/2023</span></td>
-                                    <td className="order__status"><span>ok</span></td>
-                                        <td className="order__statuspaid"><i className="fas fa-check-circle"></i></td>
-                                        {/* <td className="order-statuspaid"><i className="fas fa-times-circle" style="color: red;"></i></td> */}
-                                    
-                                    <td className="order__total"><span>$200</span></td>
-                                    <td className="order__action"><a href=""><i className="fas fa-eye"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>INVOICE-NO-1</td>
-                                    <td className="order__date"><span>20/10/2023</span></td>
-                                    <td className="order__status"><span>ok</span></td>
-                                        {/* <td className="order__statuspaid"><i className="fas fa-check-circle"></i></td> */}
-                                        <td className="order__statuspaid"><i className="fas fa-times-circle"></i></td>
-                                    
-                                    <td className="order__total"><span>$200</span></td>
-                                    <td className="order__action"><a href=""><i className="fas fa-eye"></i></a></td>
-                                </tr>
+                                {/* {console.log(orderHistory)} */}
+                            {orderHistory? orderHistory.map((item, index)=>{
+                                    return (
+                                        <tr key={index}>
+                                            <td className="order__date"><span>{item.oid}</span></td>
+                                            <td className="order__status"><span>{item.order_date.substring(0, 10)}</span></td>
+                                            <td className="">{item.product_status}</td>
+                                            <td className="">{item.number_people}</td>
+                                            <td className="order__total"><span>{item.price}$</span></td>
+                                            <td className="order__action"><a href=""><i className="fas fa-eye"></i></a></td>
+                                        </tr>
+                                    )
+                                }):
+                                (
+                                    <tr>
+                                        <td colSpan="6">No orders available</td>
+                                    </tr>
+                                )}
+                                
                             </tbody>
                         </table>
                     </div>

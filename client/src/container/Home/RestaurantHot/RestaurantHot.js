@@ -6,7 +6,7 @@ import resimg from '../../../assets/images/res.png'
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import { useState, useEffect } from 'react';
-import {getRestaurantHot} from '../../../action/restaurant'
+import {getRestaurantHot, postLike} from '../../../action/restaurant'
 
 
 function RestaurantHot(props) {
@@ -59,6 +59,14 @@ function RestaurantHot(props) {
         fetchData();
     }, [])
 
+    async function handelLike(e){
+        const action = await postLike(
+            localStorage.getItem("iduser"),
+            e.currentTarget.getAttribute('value')
+        );
+        dispatch(action);
+    }
+
     return ( 
         <section className="HotProduct">
             <div className="container">
@@ -79,7 +87,7 @@ function RestaurantHot(props) {
                                         <div className="featured__item__pic">
                                             <img src={restaurant.image}/>
                                             <ul className="featured__item__pic__hover">
-                                                <li><a href="#"><i className="fa fa-heart"></i></a></li>
+                                                <li value={restaurant.rid} onClick={handelLike}><a><i className="fa fa-heart"></i></a></li>
                                                 <li><a href={`/detail-restaurant/${restaurant.rid}`}><i className="fa fa-eye"></i></a></li>
                                             </ul>
                                         </div>

@@ -1,11 +1,58 @@
 import RestaurantSearch from "./RestaurantShow/RestaurantShow";
-import ResultSearch from "./ResultSearch/ResultSearch";
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { searchAI } from "../../action/search";
+import imgrc from '../../assets/images/res.png'
 
 function SearchAI() {
+    const [img, setImg] = useState(null);
+    const dispatch = useDispatch();
+
+    function chooseFile(e){
+        const fileInput = e.target;
+        if (fileInput.files && fileInput.files[0]) {
+            setImg(fileInput.files[0]);
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                const imgProfile = document.querySelector('.img-profile');
+                imgProfile.setAttribute('src', e.target.result);
+            }
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+
+    useEffect(()=>{
+        async function searchai(){
+            if(img){
+                const action = await searchAI(img);
+                console.log(action);
+                dispatch(action);
+            }
+        }
+        searchai();
+    }, [img])
+
     return ( 
         <>
-            <ResultSearch/>
-            <RestaurantSearch/>
+            <div className="container">
+                <div className="row searchai">
+                    <div className="col-lg-12 col-sm-12 col-md-12">
+                        <h3>Search Dish with Image</h3>
+                    </div>
+                    <div className="col-lg-12 col-sm-12 col-md-12">
+                        <div className="searchai__input">
+                            <div className="searchai__input__img">
+                                {img?
+                                <img src="" className="img-profile"/>
+                                :<p>Please Choice Image</p>
+                                }
+                            </div>
+                            <button className="btn">Upload<input type="file" onChange={chooseFile}/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {img?<RestaurantSearch/>:""}
         </>
      );
 }

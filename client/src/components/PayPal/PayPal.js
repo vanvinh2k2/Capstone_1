@@ -4,12 +4,16 @@ import {
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
 import { useEffect } from "react";
+import axios from "axios";
+import {useNavigate} from 'react-router-dom'
+
 
 const style = {"layout":"vertical"};
 
-const ButtonWrapper = ({ currency, showSpinner, amount }) => {
-    const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
 
+const ButtonWrapper = ({ currency, showSpinner, amount, pee, payload}) => {
+    const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
+    const navigate = useNavigate();
     useEffect(()=>{
         dispatch({
             type: 'resetOptions',
@@ -31,26 +35,72 @@ const ButtonWrapper = ({ currency, showSpinner, amount }) => {
                         purchase_units: [
                             {
                                 amount: { currency_code: currency, value: amount},
-                                // payee: {
-                                //     email_address: 'nguoi-nhan@example.com', // Địa chỉ email của người nhận
-                                // },
+                                payee: {
+                                    email_address: pee, // Địa chỉ email của người nhận
+                                },
                             }
                         ]
                     }).then(orderId => orderId)
                 }
                 onApprove={(data, actions)=>actions.order.capture().then(async(response)=>{
-                    console.log(response)
+                    const {order, orderDetail, deposit, price, rid} = payload;
+                    const {full_name, phone, table, time_from, time_to, number_people} = order;
+                    let items = [];
+                    const tid = table.tid;
+                    for(let i=0; i<orderDetail.length; i++){
+                        let item = {
+                            item: "",
+                            image: null,
+                            quantity: 0,
+                            price: 0,
+                            total: 0,
+                        }
+                        item.item = orderDetail[i].dish.title;
+                        item.image = orderDetail[i].dish.image;
+                        item.quantity = orderDetail[i].quantity;
+                        item.price = orderDetail[i].dish.price;
+                        item.total = orderDetail[i].dish.price * orderDetail[i].quantity;
+                        items.push(item);
+                    }
+                    const config = {
+                        headers: {
+                            "Content-type": "application/json",
+                        }
+                    }
+                    const body = JSON.stringify({
+                        full_name, 
+                        phone,
+                        tid,
+                        time_from,
+                        time_to,
+                        number_people,
+                        deposit,
+                        price,
+                        items
+                    })
+                    axios.post(`http://127.0.0.1:8000/api/add-order/${localStorage.getItem("iduser")}/${rid}/`, body, config)
+                    .then((res) => {
+                        if (res.data.success === true) {
+                            const oid = res.data.data.oid;
+                            axios.get(`http://127.0.0.1:8000/api/delete-order-cart/${localStorage.getItem("iduser")}/${rid}/`, config)
+                            .then((res2)=>{
+                                if (res2.data.success === true) {
+                                    navigate(`/bill/${oid}`);
+                                }
+                            })
+                        }
+                    });
                 })}
             />
         </>
     );
 }
 
-export default function PayPal({amount}) {
+export default function PayPal({amount, pee, payload}) {
     return (
         <div style={{ maxWidth: "750px", minHeight: "200px" }}>
             <PayPalScriptProvider options={{ clientId: "test", components: "buttons", currency: "USD" }}>
-                <ButtonWrapper currency={'USD'} amount={amount} showSpinner={false} />
+                <ButtonWrapper currency={'USD'} amount={amount} showSpinner={false} pee={pee} payload={payload}/>
             </PayPalScriptProvider>
         </div>
     );

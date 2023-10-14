@@ -2,12 +2,12 @@ from .views import *
 from django.urls import path
 from .ai import search_restaurant_image
 from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, CategoryAPI, \
-    dish_by_category, add_order_item, dishes_of_restaurant, list_like, add_order, add_like, \
+    dish_by_category, dishes_of_restaurant, list_like, add_order, add_like, update_order_cart,\
     order_detail, search_restaurant, delete_like, edit_profile, list_order, search_dishes, \
     cancel_order, contact_us, add_restaurant, add_category, delete_category, update_category, \
     wishlist_restaurant, add_dish, delete_dish, update_dish, order_restaurant, add_table, \
     get_table, update_table, delete_table, list_table, get_profile, get_order_cart_res,\
-    add_order_cart, delete_order_cart, update_order_cart
+    add_order_cart, delete_order_cart, bill_order
     # update_order_cart_item, delete_order_cart_item
 
 urlpatterns = [
@@ -23,9 +23,10 @@ urlpatterns = [
     path('api/dish/<did>/', DishesAPI.as_view(), name='dish-detail'),
     path('api/restaurant/dish-by-category/<rid>/<cid>/', dish_by_category, name='dish-by-category'),
     path('api/category/', CategoryAPI.as_view(), name='category'),
-    path('api/add-order/<uid>/', add_order, name='add-order'),
-    path('api/add-order-item/<oid>/', add_order_item, name='add-order-item'),
+    path('api/add-order/<uid>/<rid>/', add_order, name='add-order'),
+    # path('api/add-order-item/<oid>/', add_order_item, name='add-order-item'),
     path('api/order-detail/<oid>/', order_detail, name='order-detail'),
+    path('api/bill-order/<oid>/', bill_order, name='bill-order'),
     path('api/dishes-of-restaurant/<rid>/', dishes_of_restaurant, name='dishes-of-restaurant'),
     path('api/list-like/<uid>/', list_like, name='list-like'),
     path('api/add-like/<uid>/<rid>/', add_like, name='add-like'),

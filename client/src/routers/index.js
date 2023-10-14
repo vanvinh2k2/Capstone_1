@@ -24,7 +24,7 @@ const publicRouter = [
     {path: '/detail-dish/:did', component: DetailDish},
     {path: '/detail-order/:rid', component: DetailOrder},
     {path: '/dish', component: Dish},
-    {path: '/bill', component: Bill},
+    {path: '/bill/:oid', component: Bill},
     {path: '/search-ai', component: SearchAI},
     {path: '/account', component: Account},
     {path: '/love-restaurant', component: LikeRestaurant},

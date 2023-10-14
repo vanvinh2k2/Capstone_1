@@ -57,6 +57,7 @@ class WishlistRestaurantSerializers(serializers.ModelSerializer):
 class OrderSerializers(serializers.ModelSerializer):
     user = UserSerializers(read_only=True)
     table = TableSerializers(read_only=True)
+    restaurant = RestaurantSerializers(read_only=True)
 
     class Meta:
         model = Order
@@ -64,6 +65,7 @@ class OrderSerializers(serializers.ModelSerializer):
 
 
 class OrderItemSerializers(serializers.ModelSerializer):
+    invoice_no = serializers.CharField(read_only=True)
     class Meta:
         model = OrderItem
         fields = ['invoice_no', 'item', 'image', 'quantity', 'price', 'total']
