@@ -1,0 +1,35 @@
+.fc-license-message{
+    display: none !important;
+}
+table.fc-scrollgrid {
+    colgroup col:first-child {
+        width: 15% !important;
+    }
+    table colgroup col:first-child {
+        width: 30px !important;
+    }
+}
+
+h3{
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.add-OrderDetail .card{
+    padding: 20px 20px 0;
+    table{
+        margin: 0 !important;
+    }
+    .item{
+        display: flex;
+        justify-content: space-between;
+    }
+    p{
+        margin-bottom: 10px;
+    }
+    .form-group{
+        margin-top: 20px;
+    }
+}

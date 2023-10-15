@@ -1,1 +1,9 @@
-@import './base/base'
+@import './base/base';
+@import './base//utilities';
+
+@import './component/Sidebar/sidebar';
+
+@import './container/Dashboard/dashboard';
+@import './container/Dish/dish';
+@import './container/Login/login';
+@import './container/Table/table';
