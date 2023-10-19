@@ -89,7 +89,47 @@ class LoginAPI(generics.CreateAPIView):
                 }, status=status.HTTP_200_OK)
             else:
                 return Response({
+                    'success': False,
+                    'message': 'User is not exists!'
+                }, status=status.HTTP_200_OK)
+
+        return Response({
+            'success': False,
+            'message': 'Enter a valid email address!'
+        }, status=status.HTTP_200_OK)
+    
+
+class LoginRestaurantAPI(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = LoginSerializes
+    permissions = [permissions.AllowAny]
+
+    def create(self, request):
+        serialize = self.get_serializer(data=request.data)
+        if serialize.is_valid():
+            user = authenticate(request, email=request.data['email'], password=request.data['password'], is_restaurant=True);
+            if user is not None:
+                token = get_tokens_for_user(user)
+                return Response({
                     'success': True,
+                    'message': 'Login success.',
+                    'data': {
+                        'id': user.id,
+                        'username': user.username,
+                        'full_name': user.full_name,
+                        'email': user.email,
+                        'phone': user.phone,
+                        'password': user.password,
+                        'is_active': user.is_active,
+                        'verified': user.verified,
+                        'date_joined': user.date_joined,
+                        'avatar': get_base_url(request) + user.image.url,
+                        'token': token
+                    }
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    'success': False,
                     'message': 'User is not exists!'
                 }, status=status.HTTP_200_OK)
 

@@ -1,7 +1,21 @@
-import imgsrc from '../../assets/images/res.png'
 import {NavLink} from 'react-router-dom'
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { getHistoryOrder } from '../../action/restaurant';
 
 function HistoryOrder() {
+    const orders = useSelector(state=>state.restaurant.orders);
+    const dispatch = useDispatch();
+    const rid = "res51312ab1b4";
+
+    useEffect(()=>{
+        async function gethistoryOrder(){
+            const action  = await getHistoryOrder(rid)
+            dispatch(action);
+        }
+        gethistoryOrder();
+    }, [])
+
     return ( 
         <div>
             <nav className='nav-header'>
@@ -25,71 +39,63 @@ function HistoryOrder() {
                         <tr>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=1">Oid</a>
+                                    <b>Oid</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=2">Order Date</a>
+                                    <b>Order Date</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=3">Price</a>
+                                    <b>Price</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=4">Product Status</a>
+                                    <b>Product Status</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=5">Time from</a>
+                                    <b>Time from</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=6">Time to</a>
+                                    <b>Time to</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=7">Number People</a>
+                                    <b>Number People</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=7">Deposit</a>
+                                    <b>Deposit</b>
                                 </div>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr role="row" class="even">
-                            <th>
-                                <a href="/restaurant/update-dish">oid12345</a>
-                            </th>
-                            <td>24/3/2002</td>
-                            <td>54.00</td>
-                            <td>Not paid yet</td>
-                            <td>3 pm</td>
-                            <td class="nowrap">10 pm</td>
-                            <td class="nowrap">4</td>
-                            <td class="nowrap">16.20$</td>
-                        </tr>
-                        <tr role="row" class="odd">
-                            <th>
-                                <a href="/restaurant/update-dish">oid12345</a>
-                            </th>
-                            <td>11/2/2002</td>
-                            <td>76.00</td>
-                            <td>Not paid yet</td>
-                            <td>4 pm</td>
-                            <td class="nowrap">10 pm</td>
-                            <td class="nowrap">4</td>
-                            <td class="nowrap">20.20$</td>
-                        </tr>
+                        {orders? orders.map((item, index)=>{
+                            return (
+                                <tr role="row" class="even" key={index}>
+                                    <th>
+                                        <NavLink to={`/restaurant/history-detail/${item.oid}`} >{item.oid}</NavLink>
+                                    </th>
+                                    <td>{item.order_date.substring(0,10)}</td>
+                                    <td>{item.price}$</td>
+                                    <td>{item.product_status}</td>
+                                    <td>{item.time_from.substring(0,5)}</td>
+                                    <td class="nowrap">{item.time_to.substring(0,5)}</td>
+                                    <td class="nowrap">{item.number_people}</td>
+                                    <td class="nowrap">{item.deposit}$</td>
+                                </tr>
+                            )
+                        }): ""}
                     </tbody>
                 </table>
             </div>

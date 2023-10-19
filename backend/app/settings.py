@@ -93,6 +93,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:3001',
 ]
 
 DATABASES = {

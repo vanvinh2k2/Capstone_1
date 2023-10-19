@@ -1,4 +1,27 @@
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { getReviews } from "../../action/restaurant";
+
 function Review() {
+    const reviews = useSelector(state=>state.restaurant.reviews);
+    const dispatch = useDispatch();
+    const rid = "res51312ab1b4";
+    const RATING = [
+        "★☆☆☆☆",
+        "★★☆☆☆",
+        "★★★☆☆",
+        "★★★★☆",
+        "★★★★★"
+    ];
+
+    useEffect(()=>{
+        async function getreviews(){
+            const action  = await getReviews(rid)
+            dispatch(action);
+        }
+        getreviews();
+    }, [])
+
     return ( 
         <div>
             <nav className='nav-header'>
@@ -20,48 +43,46 @@ function Review() {
                 <table id="result_list" class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <a href="?o=1">User</a>
+                                    <b href="#">User</b>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <a href="?o=2">Restaurant</a>
+                                    <b href="#">Email</b>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <a href="?o=3">Review</a>
+                                    <b href="#">Review</b>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <a href="?o=4">Rating</a>
+                                    <b href="#">Rating</b>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <a href="?o=5">Date</a>
+                                    <b href="#">Date</b>
                                 </div>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr role="row" class="even">
-                            <th>Loi ngao</th>
-                            <td>Nhaf Hnag Ga Ran</td>
-                            <td>ngon</td>
-                            <td>★★★★☆</td>
-                            <td>20/10/2023</td>
-                        </tr>
-                        <tr role="row" class="odd">
-                        <th>Hoa ngao</th>
-                            <td>Nhaf Hnag Ga new</td>
-                            <td>te</td>
-                            <td>★★★☆☆</td>
-                            <td>22/10/2023</td>
-                        </tr>
+                        {reviews? reviews.map((item, index)=>{
+                            return (
+                                <tr role="row" class="even" key={index}>
+                                    <th>{item.user.username}</th>
+                                    <td>{item.user.email}</td>
+                                    <td>{item.review}</td>
+                                    <td>{RATING[item.rating - 1]}</td>
+                                    <td>{item.date.substring(0,10)}</td>
+                                </tr>
+                            )
+                        })
+                        : ""}
                     </tbody>
                 </table>
             </div>

@@ -97,3 +97,11 @@ class OrderCartItemsSerializers(serializers.ModelSerializer):
     class Meta:
         model = OrderCartItem
         fields = "__all__"
+
+class RestaurantReviewSerializers(serializers.ModelSerializer):
+    user = UserSerializers(read_only=True)
+    restaurant = RestaurantSerializers(read_only=True)
+    class Meta:
+        model = RestaurantReview
+        fields = '__all__'
+

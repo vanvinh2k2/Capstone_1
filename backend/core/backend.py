@@ -656,14 +656,21 @@ def add_address():
     pass
 
 
-@api_view(['POST'])
-def review_restaurant():
-    pass
+@api_view(['GET'])
+def review_restaurant(request, *args, **kwargs):
+    rid = kwargs.get("rid")
+    restaurant = Restaurant.objects.get(rid=rid)
+    reviews = RestaurantReview.objects.filter(restaurant=restaurant)
+    serialize = RestaurantReviewSerializers(reviews, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get reviews successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
-def add_dish(request):
-    rid = request.data.get('rid')
+def add_dish(request, *args, **kwargs):
+    rid = kwargs.get('rid')
     cid = request.data.get('cid')
     restaurant = Restaurant.objects.get(rid=rid)
     category = Category.objects.get(cid=cid)
@@ -682,11 +689,16 @@ def add_dish(request):
 @api_view(['GET'])
 def delete_dish(request, *args, **kwargs):
     did = kwargs.get('did')
+    rid = kwargs.get('rid')
     try:
         dish = Dish.objects.get(did=did)
         dish.delete()
+        restaurant = Restaurant.objects.get(rid=rid)
+        dishes = Dish.objects.filter(restaurant=restaurant)
+        serialize = DishesSerializers(dishes, many=True, context={'request': request})
         return Response({'success': True,
-                         'message': 'Delete dish successfully.'
+                         'message': 'Delete dish successfully.',
+                        'data': serialize.data
                          }, status=status.HTTP_200_OK)
     except:
         return Response({'success': False,
@@ -731,8 +743,8 @@ def order_restaurant(request, *args, **kwargs):
 
 
 @api_view(['POST'])
-def add_table(request):
-    rid = request.data.get('rid')
+def add_table(request, *args, **kwargs):
+    rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
     serialize = TableSerializers(data=request.data, context={'request': request})
     if serialize.is_valid(raise_exception=True):
@@ -777,11 +789,17 @@ def update_table(request, *args, **kwargs):
 @api_view(['GET'])
 def delete_table(request, *args, **kwargs):
     tid = kwargs.get('tid')
+    rid = kwargs.get('rid')
     try:
         table = Table.objects.get(tid=tid)
         table.delete()
+        rid = kwargs.get('rid')
+        restaurant = Restaurant.objects.get(rid=rid)
+        data = Table.objects.filter(restaurant=restaurant)
+        serialize = TableSerializers(data, many=True)
         return Response({'success': True,
-                         'message': 'Delete table successfully.'
+                         'message': 'Delete table successfully.',
+                         'data': serialize.data
                          }, status=status.HTTP_200_OK)
     except:
         return Response({'success': False,

@@ -1,7 +1,27 @@
-import imgsrc from '../../assets/images/res.png'
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import {NavLink} from 'react-router-dom'
+import { deleteDish, getDishes } from '../../action/restaurant';
 
 function Dish() {
+    const dishes = useSelector(state=>state.restaurant.dishes);
+    const dispatch = useDispatch();
+    const rid = "res51312ab1b4";
+
+    useEffect(()=>{
+        async function getdishes(){
+            const action  = await getDishes(rid)
+            dispatch(action);
+        }
+        getdishes();
+    }, [])
+
+    async function handelDelete(e){
+        const action = await deleteDish(rid, e.currentTarget.getAttribute('id-dish'));
+        dispatch(action);
+        alert("Delete success.");
+    }
+
     return ( 
         <div>
             <nav className='nav-header'>
@@ -11,7 +31,7 @@ function Dish() {
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Dishes</p>
-                    <p><a href="/restaurant">Home</a></p>
+                    <p><NavLink to="/restaurant">Home</NavLink></p>
                     <i class="fas fa-chevron-right"></i>
                     <p>The Dishes</p>
                 </div>
@@ -28,68 +48,62 @@ function Dish() {
                         <tr>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=1">Did</a>
+                                    <b>Did</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=2">Title</a>
+                                    <b>Title</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=3">Dish Image</a>
+                                    <b>Dish Image</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=4">Price</a>
+                                    <b>Price</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=5">Date</a>
+                                    <b>Date</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=6">Featured</a>
+                                    <b>Featured</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=7">Action</a>
+                                    <b>Action</b>
                                 </div>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr role="row" class="even">
-                            <th>
-                                <a href="/restaurant/update-dish">did12345</a>
-                            </th>
-                            <td>Ga Ran</td>
-                            <td>
-                                <img src={imgsrc} alt="True"/>
-                            </td>
-                            <td>200$</td>
-                            <td>20/10/2023</td>
-                            <td class="nowrap">ok</td>
-                            <td class="nowrap"><i class="fa-solid fa-trash"></i></td>
-                        </tr>
-                        <tr role="row" class="odd">
-                        <th>
-                                <a href="/restaurant/update-dish">did17340</a>
-                            </th>
-                            <td>Ga Luoc</td>
-                            <td>
-                                <img src={imgsrc} alt="True"/>
-                            </td>
-                            <td>700$</td>
-                            <td>20/10/2023</td>
-                            <td class="nowrap">ok</td>
-                            <td class="nowrap"><i class="fa-solid fa-trash"></i></td>
-                        </tr>
+                        {dishes?dishes.map((item, index)=>{
+                            return (
+                                <tr role="row" class="even" key={index}>
+                                    <th>
+                                        <NavLink to="/restaurant/update-dish">{item.did}</NavLink>
+                                    </th>
+                                    <td>{item.title}</td>
+                                    <td>
+                                        <img src={`${item.image}`} alt="True"/>
+                                    </td>
+                                    <td>{item.price}$</td>
+                                    <td>{item.date.substring(0,10)}</td>
+                                    <td class="nowrap">
+                                        {item.featured?<i class="fa-solid fa-circle-check" style={{color: "green"}}></i>
+                                        :<i class="fa-solid fa-circle-xmark" style={{color: "red"}}></i>}
+                                    </td>
+                                    <td class="nowrap"><i onClick={handelDelete} id-dish={item.did} class="fa-solid fa-trash"></i></td>
+                                </tr>
+                            )
+                        }):""}
                     </tbody>
                 </table>
             </div>

@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images/logo1.png';
-import user from '../../assets/images/default.png';
+import { logout } from '../../action/auth';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
   const [click, setClick] = useState("dashboard");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleClick(value) {
     setClick(value);
+  }
+
+  function handelLogout(){
+    const action = logout();
+    dispatch(action);
+    alert("Logout success.")
+    navigate("/login")
   }
 
   return ( 
@@ -17,8 +28,8 @@ function Sidebar() {
         <span className="text">Booking Restaurant</span>
       </a>
       <a href="#" className="account">
-        <img src={user} alt="User" />
-        <span className="text">Hoa Ngao</span>
+        <img src={localStorage.getItem("avatar")} alt="User" />
+        <span className="text">{localStorage.getItem("username")}</span>
       </a>
       <ul className="side-menu top">
         <li className={click === "dashboard" ? "active" : ""}>
@@ -75,7 +86,7 @@ function Sidebar() {
         <li>
           <a href="/" className="logout">
             <i className="fas fa-sign-out"></i>
-            <span className="text">Logout</span>
+            <span className="text" onClick={handelLogout}>Logout</span>
           </a>
         </li>
       </ul>

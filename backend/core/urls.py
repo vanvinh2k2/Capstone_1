@@ -7,7 +7,7 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     cancel_order, contact_us, add_restaurant, add_category, delete_category, update_category, \
     wishlist_restaurant, add_dish, delete_dish, update_dish, order_restaurant, add_table, \
     get_table, update_table, delete_table, list_table, get_profile, get_order_cart_res,\
-    add_order_cart, delete_order_cart, bill_order
+    add_order_cart, delete_order_cart, bill_order, review_restaurant
     # update_order_cart_item, delete_order_cart_item
 
 urlpatterns = [
@@ -53,14 +53,15 @@ urlpatterns = [
     path('api/delete-category/<cid>/', delete_category, name='delete-category'),
     path('api/update-category/<cid>/', update_category, name='update-category'),
     path('api/wishlist/<rid>/', wishlist_restaurant, name='wishlist'),
-    path('api/add-dish/', add_dish, name='add-dish'),
-    path('api/delete-dish/<did>/', delete_dish, name='delete-dish'),
+    path('api/add-dish/<rid>/', add_dish, name='add-dish'),
+    path('api/delete-dish/<rid>/<did>/', delete_dish, name='delete-dish'),
     path('api/update-dish/<did>/', update_dish, name='update-dish'),
     path('api/order-restaurant/<rid>/', order_restaurant, name='order-restaurant'),
-    path('api/add-table/', add_table, name='add-table'),
+    path('api/add-table/<rid>/', add_table, name='add-table'),
     path('api/get-table/<rid>/', get_table, name='get-table'),
     path('api/update-table/<tid>/', update_table, name='update-table'),
-    path('api/delete-table/<tid>/', delete_table, name='delete-table'),
+    path('api/delete-table/<rid>/<tid>/', delete_table, name='delete-table'),
+    path('api/reviews-restaurant/<rid>/', review_restaurant, name='review-restaurant'),
 
     # For AI
     path('api/search-ai/', search_restaurant_image, name='search-restaurant-image'),

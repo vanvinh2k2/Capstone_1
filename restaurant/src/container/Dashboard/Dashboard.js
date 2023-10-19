@@ -9,11 +9,20 @@ function ManageOrder() {
   const resources = [
     { id: 'room1', title: 'Table 1' },
     { id: 'room2', title: 'Table 2' },
+    { id: 'room3', title: 'Table 3' },
   ];
   const navigate = useNavigate();
 
   const handleEventClick = (info) => {
     navigate('/restaurant/order-detail');
+  };
+
+  const handleDatesSet = (arg) => {
+    const selectedDate = arg.view.activeStart; // Lấy ngày khi người dùng click vào "Prev" hoặc "Next"
+    const formattedDate = `${selectedDate.getDate().toString().padStart(2, '0')}/${
+      (selectedDate.getMonth() + 1).toString().padStart(2, '0')
+    }/${selectedDate.getFullYear()}`;
+    console.log('Selected Date (dd/MM/yyyy):', formattedDate);
   };
 
   return (
@@ -38,20 +47,39 @@ function ManageOrder() {
         resources={resources}
         events={[
           {
-            title: 'Sự kiện 1',
-            start: '2023-10-15T08:00:00',
-            end: '2023-10-15T10:00:00',
+            title: 'Time: 08:00-10:00<br>people:45<br>Deposited: 45$',
+            start: '2023-10-19T08:00',
+            end: '2023-10-19T10:00',
             resourceId: 'room1',
             eventBackgroundColor: 'red',
           },
           {
-            title: 'Sự kiện 2',
-            start: '2023-10-15T09:00:00',
-            end: '2023-10-15T11:00:00',
+            title: 'Time: 11:20-15:00<br>people:45<br>Deposited: 45$',
+            start: '2023-10-19T11:20',
+            end: '2023-10-19T15:00',
+            resourceId: 'room1',
+            eventBackgroundColor: 'red',
+          },
+          {
+            title: 'Time: 09:00-11:00<br>people:5<br>Deposited: 45$',
+            start: '2023-10-19T09:00:00',
+            end: '2023-10-19T11:00:00',
             resourceId: 'room2',
+          },
+          {
+            title: 'Time: 16:00-18:00<br>people:5<br>Deposited: 45$',
+            start: '2023-10-19T16:00:00',
+            end: '2023-10-19T18:00:00',
+            resourceId: 'room3',
           },
         ]}
         eventClick={handleEventClick}
+        datesSet={handleDatesSet}
+        eventContent={(arg) => (
+          <>
+            <div dangerouslySetInnerHTML={{ __html: arg.event.title }} />
+          </>
+        )}
       />
     </div>
   );

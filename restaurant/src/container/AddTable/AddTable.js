@@ -1,7 +1,28 @@
-import {NavLink} from 'react-router-dom'
-
+import {NavLink, useNavigate} from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTable } from '../../action/restaurant';
+import { ADD_TABLE } from '../../action/type';
 
 function AddTable() {
+    const rid = "res51312ab1b4";
+    const [title, setTitle] = useState("");
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    async function handelSubmit(e){
+        e.preventDefault();
+        if(title!==""){
+            const action = await addTable(rid, title);
+            dispatch(action);
+            if(action.type === ADD_TABLE){
+                navigate("/restaurant/table");
+            }
+        }else{
+            alert("Please input Title!");
+        }
+    }
+
     return ( 
         <div class="content">
             <nav className='nav-header'>
@@ -11,9 +32,9 @@ function AddTable() {
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Tables</p>
-                    <p><a href="/restaurant">Home</a></p>
+                    <p><NavLink to="/restaurant">Home</NavLink></p>
                     <i class="fas fa-chevron-right"></i>
-                    <p><NavLink to="/restaurant/dish">The Tables</NavLink></p>
+                    <p><NavLink to="/restaurant/table">The Tables</NavLink></p>
                     <i class="fas fa-chevron-right"></i>
                     <p>Add Table</p>
                 </div>
@@ -30,17 +51,6 @@ function AddTable() {
                                     <div class="col-12 col-lg-9">
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="form-group field-did">
-                                                    <div class="row">
-                                                        <label class="col-sm-3 text-left" for="id_did">
-                                                            Tid
-                                                            <span class="text-red">* </span> 
-                                                        </label>
-                                                        <div class=" col-sm-7 field-did ">
-                                                            <input className="input" type="text" name="did" value="324aga54a3" maxlength="20"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="form-group field-title">
                                                     <div class="row">
                                                         <label class="col-sm-3 text-left" for="id_title">
@@ -48,25 +58,7 @@ function AddTable() {
                                                             <span class="text-red">* </span>  
                                                         </label>
                                                         <div class=" col-sm-7 field-title">
-                                                            <input className="input" type="text" name="title" maxlength="100"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group field-category">
-                                                    <div class="row">
-                                                        <label class="col-sm-3 text-left" for="id_category">
-                                                            Category
-                                                            <span class="text-red">* </span>
-                                                        </label>
-                                                        <div class="col-sm-7 field-category">
-                                                            <div class="related-widget-wrapper" data-model-ref="category">
-                                                                <select className="input" name="table">
-                                                                    <option value="" selected="">---------</option>
-                                                                    <option value="1">Table 1</option>
-                                                                    <option value="2">Table 2</option>
-                                                                    <option value="3">Nước uống</option>
-                                                                </select>
-                                                            </div>
+                                                            <input onChange={e=>setTitle(e.target.value)} className="input" type="text" name="title"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -75,7 +67,7 @@ function AddTable() {
                                     </div>
                                     <div class="col-12 col-lg-3">
                                         <div class="form-group">
-                                            <input type="submit" value="Save" class="btn btn-success form-control"/>
+                                            <input onClick={handelSubmit} type="submit" value="Save" class="btn btn-success form-control"/>
                                         </div>
                                     </div>
                                 </div>

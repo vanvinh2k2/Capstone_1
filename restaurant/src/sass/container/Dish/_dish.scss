@@ -22,6 +22,15 @@ table#result_list{
     border: 1px solid #ccc;
 }
 
+textarea {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
 .form-group {
     margin-bottom: 1rem;
 }

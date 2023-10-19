@@ -1,6 +1,27 @@
 import {NavLink} from 'react-router-dom'
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { getTables, deleteTable } from '../../action/restaurant';
 
 function Table() {
+    const tables = useSelector(state=>state.restaurant.tables);
+    const dispatch = useDispatch();
+    const rid = "res51312ab1b4";
+
+    useEffect(()=>{
+        async function gettables(){
+            const action  = await getTables(rid)
+            dispatch(action);
+        }
+        gettables();
+    }, []);
+
+    async function handleDelete(e){
+        const action = await deleteTable(rid, e.currentTarget.getAttribute('id-table'));
+        dispatch(action);
+        alert("Delete success.");
+    }
+
     return ( 
         <div>
             <nav className='nav-header'>
@@ -27,36 +48,33 @@ function Table() {
                         <tr>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=1">Tid</a>
+                                    <b>Tid</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=2">Title</a>
+                                    <b>Title</b>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <a href="?o=7">Action</a>
+                                    <b>Action</b>
                                 </div>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr role="row" class="even">
-                            <th>
-                                <NavLink to="/restaurant/update-table">tid12345</NavLink>
-                            </th>
-                            <td>Table 1</td>
-                            <td class="nowrap"><i class="fa-solid fa-trash"></i></td>
-                        </tr>
-                        <tr role="row" class="even">
-                            <th>
-                                <a href="#">tid45149</a>
-                            </th>
-                            <td>Table 2</td>
-                            <td class="nowrap"><i class="fa-solid fa-trash"></i></td>
-                        </tr>
+                        {tables ?tables.map((item, index)=>{
+                            return (
+                                <tr role="row" class="even" key={index}>
+                                    <th>
+                                        <NavLink to="/restaurant/update-table">{item.tid}</NavLink>
+                                    </th>
+                                    <td>{item.title}</td>
+                                    <td class="nowrap"><i onClick={handleDelete} id-table={item.tid} class="fa-solid fa-trash"></i></td>
+                                </tr>
+                            )
+                        }):""}
                     </tbody>
                 </table>
             </div>

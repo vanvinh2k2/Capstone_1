@@ -12,10 +12,12 @@ import AddTable from "../container/AddTable/AddTable";
 import UpdateTable from "../container/UpdateTable/UpdateTable";
 import OrderDetail from "../container/OrderDetail/OrderDetail";
 import HistoryOrder from "../container/HistoryOrder/HistoryOrder";
+import HistoryDetail from "../container/HistoryDetail/HistoryDetail";
+import NotFound from "../container/NotFound";
 
 const publicRouter = [
     {path: 'restaurant/', component: Dashboard},
-    {path: 'restaurant/login', component: Login, layout: null},
+    {path: '/login', component: Login, layout: null},
     {path: 'restaurant/dish', component: Dish},
     {path: 'restaurant/table', component: Table},
     {path: 'restaurant/contact-us', component: ContactUs},
@@ -28,6 +30,8 @@ const publicRouter = [
     {path: 'restaurant/update-table', component: UpdateTable},
     {path: 'restaurant/chat-message', component: ChatMessage},
     {path: 'restaurant/history-order', component: HistoryOrder},
+    {path: 'restaurant/history-detail/:oid', component: HistoryDetail},
+    {path: '*', component: NotFound}
 ]
 
 const privateRouter = [
