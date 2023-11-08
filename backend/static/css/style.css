@@ -128,3 +128,53 @@ p{
     display: block;
     padding: 10px 0 0 0;
 }
+
+.item-tk{
+    display: flex;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.item-tk .content-icon{
+    margin-right: 10px;
+    color: white;
+}
+
+.item-tk .content-item p{
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+}
+
+.item-tk .content-item p.title{
+    font-size: 16px;
+    text-align: left;
+}
+
+.item-tk.num-invoice{
+    background: #d55e5e;
+}
+
+.item-tk.num-client{
+    background: #4ab84a;
+}
+
+.item-tk.num-restaurant{
+    background: #5cd8d8;
+}
+
+.item-tk.num-message{
+    background: #f0b570;
+}
+
+#mayChart, #myChart2{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#myChart2{
+    display: block;
+    max-width: 400px;
+    margin: 0 auto;
+}

@@ -88,7 +88,7 @@ function Dish() {
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>
-                                        <NavLink to="/restaurant/update-dish">{item.did}</NavLink>
+                                        <NavLink to={`/restaurant/update-dish/${item.did}`}>{item.did}</NavLink>
                                     </th>
                                     <td>{item.title}</td>
                                     <td>

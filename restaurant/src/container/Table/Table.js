@@ -68,7 +68,7 @@ function Table() {
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>
-                                        <NavLink to="/restaurant/update-table">{item.tid}</NavLink>
+                                        <NavLink to={`/restaurant/update-table/${item.tid}`}>{item.tid}</NavLink>
                                     </th>
                                     <td>{item.title}</td>
                                     <td class="nowrap"><i onClick={handleDelete} id-table={item.tid} class="fa-solid fa-trash"></i></td>

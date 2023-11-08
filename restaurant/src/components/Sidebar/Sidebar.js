@@ -18,7 +18,7 @@ function Sidebar() {
     const action = logout();
     dispatch(action);
     alert("Logout success.")
-    navigate("/login")
+    navigate("/")
   }
 
   return ( 
@@ -71,12 +71,12 @@ function Sidebar() {
       </ul>
       <a className="menu-other">Others</a>
       <ul className="side-menu">
-        <li className={click === "setting" ? "active" : ""}>
+        {/* <li className={click === "setting" ? "active" : ""}>
           <NavLink to="/restaurant/setting" onClick={() => handleClick("setting")}>
             <i className="fas fa-cog"></i>
             <span className="text">Settings</span>
           </NavLink>
-        </li>
+        </li> */}
         <li className={click === "contact" ? "active" : ""}>
           <NavLink to="/restaurant/contact-us" onClick={() => handleClick("contact")}>
             <i class="fa-solid fa-headset"></i>

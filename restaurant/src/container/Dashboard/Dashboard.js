@@ -2,27 +2,85 @@ import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import dayGridPlugin from '@fullcalendar/daygrid'; // Thêm dayGridPlugin
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { manageOrder, getTables } from '../../action/restaurant';
 
 function ManageOrder() {
-  // Danh sách các bàn
-  const resources = [
-    { id: 'room1', title: 'Table 1' },
-    { id: 'room2', title: 'Table 2' },
-    { id: 'room3', title: 'Table 3' },
-  ];
+  const dispatch = useDispatch();
+  const display_order = useSelector(state=>state.restaurant.display_order);
+  const tables = useSelector(state=>state.restaurant.tables);
+  const rid = "res51312ab1b4";
+
+  const currentDate = new Date();
+  const year1 = currentDate.getFullYear();
+  const month1 = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day1 = String(currentDate.getDate()).padStart(2, '0');
+  const [day, setDay] = useState(day1);
+  const [month, setMonth] = useState(month1);
+  const [year, setYear] = useState(year1);
   const navigate = useNavigate();
 
+  const [resources, setResources] = useState([])
+  const [ev, setEv] = useState([])
+
+  useEffect(()=>{
+    async function manageorder(){
+      const action = await manageOrder(rid, day, month, year);
+      dispatch(action);
+    }
+    manageorder();
+  }, [day, month, year])
+
+  useEffect(()=>{
+    async function gettables(){
+        const action  = await getTables(rid)
+        dispatch(action);
+    }
+    gettables();
+  }, []);
+
+  useEffect(()=>{
+    let newResources = [];
+    tables.map((item, index)=>{
+      const table = {
+        id: item.tid,
+        title: item.title
+      }
+      newResources.push(table);
+    });
+    setResources(newResources);
+  }, [tables]);
+
+  useEffect(()=>{
+    let newEV = [];
+    display_order.map((item, index)=>{
+      const order = {
+        title: `Time: ${item.time_from.substring(0,5)} - ${item.time_to.substring(0,5)}
+        <br>People: ${item.number_people}<br>
+        Deposited: ${item.deposit}$`,
+        start: `${item.order_date.substring(0,10)}T${item.time_from.substring(0,5)}`,
+        end: `${item.order_date.substring(0,10)}T${item.time_to.substring(0,5)}`,
+        resourceId: item.table.tid,
+        oid: item.oid,
+      }
+      newEV.push(order);
+    })
+    setEv(newEV);
+  }, [display_order]);
+
   const handleEventClick = (info) => {
-    navigate('/restaurant/order-detail');
+    const event = info.event;
+    const oid = event.extendedProps.oid;
+    navigate(`/restaurant/order-detail/${oid}`);
   };
 
-  const handleDatesSet = (arg) => {
-    const selectedDate = arg.view.activeStart; // Lấy ngày khi người dùng click vào "Prev" hoặc "Next"
-    const formattedDate = `${selectedDate.getDate().toString().padStart(2, '0')}/${
-      (selectedDate.getMonth() + 1).toString().padStart(2, '0')
-    }/${selectedDate.getFullYear()}`;
-    console.log('Selected Date (dd/MM/yyyy):', formattedDate);
+  const handleDatesSet = (e) => {
+    const selectedDate = e.view.activeStart;
+    setDay(selectedDate.getDate().toString().padStart(2, '0'));
+    setMonth((selectedDate.getMonth() + 1).toString().padStart(2, '0'));
+    setYear(selectedDate.getFullYear());
   };
 
   return (
@@ -44,35 +102,8 @@ function ManageOrder() {
       <FullCalendar
         plugins={[resourceTimelinePlugin, dayGridPlugin]}
         initialView="resourceTimelineDay"
-        resources={resources}
-        events={[
-          {
-            title: 'Time: 08:00-10:00<br>people:45<br>Deposited: 45$',
-            start: '2023-10-19T08:00',
-            end: '2023-10-19T10:00',
-            resourceId: 'room1',
-            eventBackgroundColor: 'red',
-          },
-          {
-            title: 'Time: 11:20-15:00<br>people:45<br>Deposited: 45$',
-            start: '2023-10-19T11:20',
-            end: '2023-10-19T15:00',
-            resourceId: 'room1',
-            eventBackgroundColor: 'red',
-          },
-          {
-            title: 'Time: 09:00-11:00<br>people:5<br>Deposited: 45$',
-            start: '2023-10-19T09:00:00',
-            end: '2023-10-19T11:00:00',
-            resourceId: 'room2',
-          },
-          {
-            title: 'Time: 16:00-18:00<br>people:5<br>Deposited: 45$',
-            start: '2023-10-19T16:00:00',
-            end: '2023-10-19T18:00:00',
-            resourceId: 'room3',
-          },
-        ]}
+        resources={resources?resources:[]}
+        events={ev?ev:[]}
         eventClick={handleEventClick}
         datesSet={handleDatesSet}
         eventContent={(arg) => (

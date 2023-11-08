@@ -355,6 +355,19 @@ def list_order(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 
+@api_view(['POST'])
+def manage_order_by_date(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    date = request.data.get("date")
+    restaurant = Restaurant.objects.get(rid=rid)
+    orders = Order.objects.filter(restaurant=restaurant, order_date__date=date)
+    serialize = OrderSerializers(orders, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get list order successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
 @api_view(['GET'])
 def bill_order(request, *args, **kwargs):
     oid = kwargs.get('oid')
@@ -397,6 +410,20 @@ def search_dishes(request):
                      }, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def friend_chat(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    user = User.objects.get(id=uid)
+    friends = User.objects.all().exclude(
+        id=uid
+    )
+    serialize = SearchSerializer(friends, many=True, context={'request': request})
+    return Response({'success': True,
+        'message': 'Search dishes successfully.',
+        'data': serialize.data
+    }, status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 def send_chat():
     pass
@@ -431,11 +458,10 @@ def contact_us(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def list_table(request, *args, **kwargs):
-    rid = kwargs.get('rid');
-    restaurant = Restaurant.objects.get(rid=rid)
-    tables = Table.objects.filter(restaurant=restaurant)
-    serialize = TableSerializers(tables, many=True)
+def detail_table(request, *args, **kwargs):
+    tid = kwargs.get('tid');
+    table = Table.objects.get(tid=tid)
+    serialize = TableSerializers(table)
     return Response({'success': True,
                      'message': 'Get success.',
                      'data': serialize.data
@@ -709,25 +735,29 @@ def delete_dish(request, *args, **kwargs):
 @api_view(['POST'])
 def update_dish(request, *args, **kwargs):
     did = kwargs.get('did')
-    try:
-        dish = Dish.objects.get(did=did)
-        dish.title = request.data.get('title')
+    # try:
+    dish = Dish.objects.get(did=did)
+    dish.title = request.data.get('title')
+    if 'image' in request.data:
         dish.image = request.FILES.get('image')
-        dish.description = request.data.get('description')
-        dish.price = request.data.get('price')
-        dish.old_price = request.data.get('old_price')
-        dish.specifications = request.data.get('specifications')
-        dish.product_status = request.data.get('product_status')
-        dish.featured = request.data.get('featured')
-        dish.digital = request.data.get('digital')
-        dish.save()
-        return Response({'success': True,
+    dish.description = request.data.get('description')
+    dish.price = request.data.get('price')
+    dish.old_price = request.data.get('old_price')
+    dish.specifications = request.data.get('specifications')
+    dish.product_status = request.data.get('product_status')
+    dish.featured = request.data.get('featured').title()
+    dish.digital = request.data.get('digital').title()
+    cid = request.data.get('cid')
+    category = Category.objects.get(cid=cid)
+    dish.category = category
+    dish.save()
+    return Response({'success': True,
                          'message': 'Update dish successfully.'
                          }, status=status.HTTP_200_OK)
-    except:
-        return Response({'success': False,
-                         'message': 'Update dish fail.'
-                         }, status=status.HTTP_200_OK)
+    # except:
+    #     return Response({'success': False,
+    #                      'message': 'Update dish fail.'
+    #                      }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

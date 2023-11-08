@@ -64,7 +64,7 @@ export const getRestaurantDetail= async(rid)=>{
 
 export const getTable = async(rid) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/list-table/${rid}/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/get-table/${rid}/`, config)
         return {
             type: GET_TABLE,
             payload: res.data.data

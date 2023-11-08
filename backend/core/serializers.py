@@ -9,6 +9,12 @@ class UserSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SenderSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "image"]
+
+
 class RestaurantSerializers(serializers.ModelSerializer):
     user = UserSerializers(read_only=True)
 
@@ -105,3 +111,16 @@ class RestaurantReviewSerializers(serializers.ModelSerializer):
         model = RestaurantReview
         fields = '__all__'
 
+class SearchSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = User
+		fields = ['id', 'username', 'image', ]
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    msg_sender = SenderSerializers(read_only=True)
+    msg_receiver = SearchSerializer(read_only=True)
+    class Meta:
+        model = ChatMessage
+        fields = ['body', 'msg_sender', 'msg_receiver', 'seen']

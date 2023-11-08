@@ -16,18 +16,18 @@ import HistoryDetail from "../container/HistoryDetail/HistoryDetail";
 import NotFound from "../container/NotFound";
 
 const publicRouter = [
+    {path: '/', component: Login, layout: null},
     {path: 'restaurant/', component: Dashboard},
-    {path: '/login', component: Login, layout: null},
     {path: 'restaurant/dish', component: Dish},
     {path: 'restaurant/table', component: Table},
     {path: 'restaurant/contact-us', component: ContactUs},
     {path: 'restaurant/review', component: Review},
     {path: 'restaurant/setting', component: Setting},
     {path: 'restaurant/add-dish', component: AddDish},
-    {path: 'restaurant/order-detail', component: OrderDetail},
-    {path: 'restaurant/update-dish', component: UpdateDish},
+    {path: 'restaurant/order-detail/:oid', component: OrderDetail},
+    {path: 'restaurant/update-dish/:did', component: UpdateDish},
     {path: 'restaurant/add-table', component: AddTable},
-    {path: 'restaurant/update-table', component: UpdateTable},
+    {path: 'restaurant/update-table/:tid', component: UpdateTable},
     {path: 'restaurant/chat-message', component: ChatMessage},
     {path: 'restaurant/history-order', component: HistoryOrder},
     {path: 'restaurant/history-detail/:oid', component: HistoryDetail},

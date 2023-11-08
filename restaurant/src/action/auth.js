@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, GET_ERROR, LOGOUT } from "./type";
+import { LOGIN_SUCCESS, GET_ERROR, LOGOUT, FRIEND_CHAT } from "./type";
 import axios from 'axios';
 
 
@@ -42,5 +42,30 @@ export const logout = () =>{
     return {
         type: LOGOUT,
         payload: "Logout Success."
+    }
+}
+
+export const friend_chat = async(uid) =>{
+    try{
+        const res = await axios.get(`http://127.0.0.1:8000/api/friend-chat/${uid}/`, config)
+        if(res.data.success === true){
+            const result = {
+                type: FRIEND_CHAT,
+                payload: res.data.data
+            }
+            return result
+        }
+        else{
+            return {
+                type: GET_ERROR,
+                payload: res.data.message
+            }
+        }
+        
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
     }
 }

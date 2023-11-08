@@ -1,8 +1,17 @@
-import {NavLink} from 'react-router-dom'
+import {NavLink, useParams, useNavigate} from 'react-router-dom'
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { detailDish, getCategory, updateDish } from '../../action/restaurant';
+import { UPDATE_DISH } from '../../action/type';
+
 
 function UpdateDish() {
     const rid = "res51312ab1b4";
+    const dish = useSelector(state=>state.restaurant.dish);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const category = useSelector(state=>state.restaurant.category);
+    const {did} = useParams();
     const [form, setForm] = useState({
         title: "",
         image: null,
@@ -15,6 +24,53 @@ function UpdateDish() {
         digital: false,
         cid: ""
     });
+
+    useEffect(()=>{
+        async function getcategory(){
+            const action = await getCategory(rid)
+            dispatch(action);
+        }
+        getcategory();
+
+        async function getDetailDish(){
+            const action = await detailDish(did, form);
+            dispatch(action);
+        }
+        getDetailDish();
+    }, [])
+
+    useEffect(()=>{
+        async function getDetailDish(){
+            const action = await detailDish(did, form);
+            dispatch(action);
+        }
+        getDetailDish();
+    }, [])
+
+    function checkInput(){
+        if(form.title === ""){
+            alert("Please input Title!");
+            return false;
+        }else if(form.description === ""){
+            alert("Please input description!");
+            return false;
+        }else if(form.cid === ""){
+            alert("Please choice Category!");
+            return false;
+        }return true;
+    }
+
+    useEffect(()=>{
+        form.title = dish.title;
+        form.description= dish.description;
+        form.price= dish.price;
+        form.old_price= dish.old_price;
+        form.product_status= dish.product_status;
+        form.specifications= dish.specifications;
+        form.featured= dish.featured;
+        form.digital= dish.digital;
+        form.cid = dish.category?dish.category.cid: "";
+    }, [dish])
 
     function handelChange(e){
         setForm({...form, [e.target.name]: e.target.value});
@@ -31,9 +87,16 @@ function UpdateDish() {
         setForm({...form, [e.target.name]: e.target.checked});
     }
 
-    function handelsubmit(e){
+    async function handelsubmit(e){
         e.preventDefault();
-        console.log(form);
+        if(checkInput()){
+            const action = await updateDish(did, form);
+            console.log(action);
+            dispatch(action);
+            if(action.type === UPDATE_DISH){
+                navigate("/restaurant/dish");
+            }
+        }
     }
     return ( 
         <div class="content">
@@ -70,7 +133,7 @@ function UpdateDish() {
                                                             <span class="text-red">* </span> 
                                                         </label>
                                                         <div class=" col-sm-7 field-did ">
-                                                            <input className="input" type="text" name="did" value="324aga54a3" maxlength="20" disabled/>
+                                                            <input className="input" type="text" name="did" value={dish.did} maxlength="20" disabled/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -81,7 +144,7 @@ function UpdateDish() {
                                                             <span class="text-red">* </span>  
                                                         </label>
                                                         <div class=" col-sm-7 field-title">
-                                                            <input onChange={handelChange} className="input" type="text" name="title"/>
+                                                            <input onChange={handelChange} value={form.title} className="input" type="text" name="title"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -102,7 +165,7 @@ function UpdateDish() {
                                                             Description
                                                         </label>
                                                         <div class=" col-sm-7 field-description">
-                                                            <textarea onChange={handelChange} type="number" name="description" rows="5"/>
+                                                            <textarea onChange={handelChange} value={form.description} type="number" name="description" rows="5"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -113,7 +176,7 @@ function UpdateDish() {
                                                             <span class="text-red">* </span>
                                                         </label>
                                                         <div class=" col-sm-7 field-price">
-                                                            <input onChange={handelChange} className="input" type="number" name="price"/>
+                                                            <input onChange={handelChange} value={form.price} className="input" type="number" name="price"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,7 +187,7 @@ function UpdateDish() {
                                                                 <span class="text-red">* </span>
                                                             </label>
                                                             <div class="col-sm-7 field-old_price">
-                                                                <input onChange={handelChange} className="input" type="number" name="old_price"/>
+                                                                <input onChange={handelChange} value={form.old_price} className="input" type="number" name="old_price"/>
                                                             </div>
                                                     </div>
                                                 </div>
@@ -135,7 +198,7 @@ function UpdateDish() {
                                                             <span class="text-red">* </span>
                                                         </label>
                                                         <div class="col-sm-7 field-product_status">
-                                                            <select onChange={handelChange} className="input" name="product_status">
+                                                            <select onChange={handelChange} value={form.product_status} className="input" name="product_status">
                                                                 <option value="draft" data-select2-id="select2-data-2-4k8x">Draft</option>
                                                                 <option value="disabled">Disabled</option>
                                                                 <option value="rejected">Rejected</option>
@@ -151,7 +214,7 @@ function UpdateDish() {
                                                             Featured
                                                         </label>
                                                         <div class="col-sm-7 field-featured">
-                                                            <input onChange={handelCheck} type="checkbox" name="featured"/>
+                                                            <input onChange={handelCheck} checked={form.featured} type="checkbox" name="featured"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,7 +224,7 @@ function UpdateDish() {
                                                             Digital
                                                         </label>
                                                         <div class="col-sm-7 field-digital">
-                                                            <input onChange={handelCheck} type="checkbox" name="digital"/>
+                                                            <input onChange={handelCheck} checked={form.digital} type="checkbox" name="digital"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,11 +236,13 @@ function UpdateDish() {
                                                         </label>
                                                         <div class="col-sm-7 field-category">
                                                             <div class="related-widget-wrapper" >
-                                                                <select className="input" name="category">
+                                                                <select value={form.cid} onChange={handelChange} className="input" name="cid">
                                                                     <option value="" selected="">---------</option>
-                                                                    <option value="1">Món Chính</option>
-                                                                    <option value="2">Món phụ</option>
-                                                                    <option value="3">Nước uống</option>
+                                                                    {category?category.map((item, index)=>{
+                                                                        return (
+                                                                            <option key={index} value={item.cid}>{item.title}</option>
+                                                                        )
+                                                                    }):""}
                                                                 </select>
                                                             </div>
                                                         </div>

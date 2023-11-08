@@ -10,6 +10,9 @@ import {
     DELETE_TABLE,
     UPDATE_DISH,
     GET_CATEGORY,
+    MANAGE_ORDER,
+    DETAIL_TABLE,
+    DETAIL_DISH,
 } from "../action/type";
 const initialState = {
     reviews: [],
@@ -18,6 +21,9 @@ const initialState = {
     tables: [],
     order: [],
     category: [],
+    display_order: [],
+    table: {},
+    dish: {},
 }
 
 export default function (state = initialState, action){
@@ -62,6 +68,21 @@ export default function (state = initialState, action){
             return {
                 ...state,
                 tables: payload,
+            }
+        case MANAGE_ORDER:
+            return {
+                ...state,
+                display_order: payload,
+            }
+        case DETAIL_TABLE:
+            return {
+                ...state,
+                table: payload,
+            }
+        case DETAIL_DISH:
+            return {
+                ...state,
+                dish: payload,
             }
         case GET_ERROR:
         default: return state;

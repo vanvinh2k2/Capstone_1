@@ -238,6 +238,7 @@ class ChatMessage(models.Model):
     msg_sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
     msg_receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
     seen = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         # dat lai hien name

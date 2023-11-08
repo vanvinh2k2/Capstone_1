@@ -1,20 +1,40 @@
-import {NavLink} from 'react-router-dom'
+import {NavLink, useNavigate} from 'react-router-dom'
 import { useState, useEffect } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { detailTable, updateTable } from '../../action/restaurant';
+import {useParams} from 'react-router-dom'
+import { UPDATE_TABLE } from '../../action/type';
 
 function UpdateTable() {
-
-    const rid = "res51312ab1b4";
+    const dispatch = useDispatch();
+    const {tid} = useParams();
     const [title, setTitle] = useState("");
+    const table = useSelector(state=>state.restaurant.table);
+    const navigate = useNavigate();
 
-    function handelChange(e){
-        setTitle(e.target.value);
-    }
-
-    function handelSubmit(e){
+    async function handelSubmit(e){
         e.preventDefault();
-        console.log(title);
+        const action = await updateTable(tid, title);
+        console.log(action);
+        dispatch(action);
+        if(action.type === UPDATE_TABLE){
+            navigate('/restaurant/table')
+        }
     }
+
+    useEffect(()=>{
+        setTitle(title)
+        async function getDetailTable(){
+            const action = await detailTable(tid);
+            // console.log(action);
+            dispatch(action);
+        }
+        getDetailTable();
+    }, [])
+
+    useEffect(()=>{
+        setTitle(table.title);
+    }, [table])
 
     return ( 
         <div class="content">
@@ -27,7 +47,7 @@ function UpdateTable() {
                     <p className='top'>The Tables</p>
                     <p><a href="/restaurant">Home</a></p>
                     <i class="fas fa-chevron-right"></i>
-                    <p><NavLink to="/restaurant/dish">The Tables</NavLink></p>
+                    <p><NavLink to="/restaurant/table">The Tables</NavLink></p>
                     <i class="fas fa-chevron-right"></i>
                     <p>Update Table</p>
                 </div>
@@ -51,18 +71,18 @@ function UpdateTable() {
                                                             <span class="text-red">* </span> 
                                                         </label>
                                                         <div class=" col-sm-7 field-did ">
-                                                            <input className="input" type="text" name="did" value="324aga54a3" maxlength="20" disabled/>
+                                                            <input className="input" type="text" value={table?table.tid:""} disabled/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group field-title">
                                                     <div class="row">
-                                                        <label class="col-sm-3 text-left" for="id_title">
+                                                        <label class="col-sm-3 text-left">
                                                             Title
                                                             <span class="text-red">* </span>  
                                                         </label>
                                                         <div class=" col-sm-7 field-title">
-                                                            <input onClick={handelChange} className="input" type="text" name="title"/>
+                                                            <input onChange={e=>setTitle(e.target.value)} value={title} className="input" type="text"/>
                                                         </div>
                                                     </div>
                                                 </div>

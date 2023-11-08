@@ -244,9 +244,10 @@ function OrderRestaurant(props) {
                                         <p>Table</p>
                                         <select value={orderUser.tid} onChange={handelChange} name='tid'>
                                             <option value="0">Choice Table</option>
+                                            {/* for(let table=0; table<tables.lenght;table++) */}
                                             {tables.map((table, index)=>{
                                                 return(
-                                                    <option value={table.tid} key={index}>{table.title}</option>
+                                                    <option value={table.tid}>{table.title}</option>
                                                 )
                                             })}
                                         </select>
