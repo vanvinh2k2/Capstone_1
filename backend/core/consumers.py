@@ -70,7 +70,6 @@ class ChatConsumer(WebsocketConsumer):
         self.send_group(self.username, 'message-list', serialize.data)
         self.send_group(username, 'message-list', serialize.data)
 
-
     def send_group(self, group, source, data):
         response = {
             'type': 'broadcast_group',

@@ -3,6 +3,7 @@ import { useNavigation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getRestaurantDetail } from '../../../action/restaurant';
+import ChatMessage from '../../ChatMessage/ChatMessage';
 
 function InforRestaurant(props) {
     const dispatch = useDispatch();
@@ -58,6 +59,7 @@ function InforRestaurant(props) {
                         </div>
                         <div className="product-infor">
                             <b>Support Chat :</b><i className="far fa-comment-dots"></i>
+                            <ChatMessage/>
                         </div>
                         <h4>Information :</h4>
                         <div className="product-infor content-text" dangerouslySetInnerHTML={{ __html: restaurant.description }}></div>
