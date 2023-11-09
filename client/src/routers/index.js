@@ -35,8 +35,7 @@ const publicRouter = [
     {path: '*', component: NotFound},
 ]
 
-const privateRouter = [
-    {}
+const privateRouter = [{}
 ]
 
 export {publicRouter, privateRouter};

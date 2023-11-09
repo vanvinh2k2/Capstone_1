@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
 
     switch(type) {
         case LOGIN_SUCCESS:
-            localStorage.setItem('token', payload.token.access);
+            localStorage.setItem('token', payload.token.refresh);
             localStorage.setItem('iduser', payload.id);
             localStorage.setItem('email', payload.email);
             localStorage.setItem('avatar', payload.avatar);
@@ -34,7 +34,7 @@ export default function(state = initialState, action) {
                 username: payload.username
             }
         case SIGNUP_SUCCESS:
-            localStorage.setItem('token', payload.token.access);
+            localStorage.setItem('token', payload.token.refresh);
             localStorage.setItem('iduser', payload.id);
             localStorage.setItem('email', payload.email);
             localStorage.setItem('avatar', payload.avatar);

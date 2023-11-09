@@ -5,7 +5,6 @@ import { getCategory, addDish } from '../../action/restaurant';
 import { ADD_DISH } from '../../action/type';
 
 function AddDish() {
-    const rid = "res51312ab1b4";
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const category = useSelector(state=>state.restaurant.category);
@@ -24,7 +23,7 @@ function AddDish() {
 
     useEffect(()=>{
         async function getcategory(){
-            const action = await getCategory(rid)
+            const action = await getCategory(localStorage.getItem('rid'))
             dispatch(action);
         }
         getcategory();
@@ -48,7 +47,7 @@ function AddDish() {
     async function handelsubmit(e){
         e.preventDefault();
         if(checkInput()){
-            const action = await addDish(rid, form);
+            const action = await addDish(localStorage.getItem('rid'), form);
             dispatch(action);
             if(action.type === ADD_DISH){
                 navigate("/restaurant/dish");

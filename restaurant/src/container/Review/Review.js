@@ -5,7 +5,6 @@ import { getReviews } from "../../action/restaurant";
 function Review() {
     const reviews = useSelector(state=>state.restaurant.reviews);
     const dispatch = useDispatch();
-    const rid = "res51312ab1b4";
     const RATING = [
         "★☆☆☆☆",
         "★★☆☆☆",
@@ -16,7 +15,7 @@ function Review() {
 
     useEffect(()=>{
         async function getreviews(){
-            const action  = await getReviews(rid)
+            const action  = await getReviews(localStorage.getItem('rid'))
             dispatch(action);
         }
         getreviews();

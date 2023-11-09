@@ -69,8 +69,7 @@ class Restaurant(models.Model):
     time_close = models.TimeField()
     is_hot = models.BooleanField(default=False)
     like = models.IntegerField(default=0)
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
         # dat lai hien name

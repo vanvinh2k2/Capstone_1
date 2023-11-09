@@ -267,7 +267,13 @@ def delete_like(request, *args, **kwargs):
 def edit_profile(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
-    address = Address.objects.get(user=user)
+    if 'address' in request.POST and request.POST['address']:
+        try:
+            address = Address.objects.get(user=user)
+            address.address = request.POST.get('address')
+            address.save()
+        except Address.DoesNotExist:
+            address = Address.objects.create(user=user, address=request.POST.get('address'))
     
     if 'image' in request.FILES and request.FILES['image']:
         user.image = request.FILES['image']
@@ -280,10 +286,6 @@ def edit_profile(request, *args, **kwargs):
     if 'full_name' in request.POST and request.POST['full_name']:
         user.full_name = request.POST.get('full_name')
     user.verified = True
-
-    if 'address' in request.POST and request.POST['address']:
-        address.address = request.POST.get('address')
-    address.save()
     user.save()
     
     response_data = {
@@ -310,8 +312,9 @@ def get_profile(request, *args, **kwargs):
     uid = kwargs.get('uid')
     try:
         user = User.objects.get(id=uid)
-        address = Address.objects.get(user=user)
-        return Response({'success': True,
+        try:
+            address = Address.objects.get(user=user)
+            return Response({'success': True,
                         'message': 'Get profile successfully.',
                         'data': {
                             'id': user.id,
@@ -322,6 +325,22 @@ def get_profile(request, *args, **kwargs):
                             'is_active': user.is_active,
                             'date_joined': user.date_joined,
                             'address': address.address,
+                            'verified': user.verified,
+                            'avatar': get_base_url(request) + user.image.url,
+                        }
+                        }, status=status.HTTP_200_OK)
+        except Address.DoesNotExist:
+            return Response({'success': True,
+                        'message': 'Get profile successfully.',
+                        'data': {
+                            'id': user.id,
+                            'username': user.username,
+                            'full_name': user.full_name,
+                            'email': user.email,
+                            'phone': user.phone,
+                            'is_active': user.is_active,
+                            'date_joined': user.date_joined,
+                            'address': "Not have",
                             'verified': user.verified,
                             'avatar': get_base_url(request) + user.image.url,
                         }
@@ -414,7 +433,7 @@ def search_dishes(request):
 def friend_chat(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
-    friends = User.objects.all().exclude(
+    friends = User.objects.filter(is_staff=False).exclude(
         id=uid
     )
     serialize = SearchSerializer(friends, many=True, context={'request': request})

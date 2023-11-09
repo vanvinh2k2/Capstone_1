@@ -5,7 +5,6 @@ import { addTable } from '../../action/restaurant';
 import { ADD_TABLE } from '../../action/type';
 
 function AddTable() {
-    const rid = "res51312ab1b4";
     const [title, setTitle] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -13,7 +12,7 @@ function AddTable() {
     async function handelSubmit(e){
         e.preventDefault();
         if(title!==""){
-            const action = await addTable(rid, title);
+            const action = await addTable(localStorage.getItem('rid'), title);
             dispatch(action);
             if(action.type === ADD_TABLE){
                 navigate("/restaurant/table");

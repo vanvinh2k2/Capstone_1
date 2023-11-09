@@ -1,14 +1,22 @@
 import aimg  from '../../../assets/images/res.png'
 import { useNavigation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getRestaurantDetail } from '../../../action/restaurant';
 import ChatMessage from '../../ChatMessage/ChatMessage';
 
 function InforRestaurant(props) {
     const dispatch = useDispatch();
     const {rid} = useParams();
-    const restaurant = useSelector(state=>state.restaurant.restaurant_detail)
+    const restaurant = useSelector(state=>state.restaurant.restaurant_detail);
+    const [isChat, setIsChat] = useState(false);
+
+    function handelChat(){
+        if(isChat === true){
+            setIsChat(false);
+        }else setIsChat(true);
+    }
+
     useEffect(()=>{
         async function getDetail(rid){
             const action = await getRestaurantDetail(rid);
@@ -16,6 +24,8 @@ function InforRestaurant(props) {
         }
         getDetail(rid);
     }, [])
+
+    // console.log(restaurant);
 
     return ( 
         <div className="container">
@@ -58,8 +68,8 @@ function InforRestaurant(props) {
                             </div>
                         </div>
                         <div className="product-infor">
-                            <b>Support Chat :</b><i className="far fa-comment-dots"></i>
-                            <ChatMessage/>
+                            <b>Support Chat :</b><i className="far fa-comment-dots" onClick={handelChat}></i>
+                            {isChat===true?<ChatMessage username={restaurant.user.username} image={restaurant.user.image}/>:""}
                         </div>
                         <h4>Information :</h4>
                         <div className="product-infor content-text" dangerouslySetInnerHTML={{ __html: restaurant.description }}></div>

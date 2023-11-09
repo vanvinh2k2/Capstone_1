@@ -38,10 +38,31 @@ export const login = async (email, password)=>{
     }
 }
 
-export const logout = () =>{
-    return {
-        type: LOGOUT,
-        payload: "Logout Success."
+export const logout = async(refresh) =>{
+    const body = JSON.stringify({refresh})
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/auth/api/logout/`, body, config);
+        if(res.data.success == true){
+            alert(res.data.message)
+            return {
+                type: LOGOUT,
+                payload: res.data
+            }
+        }
+        else{
+            alert(res.data.message)
+            return {
+                type: GET_ERROR,
+                payload: res.data.message
+            }
+        }
+    }
+    catch (e){
+        alert("Error!")
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
     }
 }
 

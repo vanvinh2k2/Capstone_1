@@ -43,6 +43,7 @@ export const change_account = async(full_name, phone, address, image, uid) =>{
 export const get_account = async(uid) =>{
     try{
         const res = await axios.get(`http://127.0.0.1:8000/api/get-profile/${uid}/`, config);
+        // console.log(res.data);
         if(res.data.success === true){
             return {
                 type: GET_ACCOUNT,

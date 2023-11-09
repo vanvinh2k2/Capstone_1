@@ -38,9 +38,19 @@
     margin-right: auto
 }
 
+.message{
+    background: #89ea89;
+    color: white;
+    border-radius: 30px;
+    margin-left: 5px;
+}
 .chat-message-right {
     flex-direction: row-reverse;
-    margin-left: auto
+    margin-left: auto;
+    background: #f88a8a;
+    border-radius: 30px;
+    color: white;
+    margin-right: 5px;
 }
 
 .ml-1{
@@ -53,4 +63,16 @@
 
 .mw-65{
     max-width: 65%;
+}
+
+.shadow-b{
+    box-shadow: 0 4px 10px rgb(43 40 40 / 10%);
+}
+
+.shadow{
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+}
+.img-null{
+    min-width: 60px !important;
+    height: 60px;
 }

@@ -17,16 +17,30 @@
 .chat-message-left,
 .chat-message-right {
     display: flex;
-    flex-shrink: 0
+    flex-shrink: 0;
 }
 
 .chat-message-left {
-    margin-right: auto
+    margin-right: auto;
+}
+
+.message{
+    background: #89ea89;
+    color: white;
+    border-radius: 30px;
+    margin-left: 5px;
+}
+
+.message2{
+    background: #f88a8a;
+    border-radius: 30px;
+    color: white;
+    margin-right: 5px;
 }
 
 .chat-message-right {
     flex-direction: row-reverse;
-    margin-left: auto
+    margin-left: auto;
 }
 .py-3 {
     padding-top: 1rem!important;
@@ -62,4 +76,7 @@
     cursor: pointer;
     padding: 5px 0;
     
+}
+.mw-65{
+    max-width: 65%;
 }

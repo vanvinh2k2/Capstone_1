@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from core.models import *
 
 
 def get_base_url(request):
@@ -107,8 +108,10 @@ class LoginRestaurantAPI(generics.CreateAPIView):
     def create(self, request):
         serialize = self.get_serializer(data=request.data)
         if serialize.is_valid():
-            user = authenticate(request, email=request.data['email'], password=request.data['password'], is_restaurant=True);
-            if user is not None:
+            user = authenticate(request, email=request.data['email'], password=request.data['password'])
+            if user is not None and user.is_restaurant is True:
+                restaurant = Restaurant.objects.get(user=user)
+                print(restaurant)
                 token = get_tokens_for_user(user)
                 return Response({
                     'success': True,
@@ -117,6 +120,9 @@ class LoginRestaurantAPI(generics.CreateAPIView):
                         'id': user.id,
                         'username': user.username,
                         'full_name': user.full_name,
+                        'rid': restaurant.rid,
+                        'title': restaurant.title,
+                        'image': get_base_url(request) + restaurant.image.url,
                         'email': user.email,
                         'phone': user.phone,
                         'password': user.password,

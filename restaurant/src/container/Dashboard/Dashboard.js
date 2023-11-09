@@ -11,7 +11,6 @@ function ManageOrder() {
   const dispatch = useDispatch();
   const display_order = useSelector(state=>state.restaurant.display_order);
   const tables = useSelector(state=>state.restaurant.tables);
-  const rid = "res51312ab1b4";
 
   const currentDate = new Date();
   const year1 = currentDate.getFullYear();
@@ -27,7 +26,7 @@ function ManageOrder() {
 
   useEffect(()=>{
     async function manageorder(){
-      const action = await manageOrder(rid, day, month, year);
+      const action = await manageOrder(localStorage.getItem('rid'), day, month, year);
       dispatch(action);
     }
     manageorder();
@@ -35,7 +34,7 @@ function ManageOrder() {
 
   useEffect(()=>{
     async function gettables(){
-        const action  = await getTables(rid)
+        const action  = await getTables(localStorage.getItem('rid'))
         dispatch(action);
     }
     gettables();

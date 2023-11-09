@@ -114,37 +114,6 @@ function RestaurantHot(props) {
                                 </div>
                             )
                         })}
-                        
-
-                        <div className="content_slider">
-                            <div className="featured__item_all">
-                                <div className="featured__item__pic">
-                                    <img src={resimg}/>
-                                    <ul className="featured__item__pic__hover">
-                                        <li><a href="#"><i className="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i className="fa fa-eye"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div className="featured__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <div className="featured__item__rate">
-                                        <span>Rate: </span>
-                                        <div className="featured__item__rate-content">
-                                            <span>3.5/5</span>
-                                            <i className="fa fa-star" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                    <div className="featured__item__status">
-                                        <span>Open: </span>
-                                        <div className="featured__item__status__time">
-                                            <p>10:00</p>
-                                            <p>-</p>
-                                            <p>21:00</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         </Slider>
                     </div>
                 </div>

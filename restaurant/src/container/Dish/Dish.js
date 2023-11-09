@@ -6,18 +6,17 @@ import { deleteDish, getDishes } from '../../action/restaurant';
 function Dish() {
     const dishes = useSelector(state=>state.restaurant.dishes);
     const dispatch = useDispatch();
-    const rid = "res51312ab1b4";
 
     useEffect(()=>{
         async function getdishes(){
-            const action  = await getDishes(rid)
+            const action  = await getDishes(localStorage.getItem('rid'))
             dispatch(action);
         }
         getdishes();
     }, [])
 
     async function handelDelete(e){
-        const action = await deleteDish(rid, e.currentTarget.getAttribute('id-dish'));
+        const action = await deleteDish(localStorage.getItem('rid'), e.currentTarget.getAttribute('id-dish'));
         dispatch(action);
         alert("Delete success.");
     }

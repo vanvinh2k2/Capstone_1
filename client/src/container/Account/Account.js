@@ -1,27 +1,22 @@
 import Dashboard from "./Dashboard/Dashboard";
 import MyAccount from "./MyAccount/MyAccount";
-import { useEffect, useState } from "react";
-import {logout} from '../../action/auth'
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { logout } from '../../action/auth'
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-
-function Account(props) {
-
+function Account() {
     const [activeTab, setActiveTab] = useState('tab-0');
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
     };
 
-    const handelLogout = ()=>{
-        const action = logout();
-        // console.log(action);
+    async function handelLogout(){
+        const action = await logout(localStorage.getItem('token'));
         dispatch(action)
-        alert("Logout success.")
         navigate("/login")
     }
 
@@ -39,7 +34,7 @@ function Account(props) {
                             <ul className="tab-header">
                                 <li className={`${activeTab === 'tab-0' ? 'active' : ''}`} onClick={() => handleTabClick('tab-0')}><a><i className="fas fa-user-circle"></i>Profile</a></li>
                                 <li className={`${activeTab === 'tab-1' ? 'active' : ''}`} onClick={() => handleTabClick('tab-1')}><a><i className="fas fa-tachometer-alt-average"></i>Dashboard</a></li>
-                                <li onClick={()=>handelLogout()}><i className="fas fa-sign-out"></i>Logout</li>
+                                <li onClick={handelLogout}><i className="fas fa-sign-out"></i>Logout</li>
                             </ul>
                         </div>
                     </div>

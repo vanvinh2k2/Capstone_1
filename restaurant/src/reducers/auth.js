@@ -5,6 +5,9 @@ const initialState = {
     email: localStorage.getItem('email'),
     avatar: localStorage.getItem('avatar'),
     username: localStorage.getItem('username'),
+    rid: localStorage.getItem('rid'),
+    title: localStorage.getItem('title'),
+    image: localStorage.getItem('image'),
     friends: []
 }
 
@@ -17,6 +20,9 @@ export default function (state = initialState, action){
             localStorage.setItem('email', payload.email);
             localStorage.setItem('avatar', payload.avatar);
             localStorage.setItem('username', payload.username);
+            localStorage.setItem('rid', payload.rid);
+            localStorage.setItem('title', payload.title);
+            localStorage.setItem('image', payload.image);
             return {
                 ...state,
                 token: payload.token.refresh,
@@ -31,6 +37,9 @@ export default function (state = initialState, action){
             localStorage.removeItem('email');
             localStorage.removeItem('avatar');
             localStorage.removeItem('username');
+            localStorage.removeItem('rid');
+            localStorage.removeItem('title');
+            localStorage.removeItem('image');
             return {
                 ...state,
                 token: null,

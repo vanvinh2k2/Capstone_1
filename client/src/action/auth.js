@@ -64,6 +64,7 @@ export const signup = async(username, email, password, password2) =>{
     const body = JSON.stringify({username, email, password})
     try{
         const res = await axios.post(`http://127.0.0.1:8000/auth/api/register/`, body, config);
+        // console.log(res);
         if(res.data.success == true){
             alert(res.data.message)
             return {
@@ -72,6 +73,7 @@ export const signup = async(username, email, password, password2) =>{
             }
         }
         else{
+            alert(res.data.message)
             return {
                 type: SIGNUP_FAIL,
                 payload: res
@@ -87,16 +89,36 @@ export const signup = async(username, email, password, password2) =>{
     }
 }
 
-export const logout = () =>{
-    return {
-        type: LOGOUT,
-        payload: "Logout Success."
+export const logout = async(refresh) =>{
+    const body = JSON.stringify({refresh})
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/auth/api/logout/`, body, config);
+        if(res.data.success == true){
+            alert(res.data.message)
+            return {
+                type: LOGOUT,
+                payload: res.data
+            }
+        }
+        else{
+            alert(res.data.message)
+            return {
+                type: GET_ERROR,
+                payload: res.data.message
+            }
+        }
     }
+    catch (e){
+        alert("Error!")
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
+    }  
 }
 
 export const forget_password = async(email) =>{
     const body = JSON.stringify({email})
-
     try{
         const res = await axios.post(`http://127.0.0.1:8000/auth/api/send-email/`, body, config);
         if(res.data.success == true){

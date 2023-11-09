@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch} from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { LOGIN_SUCCESS } from "../../action/types";
+// import Animation from "../../components/Animation/animation";
 
 function Login(props) {
     let navigate = useNavigate()
@@ -63,6 +64,7 @@ function Login(props) {
                     </div> 
                 </div>
             </div>
+            {/* <Animation /> */}
         </div>
     );
 }

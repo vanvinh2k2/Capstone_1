@@ -1,9 +1,9 @@
 import logo from '../../assets/images/logo1.png';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { login } from '../../action/auth';
 import { LOGIN_SUCCESS } from '../../action/type';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [form, setForm] = useState({
@@ -27,6 +27,10 @@ function Login() {
     function handleForm(e){
         setForm({...form, [e.target.name]: e.target.value});
     }
+
+    useEffect(()=>{
+        if(localStorage.getItem("token")) navigate("/restaurant");
+    }, [])
 
     return ( 
         <div class="login">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images/logo1.png';
 import { logout } from '../../action/auth';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
   const [click, setClick] = useState("dashboard");
+  const [isLogout, setIsLogout] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -14,12 +15,19 @@ function Sidebar() {
     setClick(value);
   }
 
-  function handelLogout(){
-    const action = logout();
-    dispatch(action);
-    alert("Logout success.")
-    navigate("/")
+  async function handelLogout(){
+    const action = await logout(localStorage.getItem('token'));
+    if(action){
+      await dispatch(action);
+      setIsLogout(true);
+    }
   }
+
+  useEffect(()=>{
+    if(isLogout === true){
+      navigate("/");
+    }
+  }, [isLogout])
 
   return ( 
     <section id="sidebar">

@@ -6,18 +6,17 @@ import { getTables, deleteTable } from '../../action/restaurant';
 function Table() {
     const tables = useSelector(state=>state.restaurant.tables);
     const dispatch = useDispatch();
-    const rid = "res51312ab1b4";
 
     useEffect(()=>{
         async function gettables(){
-            const action  = await getTables(rid)
+            const action  = await getTables(localStorage.getItem('rid'))
             dispatch(action);
         }
         gettables();
     }, []);
 
     async function handleDelete(e){
-        const action = await deleteTable(rid, e.currentTarget.getAttribute('id-table'));
+        const action = await deleteTable(localStorage.getItem('rid'), e.currentTarget.getAttribute('id-table'));
         dispatch(action);
         alert("Delete success.");
     }

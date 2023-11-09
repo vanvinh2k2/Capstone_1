@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import { get_account, change_account } from '../../../action/account';
 
 function MyAccount(props) {
-
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [img, setImg] = useState(null);
@@ -42,7 +41,7 @@ function MyAccount(props) {
             dispatch(action);
         }
         getAccount();
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         setName(account.full_name);
@@ -57,7 +56,7 @@ function MyAccount(props) {
            <hr></hr>
            <div className="row" id="profile-content">
                <div className="col-lg-4 col-md-12">
-                   <img src={`${account.avatar}`} className="img-profile"/>
+                   <img src={account.avatar} className="img-profile"/>
                    <h3>{account.username}</h3>
                </div>
                <div className="col-lg-8 col-md-12" >

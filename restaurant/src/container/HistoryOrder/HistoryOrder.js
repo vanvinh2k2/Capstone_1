@@ -6,11 +6,10 @@ import { getHistoryOrder } from '../../action/restaurant';
 function HistoryOrder() {
     const orders = useSelector(state=>state.restaurant.orders);
     const dispatch = useDispatch();
-    const rid = "res51312ab1b4";
 
     useEffect(()=>{
         async function gethistoryOrder(){
-            const action  = await getHistoryOrder(rid)
+            const action  = await getHistoryOrder(localStorage.getItem('rid'))
             dispatch(action);
         }
         gethistoryOrder();
