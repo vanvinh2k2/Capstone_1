@@ -1,24 +1,31 @@
-def ArrayChallenge(arr):
-    max_num = max(arr)
-    arr.remove(max_num)  # Loại bỏ số lớn nhất từ mảng
+in_time = [7, 11, 16]
+out_time = [10, 15, 18]
 
-    def can_sum(numbers, target):
-        if target == 0:
-            return True
-        if not numbers:
-            return False
+clock = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+time = []
+# Khoi tao lich thoi gian da co order(1) và ko có order(0)
+def init(clock, in_time, out_time):
+    for i in clock: 
+        time.append(0)
+    for i in range(0, len(in_time)):
+        for j in clock:
+            if (j > in_time[i]) and (j <= out_time[i]):
+                time[j] = 1
 
-        current_num = numbers[0]
-        remaining_numbers = numbers[1:]
+init(clock, in_time, out_time)
+print(time)
 
-        # Thử cộng số hiện tại vào kết quả hoặc không cộng
-        return can_sum(remaining_numbers, target - current_num) or can_sum(remaining_numbers, target)
+# Check xem don hang them vao co ai dat chua
+def check_time(a, b, time):
+    for i in range(0, len(time)):
+        if a < clock[i] <= b:
+            if time[i] == 1:
+                return False
+    return True
 
-    # Kiểm tra xem có tổ hợp nào có thể cộng lại thành số lớn nhất không
-    if can_sum(arr, max_num):
-        return "true"
-    else:
-        return "false"
+print(check_time(10,11,time))
 
-# Sử dụng input() thay vì raw_input() và in the cú pháp Python 3
-print(ArrayChallenge([3, 5, -1, 8, 12]))  # Output: "false"
+
+a= "12:15"
+h,p = a.split(":")
+print((int(h)*100+int(p))/100)

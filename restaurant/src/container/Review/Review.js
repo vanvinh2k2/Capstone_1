@@ -72,7 +72,7 @@ function Review() {
                         </tr>
                     </thead>
                     <tbody>
-                        {reviews&reviews.lenght>0? reviews.map((item, index)=>{
+                        {reviews&&reviews.length>0? reviews.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>{item.user.username}</th>

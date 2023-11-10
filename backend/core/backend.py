@@ -8,6 +8,21 @@ from operator import itemgetter
 from rest_framework import status, permissions, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from datetime import datetime
+
+def convert_time(time):
+    time = str(time)[:5]
+    h,s = time.split(":")
+    return (int(h)*100+int(s))/100
+
+def check_time(a, b, time, clock):
+    for i in range(0, len(time)):
+        if a < clock[0] or b > clock[len(clock)-1]: 
+            return False
+        if a < clock[i] <= b:
+            if time[i] == 1:
+                return False
+    return True
 
 def get_base_url(request):
     absolute_url = HttpRequest.build_absolute_uri(request)
@@ -171,27 +186,71 @@ def add_order(request, *args, **kwargs):
     tid = request.data.get('tid')
     table = Table.objects.get(tid=tid)
     restaurant = Restaurant.objects.get(rid=rid)
-    items = request.data.get("items");
+    items = request.data.get("items")
     serialize = OrderSerializers(data=request.data, context={'request': request})
 
     if serialize.is_valid(raise_exception=True):
-        order = serialize.save(user=user, table=table, restaurant=restaurant)
-        for item in items:
-            OrderItem.objects.create(
-                order=order,
-                invoice_no="invoice_no_%s" %(order.id),
-                item=item['item'],
-                quantity=item['quantity'],
-                image=item['image'],
-                price=item['price'],
-                total=item['total']
-            )
-        return Response({'success': True,
-                         'message': 'Order restaurant successfully.',
-                         'data': serialize.data
+        time_from = int(str(restaurant.time_open)[:2])
+        time_to = int(str(restaurant.time_close)[:2])
+        in_time = []
+        out_time = []
+        clock = []
+        time = []
+
+        # Khoi tao cay thoi gian cho nha hang
+        for i in range(time_from, time_to):
+            clock.append(i)
+            clock.append(i + 0.15)
+            clock.append(i + 0.30)
+            clock.append(i + 0.45)
+        clock.append(time_to)
+
+        # Lay thoi gian toi -> ve cua Order co san 
+        time_now = datetime.now().date()
+        orders = Order.objects.filter(table=table, order_date__date=time_now)
+        for order in orders:
+            in_time.append(convert_time(order.time_from))
+            out_time.append(convert_time(order.time_to))
+
+        # Khoi tao lich đã có Order(1) va chua có Order(0)
+        for i in clock: 
+            time.append(0)
+        for i in range(0, len(in_time)):
+            for j in range(0, len(clock)):
+                if (clock[j] > in_time[i]) and (clock[j] <= out_time[i]):
+                    time[j] = 1
+
+        # Check Order moi them vao co hop le ko
+        new_from = convert_time(request.data.get('time_from'))
+        new_to = convert_time(request.data.get('time_to'))
+        # print(time_from, time_to)
+        # print(clock)
+        # print(time)
+        # print(in_time)
+        # print(out_time)
+        # print(new_from, new_to)
+        if check_time(new_from, new_to, time, clock) == True:
+            order = serialize.save(user=user, table=table, restaurant=restaurant)
+            for item in items:
+                OrderItem.objects.create(
+                    order=order,
+                    invoice_no="invoice_no_%s" %(order.id),
+                    item=item['item'],
+                    quantity=item['quantity'],
+                    image=item['image'],
+                    price=item['price'],
+                    total=item['total']
+                )
+            return Response({'success': True,
+                            'message': 'Order restaurant successfully.',
+                            'data': serialize.data
+                            }, status=status.HTTP_200_OK)
+        
+        else: return Response({'success': False,
+                         'message': 'Please choice other Table or Time from or Time to!'
                          }, status=status.HTTP_200_OK)
-    else:
-        return Response({'success': False,
+        
+    else: return Response({'success': False,
                          'message': 'Error!'
                          }, status=status.HTTP_200_OK)
 

@@ -5,6 +5,7 @@ import { getDishesOfRestaurant } from '../../../action/dish';
 import {useParams} from 'react-router-dom'
 import { updateOrderCart, addOrderCart, getOrderCart } from '../../../action/order';
 import { useNavigate} from 'react-router-dom'
+import Time from '../../../components/Time/Time';
 
 function OrderRestaurant(props) {
     const tables = useSelector(state=>state.restaurant.tables);
@@ -23,8 +24,8 @@ function OrderRestaurant(props) {
         full_name: "",
         phone: "",
         tid: "",
-        time_from: "",
-        time_to: "",
+        time_from: "0",
+        time_to: "0",
         number_people: ""
     })
 
@@ -39,7 +40,6 @@ function OrderRestaurant(props) {
     useEffect(()=>{
         const initialQuantity = Array.from({ length: dishes.length }, () => 1);
         const initialStick = Array.from({ length: dishes.length }, () => 0);
-        // console.log("ok",orderItems)
         for(let i=0;i<dishes.length;i++){
             for(let j=0;j<orderItems.length;j++){
                 if(dishes[i].did ===orderItems[j].did){
@@ -91,7 +91,6 @@ function OrderRestaurant(props) {
             })
         }
         if (orderCart && orderCart.orderDetail && orderCart.orderDetail.length > 0) {
-            // console.log(orderCart.orderDetail, dishes)
             let newOrderItems = [];
             for (let i = 0; i < dishes.length; i++) {
                 for (let j = 0; j < orderCart.orderDetail.length; j++) {
@@ -153,10 +152,6 @@ function OrderRestaurant(props) {
         }
     }
 
-    // useEffect(()=>{
-    //     console.log(quantity);
-    // }, [quantity])
-
     const handelDelete = (dish, index)=>{
         setStick({...stick, [index]: 0})
         let delOrderItems = [...orderItems]
@@ -181,10 +176,10 @@ function OrderRestaurant(props) {
         }else if(orderUser.table === ""){
             alert("Please choice Table!");
             return false;
-        }else if(orderUser.time_from === ""){
+        }else if(orderUser.time_from === "0"){
             alert("Please input time from!");
             return false;
-        }else if(orderUser.time_to === ""){
+        }else if(orderUser.time_to === "0"){
             alert("Please input time to!");
             return false;
         }
@@ -201,17 +196,14 @@ function OrderRestaurant(props) {
                     localStorage.getItem('iduser'),
                     rid
                 );
-                // console.log(action);
                 dispatch(action)
             }else{
-                // console.log(orderItems, orderUser)
                 const action = await updateOrderCart(
                     orderUser, 
                     orderItems,
                     localStorage.getItem('iduser'),
                     rid
                 );
-                // console.log(action);
                 dispatch(action)
             }
             setOrderItems([]);
@@ -253,12 +245,16 @@ function OrderRestaurant(props) {
                                         </select>
                                     </div>
                                     <div className="item">
-                                        <p>From </p>
-                                        <input type="text" value={orderUser.time_from} onChange={handelChange} name='time_from' placeholder="7:00"/>
+                                        <p>From</p>
+                                        <select value={orderUser.time_from} onChange={handelChange} name='time_from'>
+                                            <Time/>
+                                        </select>
                                     </div>
                                     <div className="item">
                                         <p>To</p>
-                                        <input type="text" value={orderUser.time_to} onChange={handelChange} name='time_to' placeholder="11:00"/>
+                                        <select value={orderUser.time_to} onChange={handelChange} name='time_to'>
+                                            <Time/>
+                                        </select>
                                     </div>
                                     <div className="item">
                                         <p>Number of People</p>

@@ -84,7 +84,7 @@ function Dish() {
                         </tr>
                     </thead>
                     <tbody>
-                        {dishes & dishes.lenght>0 ?dishes.map((item, index)=>{
+                        {dishes&&dishes.length>0?dishes.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>

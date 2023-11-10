@@ -80,7 +80,7 @@ function HistoryOrder() {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders &orders.length>0? orders.map((item, index)=>{
+                        {orders&&orders.length>0?orders.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>

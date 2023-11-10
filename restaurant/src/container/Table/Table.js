@@ -64,7 +64,7 @@ function Table() {
                         </tr>
                     </thead>
                     <tbody>
-                        {tables&tables.lenght>0 ?tables.map((item, index)=>{
+                        {tables&&tables.length>0?tables.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>
