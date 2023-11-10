@@ -1,7 +1,9 @@
 from .serializers import *
 from .models import *
 from django.http import HttpRequest
-import json
+from django.db.models import Q
+from .serializers import *
+from operator import itemgetter
 
 from rest_framework import status, permissions, generics
 from rest_framework.decorators import api_view
@@ -192,22 +194,6 @@ def add_order(request, *args, **kwargs):
         return Response({'success': False,
                          'message': 'Error!'
                          }, status=status.HTTP_200_OK)
-
-
-# @api_view(['POST'])
-# def add_order_item(request, *args, **kwargs):
-#     oid = kwargs.get('oid')
-#     order = Order.objects.get(oid=oid)
-#     serialize = OrderItemSerializers(data=request.data, context={'request': request})
-#     if serialize.is_valid():
-#         serialize.save(order=order)
-#         return Response({'success': True,
-#                          'message': 'Successfully.',
-#                          }, status=status.HTTP_200_OK)
-#     else:
-#         return Response({'success': False,
-#                          'message': 'Error!'
-#                          }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -432,30 +418,25 @@ def search_dishes(request):
 @api_view(['GET'])
 def friend_chat(request, *args, **kwargs):
     uid = kwargs.get('uid')
+    result=[]
     user = User.objects.get(id=uid)
-    friends = User.objects.filter(is_staff=False).exclude(
-        id=uid
-    )
-    serialize = SearchSerializer(friends, many=True, context={'request': request})
+    friends = User.objects.filter(is_staff=False).exclude(id=uid)
+    for friend in friends:
+        friend_instance = User.objects.get(id=friend.id)
+        print(friend.id)
+        data_ok = ChatMessage.objects.filter(
+            (Q(msg_sender=user) & Q(msg_receiver=friend_instance)) |
+            (Q(msg_sender=friend_instance) & Q(msg_receiver=user))
+        ).order_by('-date')
+        if data_ok.exists():
+            final_data = MessageSerializer(data_ok[0], context={'request': request}).data
+            result.append(final_data)
+    result_sorted = sorted(result, key=itemgetter('date'), reverse=True)
+
     return Response({'success': True,
-        'message': 'Search dishes successfully.',
-        'data': serialize.data
+        'message': 'Search successfully.',
+        'data': result_sorted
     }, status=status.HTTP_200_OK)
-
-
-@api_view(['POST'])
-def send_chat():
-    pass
-
-
-@api_view(['POST'])
-def receive_chat():
-    pass
-
-
-@api_view(['POST'])
-def notify_chat():
-    pass
 
 
 @api_view(['POST'])
@@ -544,33 +525,6 @@ def add_order_cart(request, *args, **kwargs):
         return Response({'success': False,
                          'message': 'Error!'
                          }, status=status.HTTP_200_OK)
-    
-    
-# @api_view(['POST'])
-# def update_order_cart_item(request, *args, **kwargs):
-#     ocid = kwargs.get('ocid')
-#     ordercart = OrderCart.objects.get(ocid=ocid)
-#     did = kwargs.get('did')
-#     dish = Dish.objects.get(did=did)
-#     ordercart_items = OrderCartItem.objects.get(ordercart=ordercart, dish=dish)
-#     ordercart_items.quantity = request.POST.get('quantity')
-#     ordercart_items.save()
-#     return Response({'success': True,
-#                          'message': 'Update successfully.'
-#                          }, status=status.HTTP_200_OK)
-
-
-# @api_view(['GET'])
-# def delete_order_cart_item(request, *args, **kwargs):
-#     ocid = kwargs.get('ocid')
-#     did = kwargs.get('did')
-#     ordercart = OrderCart.objects.get(ocid=ocid)
-#     dish = Dish.objects.get(did=did)
-#     ordercart_items = OrderCartItem.objects.get(ordercart=ordercart, dish=dish)
-#     ordercart_items.delete()
-#     return Response({'success': True,
-#                          'message': 'Delete successfully.'
-#                          }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -696,11 +650,6 @@ def wishlist_restaurant(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-def add_address():
-    pass
-
-
 @api_view(['GET'])
 def review_restaurant(request, *args, **kwargs):
     rid = kwargs.get("rid")
@@ -773,10 +722,6 @@ def update_dish(request, *args, **kwargs):
     return Response({'success': True,
                          'message': 'Update dish successfully.'
                          }, status=status.HTTP_200_OK)
-    # except:
-    #     return Response({'success': False,
-    #                      'message': 'Update dish fail.'
-    #                      }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])

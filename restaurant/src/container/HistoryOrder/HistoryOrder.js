@@ -2,6 +2,7 @@ import {NavLink} from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryOrder } from '../../action/restaurant';
+import img from '../../assets/images/empty.png'
 
 function HistoryOrder() {
     const orders = useSelector(state=>state.restaurant.orders);
@@ -79,7 +80,7 @@ function HistoryOrder() {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders? orders.map((item, index)=>{
+                        {orders &orders.length>0? orders.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>
@@ -94,7 +95,12 @@ function HistoryOrder() {
                                     <td class="nowrap">{item.deposit}$</td>
                                 </tr>
                             )
-                        }): ""}
+                        }): <tr role="row">
+                        <td colSpan={7} className="text-center">
+                            <img src={img}/>
+                            <h6 className="text-secondary">No data</h6>
+                        </td>
+                        </tr>}
                     </tbody>
                 </table>
             </div>

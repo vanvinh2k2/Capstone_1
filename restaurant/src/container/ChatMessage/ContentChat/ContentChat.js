@@ -9,29 +9,20 @@ function ContentChat(props) {
     const [message, setMessage] = useState('');
     const [listMessage, setListMessage] = useState([]);
     const [isConnect, setIsConnect] = useState(false);
-    const [friend, setFriend] = useState({});
     const scrollContainerRef = useRef();
 
     useEffect(() => {
-      // Thiết lập cuộn tới cuối cùng khi nội dung thay đổi
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }, [listMessage]);
 
-    useEffect(()=>{
-      setFriend(props.friend);
-    }, [props.friend])
-
     useEffect(() => {
-      console.log("hoi lai")
+      if(props.friend !== null){
         client.onopen = () => {
           console.log('WebSocket Client Connected');
           if(client.OPEN) setIsConnect(true);
         };
         client.onmessage = (event) => {
-          // console.log("hoi lai mm")
           setListMessage(JSON.parse(event.data));
-          console.log(JSON.parse(event.data));
-          // setUsers([...data])
         };
         client.onerror = (e) => {
           console.log(e);
@@ -39,22 +30,19 @@ function ContentChat(props) {
         client.onclose = () => {
           console.log('WebSocket Client Closed');
         };
-      }, [client]);
+      }  
+    }, [client, props.friend]);
 
     useEffect(()=>{
-        if(isConnect === true && friend){
-          console.log(friend, "olp");
+        if(isConnect === true && props.friend && Object.keys(props.friend).length > 0){
           client.send(JSON.stringify({
             source: 'message-list',
-            friend: friend.username
+            friend: props.friend.username
           }));
         }
-      }, [isConnect, friend])
-
-    // console.log(listMessage)
+      }, [isConnect, props.friend])
 
     function sendMessage() {
-      console.log("lpop")
         if (message.trim() === '') return;
         client.send(JSON.stringify({ 
           source: 'message',
@@ -62,14 +50,11 @@ function ContentChat(props) {
           message: message
         }));
         setMessage('')
-        // console.log(message)
       };
 
     function handelSend(){
       sendMessage();
     }
-
-    // console.log(props.friend);
 
     return ( 
       <div className="col-12 col-lg-7 col-xl-8" style={{borderLeft: '1px solid #ccc'}}>
@@ -81,7 +66,7 @@ function ContentChat(props) {
             <div className="flex-grow-1 pl-3">
               <h6 className='m-0'>{props.friend?props.friend.username: ""}</h6>
               <div className="text-muted small">
-                <em>Online</em>
+                <em>{props.friend?props.friend.email: ""}</em>
               </div>
             </div>
           </div>
@@ -91,30 +76,22 @@ function ContentChat(props) {
             {listMessage&&listMessage.length>0?listMessage.map((item, index)=>{
               if(item.msg_sender.username === localStorage.getItem("username")){
                 return(
-                  <div className="chat-message-right pb-1 mw-65 mt-2">
-                    {/* <div> */}
-                      {/* <div className="text-muted small text-nowrap mt-2">
-                        2:33 am
-                      </div> */}
-                    {/* </div> */}
+                  <div className="chat-message-right pb-1 mw-65 mt-1">
                     <div className="flex-shrink-1 py-2 px-3 mr-3 message2">{item.body}</div>
                   </div>
                 )
-              }else{
+              }else if(item.msg_receiver.username === localStorage.getItem("username") && listMessage[index+1] && listMessage[index+1].msg_receiver.username === item.msg_receiver.username){
                 return(
-                  <div className="chat-message-left pb-1 mw-65 mt-2">
-                    <div>
+                  <div className="chat-message-left pb-1 mw-65 mt-1 ml-40">
+                    <div className="flex-shrink-1 bg-#ccc py-2 px-3 ml-3 message">{item.body}</div>
+                  </div>
+                )
+              }
+              else{
+                return(
+                  <div className="chat-message-left pb-1 mw-65 mt-1 align-items-end">
                       <img
-                        src={`http://127.0.0.1:8000${item.msg_sender.image}`}
-                        className="rounded-circle mr-1"
-                        alt="Sharon Lessman"
-                        width={40}
-                        height={40}
-                      />
-                      {/* <div className="text-muted small text-nowrap mt-2">
-                        2:34 am
-                      </div> */}
-                    </div>
+                        src={`http://127.0.0.1:8000${item.msg_sender.image}`} className="rounded-circle mr-1" width={40} height={40}/>
                     <div className="flex-shrink-1 bg-#ccc py-2 px-3 ml-3 message">{item.body}</div>
                   </div>
                 )

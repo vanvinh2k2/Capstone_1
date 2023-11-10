@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getReviews } from "../../action/restaurant";
+import img from '../../assets/images/empty.png'
 
 function Review() {
     const reviews = useSelector(state=>state.restaurant.reviews);
@@ -15,6 +16,7 @@ function Review() {
 
     useEffect(()=>{
         async function getreviews(){
+            console.log(localStorage.getItem('rid'))
             const action  = await getReviews(localStorage.getItem('rid'))
             dispatch(action);
         }
@@ -70,7 +72,7 @@ function Review() {
                         </tr>
                     </thead>
                     <tbody>
-                        {reviews? reviews.map((item, index)=>{
+                        {reviews&reviews.lenght>0? reviews.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>{item.user.username}</th>
@@ -81,7 +83,12 @@ function Review() {
                                 </tr>
                             )
                         })
-                        : ""}
+                        : <tr role="row">
+                            <td colSpan={7} className="text-center">
+                                <img src={img}/>
+                                <h6 className="text-secondary">No data</h6>
+                            </td>
+                            </tr>}
                     </tbody>
                 </table>
             </div>

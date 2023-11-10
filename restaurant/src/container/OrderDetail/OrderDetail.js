@@ -2,7 +2,7 @@ import {NavLink} from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryDetail } from '../../action/restaurant';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 
 function OrderDetail() {
     const {order, orderItems} = useSelector(state=>state.restaurant.order);

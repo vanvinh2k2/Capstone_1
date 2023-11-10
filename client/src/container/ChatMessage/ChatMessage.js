@@ -74,7 +74,7 @@ function ChatMessage(props) {
                         <div className="flex-grow-1 ml-3 ml-1">
                             <h6 className='m-0'>{props.username}</h6>
                             <div className="text-muted small">
-                                <em>Online</em>
+                                <em>{props.email}</em>
                             </div>
                         </div>
                         <i class="fa-solid fa-xmark" onClick={handelClose}></i>
@@ -89,16 +89,22 @@ function ChatMessage(props) {
                                             <div className="flex-shrink-1 py-2 px-3 mr-3">{item.body}</div>
                                         </div>
                                     )
-                                }else{
+                                }else if(item.msg_receiver.username === localStorage.getItem("username") && listMessage[index+1] && listMessage[index+1].msg_receiver.username === item.msg_receiver.username){
                                     return(
-                                        <div className="d-flex chat-message-left mw-65 mt-2">
-                                            <img src={props.image}
-                                                className="rounded-circle mr-1 avatar"
-                                                width={40}
-                                                height={40}/>
+                                        <div className="d-flex chat-message-left mw-65 mt-2 ml-40">
                                             <div className="flex-shrink-1 py-2 px-3 ml-3 message">{item.body}</div>
                                         </div> 
                                     )
+                                }else{
+                                  return(
+                                    <div className="d-flex chat-message-left mw-65 mt-2">
+                                        <img src={props.image}
+                                            className="rounded-circle mr-1 avatar"
+                                            width={40}
+                                            height={40}/>
+                                        <div className="flex-shrink-1 py-2 px-3 ml-3 message">{item.body}</div>
+                                    </div> 
+                                  )
                                 }
                             }):<div className='d-flex flex-column align-items-center'>
                             <img src={notmessageimg} className='center mt-5 opacity-50 img-null'/>

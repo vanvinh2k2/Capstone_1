@@ -2,7 +2,8 @@ import {NavLink} from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryDetail } from '../../action/restaurant';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import img from '../../assets/images/empty.png'
 
 function HistoryDetail() {
     const {order, orderItems} = useSelector(state=>state.restaurant.order);
@@ -97,7 +98,12 @@ function HistoryDetail() {
                                             </tr>
                                         )
                                     })
-                                    :""}
+                                    :<tr role="row">
+                                    <td colSpan={7} className="text-center">
+                                        <img src={img}/>
+                                        <h6 className="text-secondary">No data</h6>
+                                    </td>
+                                    </tr>}
                                     <tr>
                                     <td className="title-payment" colSpan="3">
                                         <span>SubTotal</span>

@@ -12,7 +12,7 @@ class UserSerializers(serializers.ModelSerializer):
 class SenderSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "image"]
+        fields = ["id", "username", "image", "email"]
 
 
 class RestaurantSerializers(serializers.ModelSerializer):
@@ -115,7 +115,7 @@ class SearchSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ['id', 'username', 'image', ]
+		fields = ['id', 'username', 'image', 'email']
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -123,4 +123,4 @@ class MessageSerializer(serializers.ModelSerializer):
     msg_receiver = SearchSerializer(read_only=True)
     class Meta:
         model = ChatMessage
-        fields = ['body', 'msg_sender', 'msg_receiver', 'seen']
+        fields = ['body', 'msg_sender', 'msg_receiver', 'seen', 'date']

@@ -69,7 +69,11 @@ function InforRestaurant(props) {
                         </div>
                         <div className="product-infor">
                             <b>Support Chat :</b><i className="far fa-comment-dots" onClick={handelChat}></i>
-                            {isChat===true?<ChatMessage username={restaurant.user.username} image={restaurant.user.image}/>:""}
+                            {isChat===true?<ChatMessage 
+                            username={restaurant.user.username} 
+                            image={restaurant.user.image}
+                            email={restaurant.user.email}/>
+                            :""}
                         </div>
                         <h4>Information :</h4>
                         <div className="product-infor content-text" dangerouslySetInnerHTML={{ __html: restaurant.description }}></div>

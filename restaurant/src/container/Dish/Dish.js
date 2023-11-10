@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import {NavLink} from 'react-router-dom'
 import { deleteDish, getDishes } from '../../action/restaurant';
+import img from '../../assets/images/empty.png'
 
 function Dish() {
     const dishes = useSelector(state=>state.restaurant.dishes);
@@ -83,7 +84,7 @@ function Dish() {
                         </tr>
                     </thead>
                     <tbody>
-                        {dishes?dishes.map((item, index)=>{
+                        {dishes & dishes.lenght>0 ?dishes.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>
@@ -102,7 +103,12 @@ function Dish() {
                                     <td class="nowrap"><i onClick={handelDelete} id-dish={item.did} class="fa-solid fa-trash"></i></td>
                                 </tr>
                             )
-                        }):""}
+                        }):<tr role="row">
+                            <td colSpan={7} className="text-center">
+                                <img src={img}/>
+                                <h6 className="text-secondary">No data</h6>
+                            </td>
+                            </tr>}
                     </tbody>
                 </table>
             </div>

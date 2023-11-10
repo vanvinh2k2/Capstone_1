@@ -80,3 +80,28 @@
 .mw-65{
     max-width: 65%;
 }
+
+.ml-40{
+    margin-left: 40px;
+}
+
+.fs-14{
+    font-size: 15px;
+    color: #696969;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.fs-10{
+    font-size: 9px;
+    margin-left: 10px;
+    color: gray;
+    color: white;
+    background: olivedrab;
+    padding: 0 5px;
+    border-radius: 22px;
+    margin-top: 5px;
+}

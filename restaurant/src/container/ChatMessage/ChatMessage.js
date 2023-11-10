@@ -1,11 +1,11 @@
 
-import {useState, useEffect, useMemo} from 'react';
+import {useState, useEffect} from 'react';
 import notfoundimg from '../../assets/images/not_found.png';
 import {NavLink} from 'react-router-dom'
 import ContentChat from './ContentChat/ContentChat';
 import {useDispatch, useSelector} from 'react-redux'
 import { friend_chat } from '../../action/auth';
-
+import moment from 'moment';
 
 function ChatMessage() {
     const [query, setQuery] = useState('');
@@ -24,30 +24,37 @@ function ChatMessage() {
 
     useEffect(()=>{
       setDisplayUser(friends);
-      setFriend(friends[0]);
+      if(friends.length>0){
+        if(friends[0].msg_sender.username === localStorage.getItem("username")) setFriend(friends[0].msg_receiver);
+        else setFriend(friends[0].msg_sender);
+      }
+      
     }, [friends])
 
     function handleSearch(e){
       setQuery(e.target.value);
     }
 
-    function handleConnect(e){
-      // setConnectUser(JSON.parse(e.currentTarget.getAttribute('data-user')));
-      const newFriend = friends.filter(user=>user.username === e.currentTarget.getAttribute('data-user'))[0];
-      setFriend(newFriend);
-      // setConnectUser(e.currentTarget.getAttribute('data-user'));
+    function handleConnect(e) {
+      const clickedUsername = e.currentTarget.getAttribute('data-user');
+      const newFriend = friends.find((item) => {
+        return item.msg_sender.username === clickedUsername || item.msg_receiver.username === clickedUsername;
+      });
+      if (newFriend) {
+        const friendToSet = (newFriend.msg_sender.username === clickedUsername) ? newFriend.msg_sender : newFriend.msg_receiver;
+        setFriend(friendToSet);
+      }
     }
 
     useEffect(()=>{
       if (query !== '') {
         const lowercaseQuery = query.toLowerCase();
-        const filteredUsers = friends.filter(user => user.username.toLowerCase().includes(lowercaseQuery));
+        const filteredUsers = friends.filter(user => user.msg_sender.username.toLowerCase().includes(lowercaseQuery) | user.msg_receiver.username.toLowerCase().includes(lowercaseQuery));
         setDisplayUser(filteredUsers);
       } else {
         setDisplayUser(friends);
       }
     }, [query])
-    // console.log(friend);
       
     return ( 
         <div>
@@ -77,21 +84,20 @@ function ChatMessage() {
                         </div>
                       </div>
                       <div className='px-4 d-none d-md-block'>
-                        {displayUser && displayUser.length>0?displayUser.map((user, index)=>{
+                        {displayUser && displayUser.length>0?displayUser.map((item, index)=>{
+                          let user = {};
+                          if(item.msg_sender.username === localStorage.getItem("username")) user = item.msg_receiver;
+                          else user = item.msg_sender
                           return (
                             <div className="list-group-item list-group-item-action border-0 mb-2" 
-                            data-user={user.username}
-                            onClick={handleConnect} key={index}>
+                            data-user={user.username} onClick={handleConnect} key={index}>
                             <div className="d-flex align-items-start">
-                              <img src={`${user.image}`}
-                                className="rounded-circle avatar"
-                                width={40}
-                                height={40}/>
+                              <img src={`${user.image}`} className="rounded-circle avatar" width={40} height={40}/>
                               <div className='flex-grow-1'>
                                 <h6 className='m-0'>{user.username}</h6>
-                                <div className="small">
-                                  {/* <span className="fas fa-circle chat-online" />  */}
-                                  Online
+                                <div className='d-flex'>
+                                  <p className='fs-14'>{item.body}</p>
+                                  <p className='fs-10'>{moment.utc(item.date).local().startOf('seconds').fromNow()}</p>
                                 </div>
                               </div>
                             </div>

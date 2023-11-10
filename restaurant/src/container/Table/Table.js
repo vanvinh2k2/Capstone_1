@@ -2,6 +2,7 @@ import {NavLink} from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getTables, deleteTable } from '../../action/restaurant';
+import img from '../../assets/images/empty.png'
 
 function Table() {
     const tables = useSelector(state=>state.restaurant.tables);
@@ -63,7 +64,7 @@ function Table() {
                         </tr>
                     </thead>
                     <tbody>
-                        {tables ?tables.map((item, index)=>{
+                        {tables&tables.lenght>0 ?tables.map((item, index)=>{
                             return (
                                 <tr role="row" class="even" key={index}>
                                     <th>
@@ -73,7 +74,12 @@ function Table() {
                                     <td class="nowrap"><i onClick={handleDelete} id-table={item.tid} class="fa-solid fa-trash"></i></td>
                                 </tr>
                             )
-                        }):""}
+                        }):<tr role="row">
+                        <td colSpan={7} className="text-center">
+                            <img src={img}/>
+                            <h6 className="text-secondary">No data</h6>
+                        </td>
+                        </tr>}
                     </tbody>
                 </table>
             </div>
