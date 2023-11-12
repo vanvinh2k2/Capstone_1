@@ -246,14 +246,13 @@ def add_order(request, *args, **kwargs):
     if serialize.is_valid(raise_exception=True):
         order = serialize.save(user=user, table=table, restaurant=restaurant)
         for item in items:
+            dish = Dish.objects.get(did=item['did'])
             OrderItem.objects.create(
                 order=order,
                 invoice_no="invoice_no_%s" %(order.id),
-                item=item['item'],
                 quantity=item['quantity'],
-                image=item['image'],
-                price=item['price'],
-                total=item['total']
+                total=item['total'],
+                dish=dish
             )
         return Response({'success': True,
                         'message': 'Order restaurant successfully.',
@@ -899,3 +898,75 @@ def delete_table(request, *args, **kwargs):
         return Response({'success': False,
                          'message': 'Delete table fail.'
                          }, status=status.HTTP_200_OK)
+    
+
+@api_view(['POST'])
+def update_order_item(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    did = kwargs.get('did')
+    order = Order.objects.get(oid=oid)
+    dish = Dish.objects.get(did=did)
+    quantity = int(request.data.get('quantity'))
+    total = quantity*dish.price
+    try:
+        orderitem = OrderItem.objects.get(order=order, dish=dish)
+        orderitem.quantity += quantity
+        orderitem.total += dish.price*quantity
+        orderitem.save()
+    except:
+        OrderItem.objects.create(
+            order=order, 
+            dish=dish, 
+            invoice_no="invoice_no_%s" %(oid),
+            quantity=quantity, 
+            total=total
+        )
+    order.price += dish.price*quantity
+    order.save()
+    orders = OrderItem.objects.filter(order=order)
+    serialize = OrderSerializers(order)
+    serialize2 = OrderItemSerializers(orders, many=True, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get list order successfully.',
+                     'data': {
+                         'order': serialize.data,
+                         'orderItems': serialize2.data
+                     }
+                    }, status=status.HTTP_200_OK)
+        
+
+@api_view(['GET'])
+def delete_order_item(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    did = kwargs.get('did')
+    order = Order.objects.get(oid=oid)
+    dish = Dish.objects.get(did=did)
+    try:
+        orderitem = OrderItem.objects.get(order=order, dish=dish)
+        order.price -= orderitem.total
+        order.save()
+        orderitem.delete()
+        orders = OrderItem.objects.filter(order=order)
+        serialize = OrderSerializers(order)
+        serialize2 = OrderItemSerializers(orders, many=True, context={'request': request})
+        return Response({'success': True,
+                        'message': 'Get list order successfully.',
+                        'data': {
+                            'order': serialize.data,
+                            'orderItems': serialize2.data
+                        }
+                        }, status=status.HTTP_200_OK)
+    except: return Response({'success': False,
+                         'message': 'Delete dish fail!'
+                         }, status=status.HTTP_200_OK)
+    
+
+@api_view(['POST'])
+def update_status_order(request, *args, **kwargs):
+    oid = kwargs.get('oid')
+    order = Order.objects.get(oid=oid)
+    order.product_status = request.data.get("product_status")
+    order.save();
+    return Response({'success': True,
+             'message': 'Update status Order success.'        
+    }, status=status.HTTP_200_OK)

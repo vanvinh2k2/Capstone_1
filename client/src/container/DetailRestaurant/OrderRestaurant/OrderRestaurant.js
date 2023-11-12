@@ -273,7 +273,7 @@ function OrderRestaurant(props) {
                                     </div>
                                     <div className="item">
                                         <p>Number of People</p>
-                                        <input type="text" value={orderUser.number_people} onChange={handelChange} name='number_people'/>
+                                        <input type="number" value={orderUser.number_people} onChange={handelChange} name='number_people'/>
                                     </div>
                                 </div>
                             </div>

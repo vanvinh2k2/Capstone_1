@@ -72,9 +72,10 @@ class OrderSerializers(serializers.ModelSerializer):
 
 class OrderItemSerializers(serializers.ModelSerializer):
     invoice_no = serializers.CharField(read_only=True)
+    dish = DishesSerializers(read_only=True)
     class Meta:
         model = OrderItem
-        fields = ['invoice_no', 'item', 'image', 'quantity', 'price', 'total']
+        fields = '__all__'
 
 
 class ContactUsSerializers(serializers.ModelSerializer):

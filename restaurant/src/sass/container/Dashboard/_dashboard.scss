@@ -37,3 +37,19 @@ h3{
 .fc-timeline-lane-frame, tbody .fc-datagrid-cell-frame{
     height: 95px !important;
 }
+
+.note{
+    margin: 15px 0 20px;
+    display: flex;
+    align-items: center;
+    .content-note{
+        display: flex;
+        align-items: center;
+        margin-left: 30px;
+    }
+    .legend{
+        height: 20px;
+        width: 40px;
+        margin-right: 10px;
+    }
+}

@@ -15,6 +15,10 @@ import {
     UPDATE_TABLE,
     DETAIL_TABLE,
     DETAIL_DISH,
+    GET_DISH_OF_RES,
+    CHANGE_STATUS,
+    UPDATE_ORDER_ITEM,
+    DELETE_ORDER_ITEM,
 } from "../action/type";
 import axios from "axios";
 
@@ -383,6 +387,76 @@ export const detailDish= async(did)=>{
             }
         }
 
+    }catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }   
+    }
+}
+
+export const getDishesOfRestaurant= async(rid)=>{
+    try{
+        const res = await axios.get(`http://127.0.0.1:8000/api/dishes-of-restaurant/${rid}/`, config)
+        if(res.data.success == true){
+            return {
+                type: GET_DISH_OF_RES,
+                payload: res.data.data
+            }
+        }
+    }catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }   
+    }
+}
+
+export const updateOrderItem= async(oid, did, quantity)=>{
+    const body = JSON.stringify({quantity});
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/update-order-item/${oid}/${did}/`, body, config)
+        if(res.data.success == true){
+            return {
+                type: UPDATE_ORDER_ITEM,
+                payload: res.data.data
+            }
+        }
+    }catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }   
+    }
+}
+
+export const deleteOrderItem= async(oid, did)=>{
+    try{
+        const res = await axios.get(`http://127.0.0.1:8000/api/delete-order-item/${oid}/${did}/`, config)
+        if(res.data.success == true){
+            return {
+                type: DELETE_ORDER_ITEM,
+                payload: res.data.data
+            }
+        }
+    }catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }   
+    }
+}
+
+export const changeStatus= async(product_status, oid)=>{
+    const body = JSON.stringify({product_status});
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/update-status-order/${oid}/`, body, config)
+        if(res.data.success == true){
+            return {
+                type: CHANGE_STATUS,
+                payload: res.data.data
+            }
+        }
     }catch(e){
         return {
             type: GET_ERROR,

@@ -176,12 +176,14 @@ class OrderCartItem(models.Model):
 
 
 class OrderItem(models.Model):
+    oiid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     invoice_no = models.CharField(max_length=200)
-    item = models.CharField(max_length=200)
-    image = models.CharField(max_length=400)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    # item = models.CharField(max_length=200)
+    # image = models.CharField(max_length=400)
     quantity = models.IntegerField(default=0)
-    price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
+    # price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
     total = models.DecimalField(decimal_places=2, max_digits=50, default=2)
 
     class Meta:

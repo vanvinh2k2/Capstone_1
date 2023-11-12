@@ -49,16 +49,12 @@ const ButtonWrapper = ({ currency, showSpinner, amount, pee, payload}) => {
                     const tid = table.tid;
                     for(let i=0; i<orderDetail.length; i++){
                         let item = {
-                            item: "",
-                            image: null,
+                            did: "",
                             quantity: 0,
-                            price: 0,
                             total: 0,
                         }
-                        item.item = orderDetail[i].dish.title;
-                        item.image = orderDetail[i].dish.image;
+                        item.did = orderDetail[i].dish.did;
                         item.quantity = orderDetail[i].quantity;
-                        item.price = orderDetail[i].dish.price;
                         item.total = orderDetail[i].dish.price * orderDetail[i].quantity;
                         items.push(item);
                     }

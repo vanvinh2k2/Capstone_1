@@ -9,7 +9,7 @@ function ContentChat(props) {
     const [message, setMessage] = useState('');
     const [listMessage, setListMessage] = useState([]);
     const [isConnect, setIsConnect] = useState(false);
-    const scrollContainerRef = useRef();
+    const scrollContainerRef = useRef(0);
 
     useEffect(() => {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;

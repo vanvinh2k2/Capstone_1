@@ -1,14 +1,8 @@
-
 import {useParams} from "react-router-dom"
 
 function DetailUser(props) {
     const order = props.order;
     const {rid} = useParams();
-    // console.log(order);
-
-    const handleGoBack = () => {
-        window.history.back();
-    };
 
     return ( 
         <div className="col-lg-5 col-sm-12 col-md-12">
@@ -32,11 +26,11 @@ function DetailUser(props) {
                 </div>
                 <div className="item2">
                     <p className="title">From :</p>
-                    <p className="content">{order?order.time_from.substring(0, 5): ""}</p>
+                    <p className="content">{order?order.time_from: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">To :</p>
-                    <p className="content">{order?order.time_to.substring(0, 5): ""}</p>
+                    <p className="content">{order?order.time_to: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">Number people :</p>

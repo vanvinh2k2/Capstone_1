@@ -14,7 +14,6 @@ function ManageOrder() {
 
   const currentDate = new Date();
   const year1 = currentDate.getFullYear();
-  console.log(year1);
   const month1 = String(currentDate.getMonth() + 1).padStart(2, '0');
   const day1 = String(currentDate.getDate()).padStart(2, '0');
   const [day, setDay] = useState(day1);
@@ -55,16 +54,29 @@ function ManageOrder() {
 
   useEffect(()=>{
     let newEV = [];
-    console.log(display_order)
     display_order.map((item, index)=>{
+      let background = '#159eba';
+      if(item.product_status === 'confirmed'){
+        background = "#0f9d0f";
+      }
+      else if(item.product_status === 'cancel'){
+        background = "#de1a2d";
+      }
+      else if(item.product_status === 'awaiting_confirmation'){
+        background = "#d6ad32";
+      }
+      else background = "#159eba";
+
       const order = {
-        title: `Time: ${item.time_from.substring(0,5)} - ${item.time_to.substring(0,5)}
+        title: ` Time: ${item.time_from.substring(0,5)} - ${item.time_to.substring(0,5)}
         <br>People: ${item.number_people}<br>
         Deposited: ${item.deposit}$`,
         start: `${item.order_date}T${item.time_from}`,
         end: `${item.order_date}T${item.time_to}`,
         resourceId: item.table.tid,
         oid: item.oid,
+        backgroundColor: background,
+        textColor: 'white',
       }
       newEV.push(order);
     })
@@ -113,6 +125,27 @@ function ManageOrder() {
           </>
         )}
       />
+      <div className='row'>
+          <div className='note'>
+            Legend : 
+            <div className='content-note'>
+              <div className='legend' style={{background: "#d6ad32"}}></div>
+              Awaiting confirmation
+            </div>
+            <div className='content-note'>
+            <div className='legend' style={{background: "#0f9d0f"}}></div>
+              Confirmed
+            </div>
+            <div className='content-note'>
+            <div className='legend' style={{background: "#159eba"}}></div>
+              Complete
+            </div>
+            <div className='content-note'>
+            <div className='legend' style={{background: "#de1a2d"}}></div>
+              Cancel
+            </div>
+          </div>
+      </div>
     </div>
   );
 }

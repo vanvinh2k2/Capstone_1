@@ -19,7 +19,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'invoice_no', 'item', 'order_image', 'quantity', 'price', 'total']
+    list_display = ['order', 'invoice_no', 'quantity', 'total']
 
 
 class RestaurantReviewAdmin(admin.ModelAdmin):

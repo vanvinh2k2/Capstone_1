@@ -103,9 +103,9 @@ function DetailHistory() {
                                 return (
                                     <tr key={index}>
                                         <td className="payment-title">
-                                            <p>{item.item}</p>
+                                            <p>{item.dish.title}</p>
                                         </td>
-                                        <td className="payment-price"><span>{item.price}$</span></td>
+                                        <td className="payment-price"><span>{item.dish.price}$</span></td>
                                         <td className="payment-quantity"><span>{item.quantity}</span></td>
                                         <td className="payment-amount"><span>{item.total}$</span></td>
                                     </tr>

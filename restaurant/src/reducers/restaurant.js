@@ -13,6 +13,9 @@ import {
     MANAGE_ORDER,
     DETAIL_TABLE,
     DETAIL_DISH,
+    GET_DISH_OF_RES,
+    UPDATE_ORDER_ITEM,
+    DELETE_ORDER_ITEM
 } from "../action/type";
 const initialState = {
     reviews: [],
@@ -24,6 +27,7 @@ const initialState = {
     display_order: [],
     table: {},
     dish: {},
+    dishes_res: [],
 }
 
 export default function (state = initialState, action){
@@ -50,6 +54,16 @@ export default function (state = initialState, action){
                 tables: payload,
             }
         case ORDER_DETAIL:
+            return {
+                ...state,
+                order: payload,
+            }
+        case UPDATE_ORDER_ITEM:
+            return {
+                ...state,
+                order: payload,
+            }
+        case DELETE_ORDER_ITEM:
             return {
                 ...state,
                 order: payload,
@@ -83,6 +97,11 @@ export default function (state = initialState, action){
             return {
                 ...state,
                 dish: payload,
+            }
+        case GET_DISH_OF_RES:
+            return {
+                ...state,
+                dishes_res : payload
             }
         case GET_ERROR:
         default: return state;

@@ -90,11 +90,11 @@ function UpdateTable() {
                                                         <div class=" col-sm-7 field-title">
                                                             <input onChange={e=>setTitle(e.target.value)} value={title} className="input" type="text"/>
                                                         </div>
-                                                        <label class="col-sm-3 text-left">
-                                                            Title
+                                                        <label class="col-sm-3 text-left" style={{marginTop: "15px"}}>
+                                                            Number of Seat
                                                             <span class="text-red">* </span>  
                                                         </label>
-                                                        <div class=" col-sm-7 field-title">
+                                                        <div class=" col-sm-7 field-title" style={{marginTop: "15px"}}>
                                                             <input onChange={e=>setNumberSeat(e.target.value)} value={numberSeat} className="input" type="number"/>
                                                         </div>
                                                     </div>

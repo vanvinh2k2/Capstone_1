@@ -22,3 +22,7 @@ export const GET_CATEGORY = "GET_CATEGORY";
 
 export const MANAGE_ORDER = "MANAGE_ORDER";
 export const FRIEND_CHAT = 'FRIEND_CHAT';
+export const GET_DISH_OF_RES = 'GET_DISH_OF_RES';
+export const CHANGE_STATUS = 'CHANGE_STATUS';
+export const UPDATE_ORDER_ITEM = 'UPDATE_ORDER_ITEM';
+export const DELETE_ORDER_ITEM = 'DELETE_ORDER_ITEM';
