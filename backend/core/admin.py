@@ -43,7 +43,7 @@ class TableAdmin(admin.ModelAdmin):
 
 
 class CartOrderAdmin(admin.ModelAdmin):
-    list_display = ['ocid', 'full_name', 'phone', 'table', 'number_people']
+    list_display = ['ocid', 'full_name', 'phone', 'table', 'number_people', 'order_date']
 
 
 class CartOrderItemAdmin(admin.ModelAdmin):

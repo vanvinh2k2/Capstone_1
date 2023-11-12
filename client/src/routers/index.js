@@ -31,7 +31,7 @@ const publicRouter = [
     {path: '/contact', component: Contact},
     {path: '/history-order', component: HistoryOrder},
     {path: '/forget-password', component: ForgetUser},
-    {path: '/detail-history-order', component: DetailHistory},
+    {path: '/detail-history-order/:oid', component: DetailHistory},
     {path: '*', component: NotFound},
 ]
 

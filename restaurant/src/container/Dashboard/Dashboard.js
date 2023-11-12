@@ -1,7 +1,7 @@
 import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import dayGridPlugin from '@fullcalendar/daygrid'; // Thêm dayGridPlugin
+import dayGridPlugin from '@fullcalendar/daygrid';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,7 @@ function ManageOrder() {
 
   const currentDate = new Date();
   const year1 = currentDate.getFullYear();
+  console.log(year1);
   const month1 = String(currentDate.getMonth() + 1).padStart(2, '0');
   const day1 = String(currentDate.getDate()).padStart(2, '0');
   const [day, setDay] = useState(day1);
@@ -54,13 +55,14 @@ function ManageOrder() {
 
   useEffect(()=>{
     let newEV = [];
+    console.log(display_order)
     display_order.map((item, index)=>{
       const order = {
         title: `Time: ${item.time_from.substring(0,5)} - ${item.time_to.substring(0,5)}
         <br>People: ${item.number_people}<br>
         Deposited: ${item.deposit}$`,
-        start: `${item.order_date.substring(0,10)}T${item.time_from.substring(0,5)}`,
-        end: `${item.order_date.substring(0,10)}T${item.time_to.substring(0,5)}`,
+        start: `${item.order_date}T${item.time_from}`,
+        end: `${item.order_date}T${item.time_to}`,
         resourceId: item.table.tid,
         oid: item.oid,
       }

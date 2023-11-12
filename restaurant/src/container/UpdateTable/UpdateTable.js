@@ -9,17 +9,22 @@ function UpdateTable() {
     const dispatch = useDispatch();
     const {tid} = useParams();
     const [title, setTitle] = useState("");
+    const [numberSeat, setNumberSeat] = useState(0);
     const table = useSelector(state=>state.restaurant.table);
     const navigate = useNavigate();
 
     async function handelSubmit(e){
         e.preventDefault();
-        const action = await updateTable(tid, title);
-        console.log(action);
-        dispatch(action);
-        if(action.type === UPDATE_TABLE){
-            navigate('/restaurant/table')
-        }
+        if(title !== "" && numberSeat!==""){
+            if(numberSeat > 0){
+                const action = await updateTable(tid, title, numberSeat);
+                dispatch(action);
+                if(action.type === UPDATE_TABLE){
+                    navigate('/restaurant/table')
+                }
+            }else alert("Number of Seat have to higher 0!");
+        }else alert("Please input Title or Number of Seat!");
+        
     }
 
     useEffect(()=>{
@@ -34,6 +39,7 @@ function UpdateTable() {
 
     useEffect(()=>{
         setTitle(table.title);
+        setNumberSeat(table.number_seat);
     }, [table])
 
     return ( 
@@ -83,6 +89,13 @@ function UpdateTable() {
                                                         </label>
                                                         <div class=" col-sm-7 field-title">
                                                             <input onChange={e=>setTitle(e.target.value)} value={title} className="input" type="text"/>
+                                                        </div>
+                                                        <label class="col-sm-3 text-left">
+                                                            Title
+                                                            <span class="text-red">* </span>  
+                                                        </label>
+                                                        <div class=" col-sm-7 field-title">
+                                                            <input onChange={e=>setNumberSeat(e.target.value)} value={numberSeat} className="input" type="number"/>
                                                         </div>
                                                     </div>
                                                 </div>

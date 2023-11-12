@@ -8,7 +8,7 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     wishlist_restaurant, add_dish, delete_dish, update_dish, order_restaurant, add_table, \
     get_table, update_table, delete_table, detail_table, get_profile, get_order_cart_res,\
     add_order_cart, delete_order_cart, bill_order, review_restaurant, manage_order_by_date,\
-    friend_chat
+    friend_chat, check_order, add_review
     # update_order_cart_item, delete_order_cart_item
 
 urlpatterns = [
@@ -44,6 +44,8 @@ urlpatterns = [
     path('api/add-order-cart/<uid>/<rid>/', add_order_cart, name='add-order-cart'),
     path('api/delete-order-cart/<uid>/<rid>/', delete_order_cart, name='delete-order-cart'),
     path('api/update-order-cart/<uid>/<rid>/', update_order_cart, name='update-order-cart'),
+    path('api/check-order/<rid>/', check_order, name='check-order'),
+    path('api/add-review/<uid>/<rid>/', add_review, name='add-review'),
     # path('api/update-order-cart-item/<ocid>/<did>/', update_order_cart_item, name='update-order-cart-item'),
     # path('api/add-order-cart-item/<ocid>/', add_order_cart_item, name='add-order-cart-item'),
     # path('api/delete-order-cart-item/<ocid>/<did>/', delete_order_cart_item, name='delete-order-cart-item'),

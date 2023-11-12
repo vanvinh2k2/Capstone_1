@@ -28,15 +28,15 @@ function DetailUser(props) {
                 </div>
                 <div className="item2">
                     <p className="title">Date :</p>
-                    <p className="content">24/12/2023</p>
+                    <p className="content">{order? order.order_date: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">From :</p>
-                    <p className="content">{order? order.time_from: ""}</p>
+                    <p className="content">{order?order.time_from.substring(0, 5): ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">To :</p>
-                    <p className="content">{order? order.time_to: ""}</p>
+                    <p className="content">{order?order.time_to.substring(0, 5): ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">Number people :</p>

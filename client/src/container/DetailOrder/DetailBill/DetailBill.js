@@ -76,8 +76,6 @@ function DetailBill(props) {
         let newOrderDish = [...orderDish];
         newOrderDish = newOrderDish.filter(order=>order.dish.did !== did);
         setOrderDish(newOrderDish);
-        // const action = deleteOrder(order);
-        // dispatch(action);
     }
     return ( 
         <div className="col-lg-7 col-sm-12 col-md-12">

@@ -7,7 +7,8 @@ import {
     RES_DETAIL,
     GET_TABLE,
     GET_CATEGORY,
-    DEL_LIKE
+    DEL_LIKE,
+    REVIEW
 } from "./types";
 import axios from "axios";
 
@@ -142,6 +143,29 @@ export const deleteLike = async(uid, rid)=>{
             }
         }else{
             alert(res.data.message)
+            return {
+                type: GET_ERROR,
+                payload: res.data.message
+            }
+        }  
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: "ERROR!"
+        }
+    }
+}
+
+export const addReview = async(uid, rid, rating, review)=>{
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/add-review/${uid}/${rid}/`, 
+        {'rating': rating, 'review': review}, config)
+        if(res.data.success == true){
+            return {
+                type: REVIEW,
+                payload: res.data.data
+            }
+        }else{
             return {
                 type: GET_ERROR,
                 payload: res.data.message

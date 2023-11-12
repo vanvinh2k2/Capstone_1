@@ -26,7 +26,7 @@ class RestaurantSerializers(serializers.ModelSerializer):
 class TableSerializers(serializers.ModelSerializer):
     class Meta:
         model = Table
-        fields = ['tid', 'title']
+        fields = ['tid', 'title', 'number_seat']
 
 
 class CategorySerializers(serializers.ModelSerializer):

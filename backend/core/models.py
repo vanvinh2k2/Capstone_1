@@ -18,10 +18,10 @@ def order_dish_directory_path(instance, filename):
 
 
 STATUS_CHOICE = (
-    ("not_paid_yet", "Not paid yet"),
-    ("not_confirmed_yet", "Not confirmed yet"),
+    ("awaiting_confirmation", "Awaiting confirmation"),
     ("confirmed", "Confirmed"),
-    ("paid", "Paid")
+    ("complete", "Complete"),
+    ("cancel", "Cancel")
 )
 
 STATUS = (
@@ -39,7 +39,6 @@ RATING = (
     (4, "★★★★☆"),
     (5, "★★★★★")
 )
-
 
 # Create your models here.
 class Category(models.Model):
@@ -117,6 +116,7 @@ class Dish(models.Model):
 class Table(models.Model):
     tid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
     title = models.CharField(max_length=100)
+    number_seat = models.IntegerField(default=2)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -125,12 +125,12 @@ class Table(models.Model):
 
 class Order(models.Model):
     oid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
-    order_date = models.DateTimeField(auto_now_add=True)
+    order_date = models.DateField()
     full_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=15)
     price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
     paid_status = models.BooleanField(default=True)
-    product_status = models.CharField(choices=STATUS_CHOICE, max_length=18, default="not_paid_yet")
+    product_status = models.CharField(choices=STATUS_CHOICE, max_length=50, default="awaiting_confirmation")
     time_from = models.TimeField()
     time_to = models.TimeField()
     number_people = models.IntegerField(default=2)
@@ -151,6 +151,7 @@ class Order(models.Model):
 class OrderCart(models.Model):
     ocid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
     full_name = models.CharField(max_length=200)
+    order_date = models.DateField()
     phone = models.CharField(max_length=15)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     time_from = models.TimeField()

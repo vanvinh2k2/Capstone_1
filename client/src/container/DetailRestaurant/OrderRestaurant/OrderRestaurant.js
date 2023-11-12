@@ -6,6 +6,8 @@ import {useParams} from 'react-router-dom'
 import { updateOrderCart, addOrderCart, getOrderCart } from '../../../action/order';
 import { useNavigate} from 'react-router-dom'
 import Time from '../../../components/Time/Time';
+import { checkOrder } from '../../../action/order';
+import { CHECK_ORDER } from '../../../action/types';
 
 function OrderRestaurant(props) {
     const tables = useSelector(state=>state.restaurant.tables);
@@ -26,12 +28,14 @@ function OrderRestaurant(props) {
         tid: "",
         time_from: "0",
         time_to: "0",
+        order_date: "",
         number_people: ""
     })
 
     useEffect(()=>{
         async function getordercart(){
             const action = await getOrderCart(localStorage.getItem('iduser'), rid);
+            console.log(action)
             dispatch(action)
         }
         getordercart();
@@ -85,9 +89,10 @@ function OrderRestaurant(props) {
                 full_name: orderCart.order.full_name,
                 phone: orderCart.order.phone,
                 tid: orderCart.order.table.tid,
-                time_from: orderCart.order.time_from,
-                time_to: orderCart.order.time_to,
-                number_people: orderCart.order.number_people
+                time_from: orderCart.order.time_from.substring(0,5),
+                time_to: orderCart.order.time_to.substring(0,5),
+                number_people: orderCart.order.number_people,
+                order_date: orderCart.order.order_date.substring(0,10),
             })
         }
         if (orderCart && orderCart.orderDetail && orderCart.orderDetail.length > 0) {
@@ -158,6 +163,7 @@ function OrderRestaurant(props) {
         delOrderItems = delOrderItems.filter(item=>item.did !== dish.did)
         setOrderItems(delOrderItems);
     }
+    console.log(orderUser);
 
     function checkInput(){
         if(orderItems.length<=0){
@@ -189,26 +195,32 @@ function OrderRestaurant(props) {
     const handelSubmit = async(e)=>{
         e.preventDefault();
         if(checkInput() === true){
-            if(orderCart.length<=0){
-                const action = await addOrderCart(
-                    orderUser, 
-                    orderItems,
-                    localStorage.getItem('iduser'),
-                    rid
-                );
-                dispatch(action)
-            }else{
-                const action = await updateOrderCart(
-                    orderUser, 
-                    orderItems,
-                    localStorage.getItem('iduser'),
-                    rid
-                );
-                dispatch(action)
+            const action = await checkOrder(orderUser.time_to, orderUser.time_from, orderUser.order_date, orderUser.tid, rid)
+            if(action.type === CHECK_ORDER){
+                if(orderCart.length<=0){
+                    const action = await addOrderCart(
+                        orderUser, 
+                        orderItems,
+                        localStorage.getItem('iduser'),
+                        rid
+                    );
+                    dispatch(action)
+                }else{
+                    const action = await updateOrderCart(
+                        orderUser, 
+                        orderItems,
+                        localStorage.getItem('iduser'),
+                        rid
+                    );
+                    dispatch(action)
+                }
+                setOrderItems([]);
+                setOrderUser({});
+                navigate("/detail-order/"+rid);
             }
-            setOrderItems([]);
-            setOrderUser({});
-            navigate("/detail-order/"+rid);
+            else{
+                alert(action.payload);
+            } 
         }
     }
 
@@ -236,13 +248,16 @@ function OrderRestaurant(props) {
                                         <p>Table</p>
                                         <select value={orderUser.tid} onChange={handelChange} name='tid'>
                                             <option value="0">Choice Table</option>
-                                            {/* for(let table=0; table<tables.lenght;table++) */}
                                             {tables.map((table, index)=>{
                                                 return(
-                                                    <option value={table.tid}>{table.title}</option>
+                                                    <option value={table.tid} key={index}>{`${table.title} (${table.number_seat} person)`}</option>
                                                 )
                                             })}
                                         </select>
+                                    </div>
+                                    <div className="item">
+                                        <p>Date Time</p>
+                                        <input type="date" value={orderUser.order_date} onChange={handelChange} name='order_date'/>
                                     </div>
                                     <div className="item">
                                         <p>From</p>

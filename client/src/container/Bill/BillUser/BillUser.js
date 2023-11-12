@@ -22,7 +22,7 @@ function BillUser(props) {
                         </div>
                         <div className="bill__item">
                             <p className="bill__item__title">Date Order : </p>
-                            <p className="bill__item__content">02/02/2023</p>
+                            <p className="bill__item__content">{order?order.order_date:""}</p>
                         </div>
                         <div className="bill__item">
                             <p className="bill__item__title">Time : </p>

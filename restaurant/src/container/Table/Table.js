@@ -58,6 +58,11 @@ function Table() {
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
+                                    <b>Number of Seat</b>
+                                </div>
+                            </th>
+                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                <div class="text">
                                     <b>Action</b>
                                 </div>
                             </th>
@@ -71,6 +76,7 @@ function Table() {
                                         <NavLink to={`/restaurant/update-table/${item.tid}`}>{item.tid}</NavLink>
                                     </th>
                                     <td>{item.title}</td>
+                                    <td>{item.number_seat}</td>
                                     <td class="nowrap"><i onClick={handleDelete} id-table={item.tid} class="fa-solid fa-trash"></i></td>
                                 </tr>
                             )

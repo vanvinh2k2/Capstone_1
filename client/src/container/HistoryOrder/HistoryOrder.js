@@ -2,10 +2,17 @@ import AllRestaurant from '../Home/AllRestaurant/AllRestaurant'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { getOrderHistory } from '../../action/bill';
+import img from '../../assets/images/empty2.png'
 
 function HistoryOrder() {
     const dispatch = useDispatch();
     const orderHistory = useSelector(state=>state.bill.orderHistory);
+    const status = {
+        "awaiting_confirmation": "Awaiting confirmation",
+        "confirmed": "Confirmed",
+        "cancel": "Cancel",
+        "complete": "Complete"
+    }
 
     useEffect(()=>{
         async function getorderHistory(){
@@ -36,23 +43,24 @@ function HistoryOrder() {
                             </thead>
                             <tbody>
                                 {/* {console.log(orderHistory)} */}
-                            {orderHistory? orderHistory.map((item, index)=>{
+                            {orderHistory&&orderHistory.length>0?orderHistory.map((item, index)=>{
                                     return (
                                         <tr key={index}>
                                             <td className="order__date"><span>{item.oid}</span></td>
                                             <td className="order__status"><span>{item.order_date.substring(0, 10)}</span></td>
-                                            <td className="">{item.product_status}</td>
+                                            <td className="">{status[item.product_status]}</td>
                                             <td className="">{item.number_people}</td>
                                             <td className="order__total"><span>{item.price}$</span></td>
-                                            <td className="order__action"><a href=""><i className="fas fa-eye"></i></a></td>
+                                            <td className="order__action"><a href={`/detail-history-order/${item.oid}`}><i className="fas fa-eye"></i></a></td>
                                         </tr>
                                     )
                                 }):
-                                (
-                                    <tr>
-                                        <td colSpan="6">No orders available</td>
-                                    </tr>
-                                )}
+                                <tr role="row">
+                                    <td colSpan={6} className="text-center">
+                                        <img src={img} style={{marginTop: '50px', marginBottom: '35px'}}/>
+                                        <h6 className="text-secondary" style={{marginBottom: '85px'}}>There are no history order yet</h6>
+                                    </td>
+                                </tr>}
                                 
                             </tbody>
                         </table>

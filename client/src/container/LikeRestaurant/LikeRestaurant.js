@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch} from "react-redux";
 import { listLike, deleteLike } from "../../action/restaurant";
+import img from '../../assets/images/empty2.png'
+
 function LikeRestaurant() {
     const dispatch = useDispatch();
     const likes = useSelector(state=>state.restaurant.likes);
@@ -17,7 +19,6 @@ function LikeRestaurant() {
             localStorage.getItem("iduser"),
             e.currentTarget.getAttribute('value')
         );
-        console.log(action)
         dispatch(action);
     }
     return ( 
@@ -38,7 +39,7 @@ function LikeRestaurant() {
                             </tr>
                         </thead>
                         <tbody>
-                            {likes.map((like, index)=>{
+                            {likes.length>0?likes.map((like, index)=>{
                                 return(
                                     <tr key={index}>
                                         <td>{like.restaurant?like.restaurant.rid: ""}</td>
@@ -53,7 +54,12 @@ function LikeRestaurant() {
                                         </td>
                                     </tr>
                                 )
-                            })}
+                            }):<tr role="row">
+                            <td colSpan={7} className="text-center">
+                                <img src={img} style={{marginTop: '60px', marginBottom: '40px'}}/>
+                                <h6 className="text-secondary" style={{marginBottom: '85px'}}>There are no favorite restaurants yet</h6>
+                            </td>
+                            </tr>}
                         </tbody>
                     </table>
                 </div>

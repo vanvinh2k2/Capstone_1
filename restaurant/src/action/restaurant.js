@@ -253,8 +253,8 @@ export const updateDish = async(did, data) =>{
     }
 }
 
-export const addTable = async (rid, title)=>{
-    const body = JSON.stringify({title});
+export const addTable = async (rid, title, number_seat)=>{
+    const body = JSON.stringify({title, number_seat});
     try{
         const res = await axios.post(`http://127.0.0.1:8000/api/add-table/${rid}/`, body, config)
         if(res.data.success === true){
@@ -341,8 +341,8 @@ export const manageOrder = async(rid, day, month, year) =>{
     }
 }
 
-export const updateTable = async(tid, title) =>{
-    const body = JSON.stringify({title})
+export const updateTable = async(tid, title, number_seat) =>{
+    const body = JSON.stringify({title, number_seat})
     try{
         const res = await axios.post(`http://127.0.0.1:8000/api/update-table/${tid}/`, body, config);
         console.log(res);

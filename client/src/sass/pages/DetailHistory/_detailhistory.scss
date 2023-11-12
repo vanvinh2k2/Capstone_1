@@ -1,0 +1,20 @@
+.add-OrderDetail{
+    margin: 15px 0 30px;
+    .card{
+        padding: 20px 20px 0;
+        table{
+            margin: 0 !important;
+        }
+        .item{
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-group{
+            margin-top: 20px;
+        }
+    }
+}
+
+.fc-timeline-lane-frame, tbody .fc-datagrid-cell-frame{
+    height: 95px !important;
+}

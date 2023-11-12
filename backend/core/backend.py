@@ -179,6 +179,60 @@ def list_like(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+def check_order(request, **kwargs):
+    rid = kwargs.get('rid')
+    tid = request.data.get('tid')
+    table = Table.objects.get(tid=tid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    time_from = int(str(restaurant.time_open)[:2])
+    time_to = int(str(restaurant.time_close)[:2])
+    in_time = []
+    out_time = []
+    clock = []
+    time = []
+
+    # Khoi tao cay thoi gian cho nha hang
+    for i in range(time_from, time_to):
+        clock.append(i)
+        clock.append(i + 0.15)
+        clock.append(i + 0.30)
+        clock.append(i + 0.45)
+    clock.append(time_to)
+
+    # Lay thoi gian toi -> ve cua Order co san 
+    time_now = request.data.get('order_date')
+    orders = Order.objects.filter(table=table, order_date=time_now)
+    for order in orders:
+        in_time.append(convert_time(order.time_from))
+        out_time.append(convert_time(order.time_to))
+
+    # Khoi tao lich đã có Order(1) va chua có Order(0)
+    for i in clock: 
+        time.append(0)
+    for i in range(0, len(in_time)):
+        for j in range(0, len(clock)):
+            if (clock[j] > in_time[i]) and (clock[j] <= out_time[i]):
+                time[j] = 1
+
+    # Check Order moi them vao co hop le ko
+    new_from = convert_time(request.data.get('time_from'))
+    new_to = convert_time(request.data.get('time_to'))
+    print(time_from, time_to)
+    print(clock)
+    print(time)
+    print(in_time)
+    print(out_time)
+    print(new_from, new_to)
+    if check_time(new_from, new_to, time, clock) == True:
+        return Response({'success': True,
+                            'message': 'Order valid.'
+                            }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                            'message': 'Please choice other Table or Time from or Time to!'
+                            }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
 def add_order(request, *args, **kwargs):
     uid = kwargs.get('uid')
     rid = kwargs.get('rid')
@@ -190,65 +244,21 @@ def add_order(request, *args, **kwargs):
     serialize = OrderSerializers(data=request.data, context={'request': request})
 
     if serialize.is_valid(raise_exception=True):
-        time_from = int(str(restaurant.time_open)[:2])
-        time_to = int(str(restaurant.time_close)[:2])
-        in_time = []
-        out_time = []
-        clock = []
-        time = []
-
-        # Khoi tao cay thoi gian cho nha hang
-        for i in range(time_from, time_to):
-            clock.append(i)
-            clock.append(i + 0.15)
-            clock.append(i + 0.30)
-            clock.append(i + 0.45)
-        clock.append(time_to)
-
-        # Lay thoi gian toi -> ve cua Order co san 
-        time_now = datetime.now().date()
-        orders = Order.objects.filter(table=table, order_date__date=time_now)
-        for order in orders:
-            in_time.append(convert_time(order.time_from))
-            out_time.append(convert_time(order.time_to))
-
-        # Khoi tao lich đã có Order(1) va chua có Order(0)
-        for i in clock: 
-            time.append(0)
-        for i in range(0, len(in_time)):
-            for j in range(0, len(clock)):
-                if (clock[j] > in_time[i]) and (clock[j] <= out_time[i]):
-                    time[j] = 1
-
-        # Check Order moi them vao co hop le ko
-        new_from = convert_time(request.data.get('time_from'))
-        new_to = convert_time(request.data.get('time_to'))
-        # print(time_from, time_to)
-        # print(clock)
-        # print(time)
-        # print(in_time)
-        # print(out_time)
-        # print(new_from, new_to)
-        if check_time(new_from, new_to, time, clock) == True:
-            order = serialize.save(user=user, table=table, restaurant=restaurant)
-            for item in items:
-                OrderItem.objects.create(
-                    order=order,
-                    invoice_no="invoice_no_%s" %(order.id),
-                    item=item['item'],
-                    quantity=item['quantity'],
-                    image=item['image'],
-                    price=item['price'],
-                    total=item['total']
-                )
-            return Response({'success': True,
-                            'message': 'Order restaurant successfully.',
-                            'data': serialize.data
-                            }, status=status.HTTP_200_OK)
-        
-        else: return Response({'success': False,
-                         'message': 'Please choice other Table or Time from or Time to!'
-                         }, status=status.HTTP_200_OK)
+        order = serialize.save(user=user, table=table, restaurant=restaurant)
+        for item in items:
+            OrderItem.objects.create(
+                order=order,
+                invoice_no="invoice_no_%s" %(order.id),
+                item=item['item'],
+                quantity=item['quantity'],
+                image=item['image'],
+                price=item['price'],
+                total=item['total']
+            )
+        return Response({'success': True,
+                        'message': 'Order restaurant successfully.',
+                        'data': serialize.data
+                        }, status=status.HTTP_200_OK)
         
     else: return Response({'success': False,
                          'message': 'Error!'
@@ -270,12 +280,13 @@ def search_restaurant(request, *args, **kwargs):
 def add_like(request, *args, **kwargs):
     uid = kwargs.get('uid')
     rid = kwargs.get('rid')
-    print(uid, rid)
     user = User.objects.get(id=uid)
     restaurant = Restaurant.objects.get(rid=rid)
     wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
     
     if not wishlist.exists():
+        restaurant.like = int(restaurant.like) +1
+        restaurant.save()
         Wishlist.objects.create(user=user, restaurant=restaurant)
         wishlist = Wishlist.objects.filter(user=user)
         serialize = WishlistSerializers(wishlist, many=True, context={'request': request})
@@ -296,6 +307,8 @@ def delete_like(request, *args, **kwargs):
     restaurant = Restaurant.objects.get(rid=rid)
     wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
     if wishlist.exists():
+        restaurant.like = int(restaurant.like) - 1
+        restaurant.save();
         wishlist.delete()
         wishlist = Wishlist.objects.filter(user=user)
         serialize = WishlistSerializers(wishlist, many=True, context={'request': request})
@@ -424,7 +437,7 @@ def manage_order_by_date(request, *args, **kwargs):
     rid = kwargs.get('rid')
     date = request.data.get("date")
     restaurant = Restaurant.objects.get(rid=rid)
-    orders = Order.objects.filter(restaurant=restaurant, order_date__date=date)
+    orders = Order.objects.filter(restaurant=restaurant, order_date=date)
     serialize = OrderSerializers(orders, many=True, context={'request': request})
     return Response({'success': True,
                      'message': 'Get list order successfully.',
@@ -449,11 +462,12 @@ def bill_order(request, *args, **kwargs):
 
 
 @api_view(['GET'])
-def cancel_order(request, *args, **kwargs):
+def cancel_order(request, **kwargs):
     oid = kwargs.get('oid')
     try:
         order = Order.objects.get(oid=oid)
-        order.delete()
+        order.product_status = "cancel"
+        order.save()
         return Response({'success': True,
                          'message': 'Cancel order successfully.'
                          }, status=status.HTTP_200_OK)
@@ -499,8 +513,34 @@ def friend_chat(request, *args, **kwargs):
 
 
 @api_view(['POST'])
-def add_review():
-    pass
+def add_review(request, *args, **kwargs):
+    uid = kwargs.get("uid")
+    rid = kwargs.get("rid")
+    review = request.data.get('review')
+    rating = request.data.get('rating')
+    print(uid, rid, review, rating)
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    print(user, restaurant)
+    restaurantReview = RestaurantReview.objects.filter(
+        user=user, 
+        restaurant=restaurant
+    )
+
+    if restaurantReview is None:
+        RestaurantReview.objects.create(
+            user=user, 
+            restaurant=restaurant, 
+            review=review, 
+            rating=rating
+        )
+        return Response({'success': True,
+        'message': 'Review successfully.'
+        }, status=status.HTTP_200_OK)
+
+    return Response({'success': False,
+        'message': 'Already evaluated!'
+    }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -535,9 +575,9 @@ def get_order_cart_res(request, *args, **kwargs):
         restaurant = Restaurant.objects.get(rid=rid)
         user = User.objects.get(id=uid)
         order_cart = OrderCart.objects.get(restaurant=restaurant, user=user)
-        serialize = OrderCartSerializers(order_cart);
-        order_cart_item = OrderCartItem.objects.filter(ordercart=order_cart);
-        serialize2 = OrderCartItemsSerializers(order_cart_item, many=True, context={'request': request});
+        serialize = OrderCartSerializers(order_cart)
+        order_cart_item = OrderCartItem.objects.filter(ordercart=order_cart)
+        serialize2 = OrderCartItemsSerializers(order_cart_item, many=True, context={'request': request})
         return Response({'success': True,
                         'message': 'Get success.',
                         'data': {
@@ -829,6 +869,7 @@ def update_table(request, *args, **kwargs):
     try:
         table = Table.objects.get(tid=tid)
         table.title = request.data.get('title')
+        table.number_seat = request.data.get('number_seat')
         table.save()
         return Response({'success': True,
                          'message': 'Update table successfully.'

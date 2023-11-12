@@ -6,19 +6,23 @@ import { ADD_TABLE } from '../../action/type';
 
 function AddTable() {
     const [title, setTitle] = useState("");
+    const [numberSeat, setNumberSeat] = useState(0);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     async function handelSubmit(e){
         e.preventDefault();
-        if(title!==""){
-            const action = await addTable(localStorage.getItem('rid'), title);
-            dispatch(action);
-            if(action.type === ADD_TABLE){
-                navigate("/restaurant/table");
-            }
+        if(title!=="" && numberSeat !== ""){
+            if(numberSeat>0){
+                const action = await addTable(localStorage.getItem('rid'), title, numberSeat);
+                dispatch(action);
+                if(action.type === ADD_TABLE){
+                    navigate("/restaurant/table");
+                }
+            }else alert("Number of Seat have to higher 0!")
+            
         }else{
-            alert("Please input Title!");
+            alert("Please input Title or Number of Seat!");
         }
     }
 
@@ -57,7 +61,14 @@ function AddTable() {
                                                             <span class="text-red">* </span>  
                                                         </label>
                                                         <div class=" col-sm-7 field-title">
-                                                            <input onChange={e=>setTitle(e.target.value)} className="input" type="text" name="title"/>
+                                                            <input onChange={e=>setTitle(e.target.value)} className="input" type="text"/>
+                                                        </div>
+                                                        <label class="col-sm-3 text-left" for="id_title" style={{marginTop: "15px"}}>
+                                                            Number of Seat
+                                                            <span class="text-red">* </span>  
+                                                        </label>
+                                                        <div class=" col-sm-7" field-title style={{marginTop: "15px"}}>
+                                                            <input onChange={e=>setNumberSeat(e.target.value)} className="input" type="number"/>
                                                         </div>
                                                     </div>
                                                 </div>

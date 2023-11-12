@@ -44,7 +44,7 @@ const ButtonWrapper = ({ currency, showSpinner, amount, pee, payload}) => {
                 }
                 onApprove={(data, actions)=>actions.order.capture().then(async(response)=>{
                     const {order, orderDetail, deposit, price, rid} = payload;
-                    const {full_name, phone, table, time_from, time_to, number_people} = order;
+                    const {full_name, phone, table, time_from, time_to, number_people, order_date} = order;
                     let items = [];
                     const tid = table.tid;
                     for(let i=0; i<orderDetail.length; i++){
@@ -76,7 +76,8 @@ const ButtonWrapper = ({ currency, showSpinner, amount, pee, payload}) => {
                         number_people,
                         deposit,
                         price,
-                        items
+                        items,
+                        order_date
                     })
                     axios.post(`http://127.0.0.1:8000/api/add-order/${localStorage.getItem("iduser")}/${rid}/`, body, config)
                     .then((res) => {
