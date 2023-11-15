@@ -1,8 +1,7 @@
 import RestaurantSearch from "./RestaurantShow/RestaurantShow";
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { searchAI } from "../../action/search";
-import imgrc from '../../assets/images/res.png'
+import { getDishesfromImage } from "../../action/dish";
 
 function SearchAI() {
     const [img, setImg] = useState(null);
@@ -24,8 +23,7 @@ function SearchAI() {
     useEffect(()=>{
         async function searchai(){
             if(img){
-                const action = await searchAI(img);
-                console.log(action);
+                const action = await getDishesfromImage(img);
                 dispatch(action);
             }
         }

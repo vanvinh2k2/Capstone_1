@@ -157,7 +157,7 @@ def dish_by_category(request, *args, **kwargs):
 def dishes_of_restaurant(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
-    dishes = Dish.objects.filter(restaurant=restaurant, featured=True)
+    dishes = Dish.objects.filter(restaurant=restaurant)
     serialize = DishesSerializers(dishes, many=True, context={'request': request})
 
     return Response({'success': True,

@@ -4,13 +4,20 @@ import {
     GET_DISH_DETAIL, 
     GET_DISHES_HOT,
     GET_DISH_OF_RES,
-    // GET_DISH_OF_RES_CAT,
+    GET_DISH_AI,
+    GET_DISH_SUGGETS
 } from "./types";
 import axios from "axios";
 
 const config = {
     headers: {
         "Content-type": "application/json",
+    }
+}
+
+const config2 = {
+    headers: {
+        "Content-type": "multipart/form-data",
     }
 }
 
@@ -85,25 +92,38 @@ export const getDishesOfRestaurant= async(rid)=>{
     }
 }
 
-// export const getDishesOfResCat= async(rid, cid)=>{
-//     try{
-//         let res;
-//         if(cid !== "0"){
-//             res = await axios.get(`http://127.0.0.1:8000/api/restaurant/dish-by-category/${rid}/${cid}/`, config)
-//         }
-//         else {
-//             res = await axios.get(`http://127.0.0.1:8000/api/dishes-of-restaurant/${rid}/`, config)
-//         }
-//         if(res.data.success == true){
-//             return {
-//                 type: GET_DISH_OF_RES_CAT,
-//                 payload: res.data.data
-//             }
-//         }
-//     }catch(e){
-//         return {
-//             type: GET_ERROR,
-//             payload: e
-//         }   
-//     }
-// }
+export const getDishesfromImage= async(image)=>{
+    try{
+        let formData = new FormData();
+        formData.append('image', image);
+        const res = await axios.post(`http://127.0.0.1:8000/api/search-ai/`, formData, config2)
+        if(res.data.success == true){
+            return {
+                type: GET_DISH_AI,
+                payload: res.data.data.restaurant
+            }
+        }
+    }catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }   
+    }
+}
+
+export const getDishesSuggest= async(rid, uid)=>{
+    try{
+        const res = await axios.get(`http://127.0.0.1:8000/api/suggest-food/${uid}/${rid}/`, config)
+        if(res.data.success == true){
+            return {
+                type: GET_DISH_SUGGETS,
+                payload: res.data.data
+            }
+        }
+    }catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }   
+    }
+}

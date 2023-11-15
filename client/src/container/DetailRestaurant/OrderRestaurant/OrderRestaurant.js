@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect, useState } from 'react';
 import { getTable, getCategory } from '../../../action/restaurant';
-import { getDishesOfRestaurant } from '../../../action/dish';
+import { getDishesOfRestaurant, getDishesSuggest } from '../../../action/dish';
 import {useParams} from 'react-router-dom'
 import { updateOrderCart, addOrderCart, getOrderCart } from '../../../action/order';
 import { useNavigate} from 'react-router-dom'
@@ -17,11 +17,15 @@ function OrderRestaurant(props) {
     const {rid} = useParams();
     const orderCart = useSelector(state=>state.order.orderCart)
     const disheAll = useSelector(state=>state.dish.dishes_res);
+    const dishesSG = useSelector(state=>state.dish.dishes_suggest);
     const [dishes, setDishes] = useState([]);
+    const [dishesSuggest, setDishesSuggest] = useState([]);
+    const [dishesDisplay, setDishesDisplay] = useState([]);
     const [quantity, setQuantity] = useState(Array.from({ length: dishes.length }, () => 1));
     const [stick, setStick] = useState([]);
     const [cid, setCid] = useState("0");
     const [orderItems, setOrderItems] = useState([]);
+    const [num, setNum] = useState(0)
     const [orderUser, setOrderUser] = useState({
         full_name: "",
         phone: "",
@@ -35,18 +39,21 @@ function OrderRestaurant(props) {
     useEffect(()=>{
         async function getordercart(){
             const action = await getOrderCart(localStorage.getItem('iduser'), rid);
-            console.log(action)
             dispatch(action)
         }
         getordercart();
     }, [dispatch])
 
     useEffect(()=>{
+        setDishesSuggest(dishesSG);
+    }, [dishesSG])
+
+    useEffect(()=>{
         const initialQuantity = Array.from({ length: dishes.length }, () => 1);
         const initialStick = Array.from({ length: dishes.length }, () => 0);
-        for(let i=0;i<dishes.length;i++){
+        for(let i=0;i<dishesDisplay.length;i++){
             for(let j=0;j<orderItems.length;j++){
-                if(dishes[i].did ===orderItems[j].did){
+                if(dishesDisplay[i].did ===orderItems[j].did){
                     initialQuantity[i] = Number(orderItems[j].quantity);
                     initialStick[i] = 1;
                 }
@@ -55,7 +62,7 @@ function OrderRestaurant(props) {
         
         setQuantity(initialQuantity);
         setStick(initialStick);
-    }, [dishes])
+    }, [dishesDisplay])
 
     useEffect(()=>{
         async function getcategory(){
@@ -73,9 +80,15 @@ function OrderRestaurant(props) {
             dispatch(action);
         }
 
+        async function getDishsSuggest1(){
+            const action = await getDishesSuggest(rid, localStorage.getItem('iduser'));
+            dispatch(action);
+        }
+
         getDishs();
         gettable();
         getcategory();
+        getDishsSuggest1();
     }, [])
 
     useEffect(()=>{
@@ -163,7 +176,6 @@ function OrderRestaurant(props) {
         delOrderItems = delOrderItems.filter(item=>item.did !== dish.did)
         setOrderItems(delOrderItems);
     }
-    console.log(orderUser);
 
     function checkInput(){
         if(orderItems.length<=0){
@@ -223,6 +235,29 @@ function OrderRestaurant(props) {
             } 
         }
     }
+
+    useEffect(()=>{
+        let newDishes = [];
+        let newDishes2 = new Set();
+        let x=0;
+        for (let i = 0; i < dishes.length; i++) {
+            let isSuggested = false;
+
+            for (let j = 0; j < dishesSuggest.length; j++) {
+                if (dishes[i].did === dishesSuggest[j].did) {
+                    newDishes.push(dishes[i]);
+                    isSuggested = true;
+                    x++;
+                    break;
+                }
+            }
+            if (!isSuggested) newDishes2.add(dishes[i]);
+        }
+        setNum(x);
+        let newDishes2Array = Array.from(newDishes2);
+        newDishes = newDishes.concat(newDishes2Array);
+        setDishesDisplay(newDishes);
+    }, [dishesSuggest, dishes])
 
     return (
         <div className="container">
@@ -296,13 +331,13 @@ function OrderRestaurant(props) {
                                             </div> 
                                         </div>
                                         <div className="order__restaurant__dish__detail__content">
-                                            {dishes.map((dish, index)=>{
+                                            {dishesDisplay.map((dish, index)=>{
                                                 return (
                                                     <div className="order__restaurant__dish__detail__item" key={index}>
                                                         <img src={`${dish.image}`}/>
                                                         <div className="detail__item__title">
                                                             <h3>{dish.title}</h3>
-                                                            <span>Suggessed</span>
+                                                            {index<num?<span>Suggessed</span>:""}
                                                         </div>
                                                         <input type="number" value={quantity[index]} id-dish={dish.did} min="1" onChange={(e)=>handelQuantity(index, e)}/>
                                                         <p>{dish.price}</p>

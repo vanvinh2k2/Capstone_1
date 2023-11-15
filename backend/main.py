@@ -167,9 +167,9 @@ for name, similarity in similarities_with_names:
 # for result in sorted_results:
 #     print(result)
 
-['Mussels with rice paper', 'Pot pot rice', 'Fish sauce hot pot', 'Goi spring rolls', 'Hue beef noodle soup', 'Fish ball vermicelli', 'Beef noodles', 'Bun with fish balls', 'Quang noodles']
-{
-    'product_name': ['Mussels with rice paper', 'Pot pot rice', 'Pot pot rice', 'Mussels with rice paper', 'Mussels with rice paper', 'Pot pot rice'], 
-    'order_date': ['2023-11-12', '2023-11-12', '2023-11-12', '2023-11-12', '2023-11-14', '2023-11-14']
-}
-['Mussels with rice paper', 'Beef noodles']
+# ['Mussels with rice paper', 'Pot pot rice', 'Fish sauce hot pot', 'Goi spring rolls', 'Hue beef noodle soup', 'Fish ball vermicelli', 'Beef noodles', 'Bun with fish balls', 'Quang noodles']
+# {
+#     'product_name': ['Mussels with rice paper', 'Pot pot rice', 'Pot pot rice', 'Mussels with rice paper', 'Mussels with rice paper', 'Pot pot rice'], 
+#     'order_date': ['2023-11-12', '2023-11-12', '2023-11-12', '2023-11-12', '2023-11-14', '2023-11-14']
+# }
+# ['Mussels with rice paper', 'Beef noodles']

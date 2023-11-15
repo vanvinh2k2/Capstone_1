@@ -74,5 +74,4 @@ urlpatterns = [
     # For AI
     path('api/search-ai/', search_restaurant_image, name='search-restaurant-image'),
     path('api/suggest-food/<uid>/<rid>/', suggest_food, name='suggest-food'),
-
 ]

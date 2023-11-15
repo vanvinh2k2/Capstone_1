@@ -35,3 +35,5 @@ export const GET_BILL = 'GET_BILL';
 export const CHECK_ORDER = 'CHECK_ORDER';
 export const CANCEL_ORDER = "CANCEL_ORDER";
 export const REVIEW = "REVIEW";
+export const GET_DISH_AI = 'GET_DISH_AI';
+export const GET_DISH_SUGGETS = 'GET_DISH_SUGGETS';

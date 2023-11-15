@@ -150,5 +150,6 @@ def suggest_food(request, *args, **kwargs):
 
     return Response({
             'success': True,
-            'message': data
+            'message': 'Suggest Successful.',
+            'data': data
         }, status=status.HTTP_200_OK)
