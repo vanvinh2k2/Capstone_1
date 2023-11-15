@@ -109,7 +109,7 @@ similarities_with_names = list(zip(dataAll, cosine_similarities))
 
 # In ra danh sách các món ăn và độ tương đồng cosine tương ứng
 for name, similarity in similarities_with_names:
-    print(f"Độ tương đồng giữa 'mì quảng VN' và '{name}': {similarity}")
+    print(f"Độ tương đồng giữa 'mì quảng' và '{name}': {similarity}")
 
 #####################################################################################
 
@@ -166,10 +166,3 @@ for name, similarity in similarities_with_names:
 # sorted_results = sorted(restaurant_results, key=lambda x: (x['specialty'], x['rating'], x['like']), reverse=True)
 # for result in sorted_results:
 #     print(result)
-
-# ['Mussels with rice paper', 'Pot pot rice', 'Fish sauce hot pot', 'Goi spring rolls', 'Hue beef noodle soup', 'Fish ball vermicelli', 'Beef noodles', 'Bun with fish balls', 'Quang noodles']
-# {
-#     'product_name': ['Mussels with rice paper', 'Pot pot rice', 'Pot pot rice', 'Mussels with rice paper', 'Mussels with rice paper', 'Pot pot rice'], 
-#     'order_date': ['2023-11-12', '2023-11-12', '2023-11-12', '2023-11-12', '2023-11-14', '2023-11-14']
-# }
-# ['Mussels with rice paper', 'Beef noodles']
