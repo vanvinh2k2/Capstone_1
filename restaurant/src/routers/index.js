@@ -14,6 +14,7 @@ import OrderDetail from "../container/OrderDetail/OrderDetail";
 import HistoryOrder from "../container/HistoryOrder/HistoryOrder";
 import HistoryDetail from "../container/HistoryDetail/HistoryDetail";
 import NotFound from "../container/NotFound";
+import Account from "../container/Account/Account";
 
 const publicRouter = [
     {path: '/', component: Login, layout: null},
@@ -31,6 +32,7 @@ const publicRouter = [
     {path: 'restaurant/chat-message', component: ChatMessage},
     {path: 'restaurant/history-order', component: HistoryOrder},
     {path: 'restaurant/history-detail/:oid', component: HistoryDetail},
+    {path: 'account/', component: Account},
     {path: '*', component: NotFound}
 ]
 

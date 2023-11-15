@@ -1,6 +1,6 @@
 from .views import *
 from django.urls import path
-from .ai import search_restaurant_image
+from .ai import search_restaurant_image, suggest_food
 from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, CategoryAPI, \
     dish_by_category, dishes_of_restaurant, list_like, add_order, add_like, update_order_cart,\
     order_detail, search_restaurant, delete_like, edit_profile, list_order, search_dishes, \
@@ -73,5 +73,6 @@ urlpatterns = [
 
     # For AI
     path('api/search-ai/', search_restaurant_image, name='search-restaurant-image'),
+    path('api/suggest-food/<uid>/<rid>/', suggest_food, name='suggest-food'),
 
 ]
