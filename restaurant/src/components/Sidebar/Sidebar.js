@@ -90,10 +90,10 @@ function Sidebar() {
           </NavLink>
         </li>
         <li>
-          <a href="/" className="logout">
+          <NavLink className="logout">
             <i className="fas fa-sign-out"></i>
             <span className="text" onClick={handelLogout}>Logout</span>
-          </a>
+          </NavLink>
         </li>
       </ul>
     </section>

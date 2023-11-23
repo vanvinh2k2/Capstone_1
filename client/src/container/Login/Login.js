@@ -30,7 +30,7 @@ function Login(props) {
     }
 
     useEffect(() => {
-        if (auth.token != null) {
+        if (auth.token !== null) {
             navigate('/');
         }
     }, [isChange]);
