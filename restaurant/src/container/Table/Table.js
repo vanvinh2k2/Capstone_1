@@ -48,22 +48,22 @@ function Table() {
                         <tr>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Tid</b>
+                                    <p>Tid</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Title</b>
+                                    <p>Title</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Number of Seat</b>
+                                    <p>Number of Seat</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Action</b>
+                                    <p>Action</p>
                                 </div>
                             </th>
                         </tr>

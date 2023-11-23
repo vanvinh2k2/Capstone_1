@@ -46,7 +46,10 @@ export default function (state = initialState, action){
                 idUser: null,
                 email: null,
                 avatar: null,
-                username: null
+                username: null,
+                rid: null,
+                title: null,
+                image: null,
             }
         case FRIEND_CHAT:
             return {

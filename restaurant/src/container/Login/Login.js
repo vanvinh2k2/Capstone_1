@@ -27,9 +27,9 @@ function Login() {
     function handleForm(e){
         setForm({...form, [e.target.name]: e.target.value});
     }
-
+    
     useEffect(()=>{
-        if(localStorage.getItem("token")) navigate("/restaurant");
+        if(localStorage.getItem("token") !== null) navigate("/restaurant");
     }, [])
 
     return ( 

@@ -1,5 +1,4 @@
-import aimg  from '../../../assets/images/res.png'
-import { useNavigation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getRestaurantDetail } from '../../../action/restaurant';
@@ -25,8 +24,6 @@ function InforRestaurant(props) {
         getDetail(rid);
     }, [])
 
-    // console.log(restaurant);
-
     return ( 
         <div className="container">
             <div className="row product__details">
@@ -42,9 +39,7 @@ function InforRestaurant(props) {
                                 <b>Evaluate :</b> 10k
                             </div>
                             <div className="prevent"></div>
-                            <div className="product-rate">
-                                4/5
-                                <i className="fa fa-star"></i>
+                            <div className="product-rate">4/5<i className="fa fa-star"></i>
                             </div>
                         </div>
                         <div className="product-infor">

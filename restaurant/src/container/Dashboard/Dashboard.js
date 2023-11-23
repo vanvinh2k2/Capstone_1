@@ -1,153 +1,170 @@
-import React from 'react';
-import FullCalendar from '@fullcalendar/react';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Chart, BarElement, BarController, CategoryScale, LinearScale, Tooltip, Legend, ArcElement } from 'chart.js';
+import { Bar, Pie } from 'react-chartjs-2';
 import { useDispatch, useSelector } from 'react-redux';
-import { manageOrder, getTables } from '../../action/restaurant';
+import { getHistoryOrder } from '../../action/restaurant';
+import {NavLink} from 'react-router-dom'
+import { useEffect } from "react";
+import img from '../../assets/images/empty.png'
+Chart.register(BarElement, BarController, CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
 
-function ManageOrder() {
-  const dispatch = useDispatch();
-  const display_order = useSelector(state=>state.restaurant.display_order);
-  const tables = useSelector(state=>state.restaurant.tables);
+function Dashboard() {
+    const data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [
+          {
+            label: 'My First Dataset',
+            data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
+            fill: false,
+            backgroundColor: '#b1f3b1',
+            tension: 0.1
+          }
+        ]
+    };
 
-  const currentDate = new Date();
-  const year1 = currentDate.getFullYear();
-  const month1 = String(currentDate.getMonth() + 1).padStart(2, '0');
-  const day1 = String(currentDate.getDate()).padStart(2, '0');
-  const [day, setDay] = useState(day1);
-  const [month, setMonth] = useState(month1);
-  const [year, setYear] = useState(year1);
-  const navigate = useNavigate();
+    const data2 = {
+        labels: ['January', 'February', 'March', 'April', 'May'],
+        datasets: [
+          {
+            label: 'My First Dataset',
+            data: [65, 59, 80, 81, 56],
+            fill: true,
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(153, 102, 255, 0.5)'
+            ],
+            tension: 0.1
+          }
+        ]
+    };
 
-  const [resources, setResources] = useState([])
-  const [ev, setEv] = useState([])
-
-  useEffect(()=>{
-    async function manageorder(){
-      const action = await manageOrder(localStorage.getItem('rid'), day, month, year);
-      dispatch(action);
+    const orders = useSelector(state=>state.restaurant.orders);
+    const dispatch = useDispatch();
+    const status = {
+        "awaiting_confirmation": "Awaiting confirmation",
+        "confirmed": "Confirmed",
+        "cancel": "Cancel",
+        "complete": "Complete"
     }
-    manageorder();
-  }, [day, month, year])
 
-  useEffect(()=>{
-    async function gettables(){
-        const action  = await getTables(localStorage.getItem('rid'))
-        dispatch(action);
-    }
-    gettables();
-  }, []);
+    useEffect(()=>{
+        async function gethistoryOrder(){
+            const action  = await getHistoryOrder(localStorage.getItem('rid'))
+            dispatch(action);
+        }
+        gethistoryOrder();
+    }, [])
 
-  useEffect(()=>{
-    let newResources = [];
-    tables.map((item, index)=>{
-      const table = {
-        id: item.tid,
-        title: item.title
-      }
-      newResources.push(table);
-    });
-    setResources(newResources);
-  }, [tables]);
+    return ( 
+        <div>
+            <nav className='nav-header'>
+                <i class="fas fa-list"></i>
+                <i class="fa-solid fa-user"></i>
+            </nav>
+            <nav className='nav-middle'>
+                <div className="view-link">
+                    <p className='top'>Dashboard</p>
+                    <p><a href="/restaurant">Home</a></p>
+                    <i class="fas fa-chevron-right"></i>
+                    <p>Dashboard</p>
+                </div>
+            </nav>
+            <div className="content-dastboard">
+                <div className='row'>
+                    <div className='col-lg-8 col-sm-12 col-md-12'>
+                        <div className='content-chart card'>
+                            <h3>Statistics of orders list by month</h3>
+                            <Bar className='order-chart' data={data}/>
+                        </div>
+                    </div>
+                    <div className='col-lg-4 col-sm-12 col-md-12'>
+                        <div className='content-chart card'>
+                            <h3>Statistics of users who order the most</h3>
+                            <Pie className='user-chart' data={data2} />
+                        </div>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-lg-12 col-sm-12 col-md-12'>
+                    <div className='content-order card'>
+                            <h3>The current order</h3>
+                            <table id="result_list" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Oid</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Order Date</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Price</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Product Status</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Time from</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Time to</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Number People</p>
+                                            </div>
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                            <div class="text">
+                                                <p>Deposit</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders&&orders.length>0?orders.map((item, index)=>{
+                                        if(index<10)
+                                        return (
+                                            <tr role="row" class="even" key={index}>
+                                                <th><NavLink to={`/restaurant/history-detail/${item.oid}`} >{item.oid}</NavLink></th>
+                                                <td>{item.order_date.substring(0,10)}</td>
+                                                <td>{item.price}$</td>
+                                                <td>{status[item.product_status]}</td>
+                                                <td>{item.time_from.substring(0,5)}</td>
+                                                <td class="nowrap">{item.time_to.substring(0,5)}</td>
+                                                <td class="nowrap">{item.number_people}</td>
+                                                <td class="nowrap">{item.deposit}$</td>
+                                            </tr>
+                                        )
+                                    }): <tr role="row">
+                                        <td colSpan={7} className="text-center">
+                                            <img src={img}/>
+                                            <h6 className="text-secondary">No data</h6>
+                                        </td>
+                                    </tr>}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-  useEffect(()=>{
-    let newEV = [];
-    display_order.map((item, index)=>{
-      let background = '#159eba';
-      if(item.product_status === 'confirmed'){
-        background = "#0f9d0f";
-      }
-      else if(item.product_status === 'cancel'){
-        background = "#de1a2d";
-      }
-      else if(item.product_status === 'awaiting_confirmation'){
-        background = "#d6ad32";
-      }
-      else background = "#159eba";
-
-      const order = {
-        title: ` Time: ${item.time_from.substring(0,5)} - ${item.time_to.substring(0,5)}
-        <br>People: ${item.number_people}<br>
-        Deposited: ${item.deposit}$`,
-        start: `${item.order_date}T${item.time_from}`,
-        end: `${item.order_date}T${item.time_to}`,
-        resourceId: item.table.tid,
-        oid: item.oid,
-        backgroundColor: background,
-        textColor: 'white',
-      }
-      newEV.push(order);
-    })
-    setEv(newEV);
-  }, [display_order]);
-
-  const handleEventClick = (info) => {
-    const event = info.event;
-    const oid = event.extendedProps.oid;
-    navigate(`/restaurant/order-detail/${oid}`);
-  };
-
-  const handleDatesSet = (e) => {
-    const selectedDate = e.view.activeStart;
-    setDay(selectedDate.getDate().toString().padStart(2, '0'));
-    setMonth((selectedDate.getMonth() + 1).toString().padStart(2, '0'));
-    setYear(selectedDate.getFullYear());
-  };
-
-  return (
-    <div>
-      <nav className='nav-header'>
-        <i class="fas fa-list"></i>
-        <i class="fa-solid fa-user"></i>
-      </nav>
-      <nav className='nav-middle'>
-      <div className="view-link">
-          <p className='top'>Dashboard</p>
-          <p><a href="/restaurant">Home</a></p>
-          <i class="fas fa-chevron-right"></i>
-          <p>Dashboard</p>
-      </div>
-      <div className="add-table">
-      </div>
-      </nav>
-      <FullCalendar
-        plugins={[resourceTimelinePlugin, dayGridPlugin]}
-        initialView="resourceTimelineDay"
-        resources={resources?resources:[]}
-        events={ev?ev:[]}
-        eventClick={handleEventClick}
-        datesSet={handleDatesSet}
-        eventContent={(arg) => (
-          <>
-            <div dangerouslySetInnerHTML={{ __html: arg.event.title }} />
-          </>
-        )}
-      />
-      <div className='row'>
-          <div className='note'>
-            Legend : 
-            <div className='content-note'>
-              <div className='legend' style={{background: "#d6ad32"}}></div>
-              Awaiting confirmation
             </div>
-            <div className='content-note'>
-            <div className='legend' style={{background: "#0f9d0f"}}></div>
-              Confirmed
-            </div>
-            <div className='content-note'>
-            <div className='legend' style={{background: "#159eba"}}></div>
-              Complete
-            </div>
-            <div className='content-note'>
-            <div className='legend' style={{background: "#de1a2d"}}></div>
-              Cancel
-            </div>
-          </div>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }
 
-export default ManageOrder;
+export default Dashboard;

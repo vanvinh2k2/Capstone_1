@@ -53,3 +53,26 @@ h3{
         margin-right: 10px;
     }
 }
+
+// .content-dastboard{
+//     display: flex;
+//     flex-wrap: wrap;
+// }
+
+.order-chart{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.user-chart{
+    max-width: 350px !important;
+    max-height: 350px !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 auto;
+}
+
+.content-chart, .content-order{
+    margin-bottom: 15px;
+    padding: 25px 20px;
+}

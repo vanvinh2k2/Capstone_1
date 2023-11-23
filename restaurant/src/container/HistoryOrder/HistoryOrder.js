@@ -1,5 +1,5 @@
 import {NavLink} from 'react-router-dom'
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryOrder } from '../../action/restaurant';
 import img from '../../assets/images/empty.png'
@@ -7,6 +7,12 @@ import img from '../../assets/images/empty.png'
 function HistoryOrder() {
     const orders = useSelector(state=>state.restaurant.orders);
     const dispatch = useDispatch();
+    const status = {
+        "awaiting_confirmation": "Awaiting confirmation",
+        "confirmed": "Confirmed",
+        "cancel": "Cancel",
+        "complete": "Complete"
+    }
 
     useEffect(()=>{
         async function gethistoryOrder(){
@@ -39,42 +45,42 @@ function HistoryOrder() {
                         <tr>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Oid</b>
+                                    <p>Oid</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Order Date</b>
+                                    <p>Order Date</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Price</b>
+                                    <p>Price</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Product Status</b>
+                                    <p>Product Status</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Time from</b>
+                                    <p>Time from</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Time to</b>
+                                    <p>Time to</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Number People</b>
+                                    <p>Number People</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Deposit</b>
+                                    <p>Deposit</p>
                                 </div>
                             </th>
                         </tr>
@@ -88,7 +94,7 @@ function HistoryOrder() {
                                     </th>
                                     <td>{item.order_date.substring(0,10)}</td>
                                     <td>{item.price}$</td>
-                                    <td>{item.product_status}</td>
+                                    <td>{status[item.product_status]}</td>
                                     <td>{item.time_from.substring(0,5)}</td>
                                     <td class="nowrap">{item.time_to.substring(0,5)}</td>
                                     <td class="nowrap">{item.number_people}</td>

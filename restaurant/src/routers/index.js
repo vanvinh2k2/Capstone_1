@@ -1,5 +1,5 @@
 import Login from "../container/Login/Login";
-import Dashboard from "../container/Dashboard/Dashboard";
+import ManageOrder from "../container/ManageOrder/ManageOrder"
 import Table from "../container/Table/Table";
 import Dish from "../container/Dish/Dish";
 import ContactUs from "../container/ContactUs/ContactUs";
@@ -15,10 +15,12 @@ import HistoryOrder from "../container/HistoryOrder/HistoryOrder";
 import HistoryDetail from "../container/HistoryDetail/HistoryDetail";
 import NotFound from "../container/NotFound";
 import Account from "../container/Account/Account";
+import Dashboard from "../container/Dashboard/Dashboard";
 
 const publicRouter = [
     {path: '/', component: Login, layout: null},
     {path: 'restaurant/', component: Dashboard},
+    {path: 'restaurant/manage-order', component: ManageOrder},
     {path: 'restaurant/dish', component: Dish},
     {path: 'restaurant/table', component: Table},
     {path: 'restaurant/contact-us', component: ContactUs},

@@ -15,16 +15,14 @@ function Sidebar() {
     setClick(value);
   }
 
-  async function handelLogout(){
+  async function handelLogout(e){
     const action = await logout(localStorage.getItem('token'));
-    if(action){
-      await dispatch(action);
-      setIsLogout(true);
-    }
+    dispatch(action);
+    setIsLogout(true);
   }
 
   useEffect(()=>{
-    if(isLogout === true){
+    if(isLogout === true && localStorage.getItem("token")===null){
       navigate("/");
     }
   }, [isLogout])
@@ -44,6 +42,12 @@ function Sidebar() {
           <NavLink to="/restaurant" onClick={() => handleClick("dashboard")}>
             <i className="fab fa-windows"></i>
             <span className="text">Dashboard</span>
+          </NavLink>
+        </li>
+        <li className={click === "manage-order" ? "active" : ""}>
+          <NavLink to="/restaurant/manage-order" onClick={() => handleClick("manage-order")}>
+            <i class="fa-regular fa-calendar-days"></i>
+            <span className="text">Manage Order</span>
           </NavLink>
         </li>
         <li className={click === "dish" ? "active" : ""}>
@@ -79,12 +83,6 @@ function Sidebar() {
       </ul>
       <a className="menu-other">Others</a>
       <ul className="side-menu">
-        {/* <li className={click === "setting" ? "active" : ""}>
-          <NavLink to="/restaurant/setting" onClick={() => handleClick("setting")}>
-            <i className="fas fa-cog"></i>
-            <span className="text">Settings</span>
-          </NavLink>
-        </li> */}
         <li className={click === "contact" ? "active" : ""}>
           <NavLink to="/restaurant/contact-us" onClick={() => handleClick("contact")}>
             <i class="fa-solid fa-headset"></i>

@@ -46,27 +46,27 @@ function Review() {
                         <tr>
                             <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <b href="#">User</b>
+                                    <p href="#">User</p>
                                 </div>
                             </th>
                             <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <b href="#">Email</b>
+                                    <p href="#">Email</p>
                                 </div>
                             </th>
                             <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <b href="#">Review</b>
+                                    <p href="#">Review</p>
                                 </div>
                             </th>
                             <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <b href="#">Rating</b>
+                                    <p href="#">Rating</p>
                                 </div>
                             </th>
                             <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
                                 <div class="text">
-                                    <b href="#">Date</b>
+                                    <p href="#">Date</p>
                                 </div>
                             </th>
                         </tr>

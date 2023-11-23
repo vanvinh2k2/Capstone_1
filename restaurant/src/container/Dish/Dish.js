@@ -48,37 +48,37 @@ function Dish() {
                         <tr>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Did</b>
+                                    <p>Did</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Title</b>
+                                    <p>Title</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Dish Image</b>
+                                    <p>Dish Image</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Price</b>
+                                    <p>Price</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Date</b>
+                                    <p>Date</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Featured</b>
+                                    <p>Featured</p>
                                 </div>
                             </th>
                             <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                 <div class="text">
-                                    <b>Action</b>
+                                    <p>Action</p>
                                 </div>
                             </th>
                         </tr>

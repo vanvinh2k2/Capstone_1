@@ -1,7 +1,7 @@
 chat ok
 order not same ok
-suggest food 
-ai image
+suggest food ok
+ai image ok
 search
 chart
 notify
