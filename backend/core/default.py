@@ -1,6 +1,6 @@
 from .models import *
 from auths.models import *
-from django.db.models import Min, Max, Count
+from django.db.models import Count
 from django.db.models.functions import ExtractMonth
 from .serializers import OrderSerializers
 

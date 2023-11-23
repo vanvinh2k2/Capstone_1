@@ -970,3 +970,34 @@ def update_status_order(request, *args, **kwargs):
     return Response({'success': True,
              'message': 'Update status Order success.'        
     }, status=status.HTTP_200_OK)
+
+
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth
+
+@api_view(['GET'])
+def statistics(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    top_user = []
+    num_top_user = []
+    order = Order.objects.filter(restaurant__rid=rid).values('user__username').annotate(num_user=Count("user__id")).order_by('-num_user')[:5]
+    for order_count in order:
+        top_user.append(order_count['user__username'])
+        num_top_user.append(order_count['num_user'])
+
+    num_order = []
+    orders_chart = Order.objects.filter(restaurant__rid=rid).annotate(month=ExtractMonth("order_date")).values("month").annotate(count=Count("id")).values('month', 'count')
+    for i in range(1,13):
+        for order_chart in orders_chart:
+            if i == order_chart['month']:
+                num_order.append(order_chart['count'])
+            else : num_order.append(0)
+   
+    return Response({'success': True,
+             'message': 'Get success.',
+             'data': {
+                 "top_user": top_user[:5],
+                 "num_top_user": num_top_user[:5],
+                 "num_order": num_order
+             }       
+    }, status=status.HTTP_200_OK)
