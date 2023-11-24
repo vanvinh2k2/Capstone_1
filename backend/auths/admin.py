@@ -3,7 +3,7 @@ from .models import User, ContactUs
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'username', 'email', 'is_active', 'is_staff', 'date_joined']
+    list_display = ['id', 'username', 'email', 'provider', 'is_active', 'is_staff', 'date_joined']
 
 
 class ContactUsAdmin(admin.ModelAdmin):

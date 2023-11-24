@@ -10,6 +10,7 @@ class User(AbstractUser):
     image = models.ImageField(upload_to="image", default="image/default.png")
     full_name = models.CharField(max_length=200, null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
+    provider = models.CharField(max_length=50, default="Email")
     verified = models.BooleanField(default=False)
     is_restaurant = models.BooleanField(default=False)
     password_token = models.CharField(max_length=50, null=True, blank=True)

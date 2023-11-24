@@ -48,6 +48,7 @@ class RegisterAPI(generics.CreateAPIView):
                     'username': user.username,
                     'email': user.email,
                     'is_active': user.is_active,
+                    'provider': user.provider,
                     'date_joined': user.date_joined,
                     'avatar': get_base_url(request) + user.image.url,
                     'token': token
@@ -82,6 +83,7 @@ class LoginAPI(generics.CreateAPIView):
                         'phone': user.phone,
                         'password': user.password,
                         'is_active': user.is_active,
+                        'provider': user.provider,
                         'verified': user.verified,
                         'date_joined': user.date_joined,
                         'avatar': get_base_url(request) + user.image.url,
@@ -99,6 +101,107 @@ class LoginAPI(generics.CreateAPIView):
             'message': 'Enter a valid email address!'
         }, status=status.HTTP_200_OK)
     
+from PIL import Image
+from io import BytesIO
+import requests
+from django.core.files.base import ContentFile
+
+@api_view(['POST'])
+def login_facebook(request):
+    uid = request.data.get("id")
+    email = request.data.get('email')
+    image_url = request.data.get('image')
+    # Tải hình ảnh từ URL và xử lý
+    image_response = requests.get(image_url)
+    image_response.raise_for_status()
+    image = Image.open(BytesIO(image_response.content))
+    image_io = BytesIO()
+    image.save(image_io, format='PNG')  # Chọn định dạng phù hợp
+    full_name = request.data.get('full_name')
+    username = request.data.get('username')
+    # Kiểm tra xem người dùng đã tồn tại hay chưa
+    user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                'id': uid,
+                'full_name': full_name,
+                'username': username,
+                'provider': "Facebook"
+            }
+    )
+    # Lưu hình ảnh vào trường ImageField
+    if created:
+        image_file = ContentFile(image_io.getvalue(), name=f"{username}.jpg")
+        user.image.save(f"{username}.jpg", image_file, save=True)
+    # Tạo hoặc cập nhật thông tin người dùng
+    user_data = {
+        'id': user.id,
+        'username': user.username,
+        'full_name': user.full_name,
+        'email': user.email,
+        'phone': user.phone,
+        'password': user.password,
+        'is_active': user.is_active,
+        'provider': user.provider,
+        'verified': user.verified,
+        'date_joined': user.date_joined,
+        'avatar': get_base_url(request) + user.image.url,
+        'token': get_tokens_for_user(user)
+    }
+    return Response({
+        'success': True,
+        'message': 'Login success.',
+        'data': user_data
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def login_google(request):
+    uid = request.data.get("id")
+    email = request.data.get('email')
+    image_url = request.data.get('image')
+    # Tải hình ảnh từ URL và xử lý
+    image_response = requests.get(image_url)
+    image_response.raise_for_status()
+    image = Image.open(BytesIO(image_response.content))
+    image_io = BytesIO()
+    image.save(image_io, format='PNG')  # Chọn định dạng phù hợp
+    full_name = request.data.get('full_name')
+    username = request.data.get('username')
+    # Kiểm tra xem người dùng đã tồn tại hay chưa
+    user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                'id': uid,
+                'full_name': full_name,
+                'username': username,
+                'provider': "Google"
+            }
+    )
+    # Lưu hình ảnh vào trường ImageField
+    if created:
+        image_file = ContentFile(image_io.getvalue(), name=f"{username}.jpg")
+        user.image.save(f"{username}.jpg", image_file, save=True)
+    # Tạo hoặc cập nhật thông tin người dùng
+    user_data = {
+        'id': user.id,
+        'username': user.username,
+        'full_name': user.full_name,
+        'email': user.email,
+        'phone': user.phone,
+        'password': user.password,
+        'is_active': user.is_active,
+        'provider': user.provider,
+        'verified': user.verified,
+        'date_joined': user.date_joined,
+        'avatar': get_base_url(request) + user.image.url,
+        'token': get_tokens_for_user(user)
+    }
+    return Response({
+        'success': True,
+        'message': 'Login success.',
+        'data': user_data
+    }, status=status.HTTP_200_OK)
 
 class LoginRestaurantAPI(generics.CreateAPIView):
     queryset = User.objects.all()
