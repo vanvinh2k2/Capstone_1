@@ -204,42 +204,32 @@ def login_google(request):
     }, status=status.HTTP_200_OK)
 
 class LoginRestaurantAPI(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = LoginSerializes
+    queryset = Restaurant.objects.all()
+    serializer_class = LoginRestaurantSerializes
     permissions = [permissions.AllowAny]
 
     def create(self, request):
         serialize = self.get_serializer(data=request.data)
         if serialize.is_valid():
-            user = authenticate(request, email=request.data['email'], password=request.data['password'])
-            if user is not None and user.is_restaurant is True:
-                restaurant = Restaurant.objects.get(user=user)
-                print(restaurant)
-                token = get_tokens_for_user(user)
+            restaurant = Restaurant.objects.filter(email=request.data['email'], password=request.data['password']).first()
+            if restaurant is not None:
                 return Response({
                     'success': True,
                     'message': 'Login success.',
                     'data': {
-                        'id': user.id,
-                        'username': user.username,
-                        'full_name': user.full_name,
                         'rid': restaurant.rid,
                         'title': restaurant.title,
                         'image': get_base_url(request) + restaurant.image.url,
-                        'email': user.email,
-                        'phone': user.phone,
-                        'password': user.password,
-                        'is_active': user.is_active,
-                        'verified': user.verified,
-                        'date_joined': user.date_joined,
-                        'avatar': get_base_url(request) + user.image.url,
-                        'token': token
+                        'email': restaurant.email,
+                        'username': restaurant.username,
+                        'phone': restaurant.phone,
+                        'password': restaurant.password
                     }
                 }, status=status.HTTP_200_OK)
             else:
                 return Response({
                     'success': False,
-                    'message': 'User is not exists!'
+                    'message': 'Restaurant is not exists!'
                 }, status=status.HTTP_200_OK)
 
         return Response({

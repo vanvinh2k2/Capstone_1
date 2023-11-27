@@ -34,7 +34,7 @@ function Sidebar() {
         <span className="text">Booking Restaurant</span>
       </a>
       <a href="#" className="account">
-        <img src={localStorage.getItem("avatar")} alt="User" />
+        <img src={localStorage.getItem("image")} alt="User" />
         <span className="text">{localStorage.getItem("username")}</span>
       </a>
       <ul className="side-menu top">

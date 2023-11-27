@@ -13,12 +13,13 @@ function OrderDetail() {
     const [dishes, setDishes] = useState([]);
     const [quantity, setQuantity] = useState(Array.from({ length: dishes.length }, () => 1));
     const {oid} = useParams();
-    const [status, setStatus] = useState("awaiting_confirmation");
+    const [status, setStatus] = useState("");
     const [cid, setCid] = useState("0");
 
-    useEffect(()=>{
-        changeStatus(status, oid);
-    }, [status]);
+    function handelChangeStatus(e){
+        setStatus(e.target.value);
+        changeStatus(e.target.value, oid);
+    }
 
     useEffect(()=>{
         setDishes(disheAll);
@@ -55,8 +56,10 @@ function OrderDetail() {
                     }
                 }
             }
+            setStatus(order.product_status);
             setQuantity(initialQuantity);
         }
+        
     }, [dishes, orderItems])
 
     useEffect(()=>{
@@ -103,7 +106,7 @@ function OrderDetail() {
                     <p className='top'>Dashboard</p>
                     <p><NavLink to="/restaurant">Home</NavLink></p>
                     <i class="fas fa-chevron-right"></i>
-                    <p><NavLink to="/restaurant">Dashboard</NavLink></p>
+                    <p><NavLink to="/restaurant/manage-order">Manage Orders</NavLink></p>
                     <i class="fas fa-chevron-right"></i>
                     <p>Order Detail</p>
                 </div>
@@ -234,7 +237,7 @@ function OrderDetail() {
                                     </label>
                                     <div class="col-sm-7">
                                         <div class="related-widget-wrapper" data-model-ref="category">
-                                            <select className="input" onClick={e=>setStatus(e.target.value)}>
+                                            <select value={status} className="input" onChange={handelChangeStatus}>
                                                 <option value="awaiting_confirmation">Awaiting confirmation</option>
                                                 <option value="confirmed">Confirmed</option>
                                                 <option value="complete">Complete</option>

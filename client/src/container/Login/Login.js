@@ -1,10 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { login } from "../../action/auth";
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch} from "react-redux";
 import { useNavigate } from 'react-router-dom';
+
+import { LoginSocialFacebook } from 'reactjs-social-login';
+import {FacebookLoginButton} from 'react-social-login-buttons'
 import { LOGIN_SUCCESS } from "../../action/types";
+import Google from "../../components/Google/Google";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 // import Animation from "../../components/Animation/animation";
 
 function Login(props) {
@@ -56,6 +60,24 @@ function Login(props) {
                         </div>
                         <button type="submit">Login</button>
                     </form>
+                    <span>Or login with</span>
+                            <button className="google">
+                                <GoogleOAuthProvider clientId="571607333156-s32hv503iaiac6joh5kqh339lhoaiurq.apps.googleusercontent.com">
+                                    <Google/>
+                                </GoogleOAuthProvider>
+                            </button>
+                            <button className="facebook">
+                                <LoginSocialFacebook appId='858875865717157'
+                                onResolve={(res)=>{
+                                    console.log(res);
+                                }}
+                                onReject={(err)=>{
+                                    console.log(err);
+                                }}>
+                                    <FacebookLoginButton/>
+                                </LoginSocialFacebook>
+                            </button>
+                           
                     <div className="login__other">
                         <span>Don't have an Account?</span>
                         <a href="/sign-up">Sign up</a>

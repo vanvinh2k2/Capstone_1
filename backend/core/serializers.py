@@ -16,7 +16,6 @@ class SenderSerializers(serializers.ModelSerializer):
 
 
 class RestaurantSerializers(serializers.ModelSerializer):
-    user = UserSerializers(read_only=True)
 
     class Meta:
         model = Restaurant
@@ -84,11 +83,11 @@ class ContactUsSerializers(serializers.ModelSerializer):
         fields = "__all__"
         
 
-class AddressSerializers(serializers.ModelSerializer):
-    user = UserSerializers(read_only=True)
-    class Meta:
-        model = Address
-        fields = "__all__"
+# class AddressSerializers(serializers.ModelSerializer):
+#     user = UserSerializers(read_only=True)
+#     class Meta:
+#         model = Address
+#         fields = "__all__"
 
 class OrderCartSerializers(serializers.ModelSerializer):
     restaurant = RestaurantSerializers(read_only=True)
@@ -118,10 +117,16 @@ class SearchSerializer(serializers.ModelSerializer):
 		model = User
 		fields = ['id', 'username', 'image', 'email']
 
+class ReceiverSerializer(serializers.ModelSerializer):
+    
+	class Meta:
+		model = Restaurant
+		fields = ['rid', 'username', 'image', 'email']
+
 
 class MessageSerializer(serializers.ModelSerializer):
     msg_sender = SenderSerializers(read_only=True)
-    msg_receiver = SearchSerializer(read_only=True)
+    msg_receiver = ReceiverSerializer(read_only=True)
     class Meta:
         model = ChatMessage
         fields = ['body', 'msg_sender', 'msg_receiver', 'seen', 'date']

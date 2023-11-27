@@ -105,6 +105,22 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'Capstone_1',
+#         'ENFORCE_SCHEMA': False,
+#         'CLIENT': {
+#             'host': 'mongodb+srv://ngov6769:2432002@cluster0.sv10xw9.mongodb.net/?retryWrites=true&w=majority',
+#             'port': 27017,
+#             'username': 'ngov6769',
+#             'password': '2432002',
+#             'authSource': 'admin',
+#             'authMechanism': 'SCRAM-SHA-1',
+#         }
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

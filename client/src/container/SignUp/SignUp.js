@@ -1,7 +1,5 @@
-import facebookimg from '../../assets/images/facebook.png'
-import googleimg from '../../assets/images/google.png'
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { signup } from '../../action/auth';
 import { SIGNUP_SUCCESS } from '../../action/types';
 import { useNavigate } from 'react-router-dom';
@@ -55,17 +53,8 @@ function SignUp() {
                                     <p>Confirm Password</p>
                                     <input type="password" name="password2" onChange={(e)=>changeData(e)}/>
                                 </div>
-                                <button type="submit">Login</button>
+                                <button type="submit">Register</button>
                             </form>
-                            <span>Or login with</span>
-                            <button className="google">
-                                <img src={googleimg}/>
-                                <span>Continue with Google</span>
-                            </button>
-                            <button className="facebook">
-                                <img src={facebookimg}/>
-                                <span>Continue with Facebook</span>
-                            </button>
                             <div className="signup__other">
                                 <span>Alreadly have an Account?</span>
                                 <a href="/login">Sign in</a>

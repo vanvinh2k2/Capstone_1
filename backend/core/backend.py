@@ -325,12 +325,7 @@ def edit_profile(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
     if 'address' in request.POST and request.POST['address']:
-        try:
-            address = Address.objects.get(user=user)
-            address.address = request.POST.get('address')
-            address.save()
-        except Address.DoesNotExist:
-            address = Address.objects.create(user=user, address=request.POST.get('address'))
+        user.address = request.POST.get('address')
     
     if 'image' in request.FILES and request.FILES['image']:
         user.image = request.FILES['image']
@@ -356,7 +351,7 @@ def edit_profile(request, *args, **kwargs):
             'phone': user.phone,
             'is_active': user.is_active,
             'date_joined': user.date_joined,
-            'address': address.address,
+            'address': user.address,
             'verified': user.verified,
             'avatar': get_base_url(request) + (user.image.url if user.image else ''),
         }
@@ -369,9 +364,7 @@ def get_profile(request, *args, **kwargs):
     uid = kwargs.get('uid')
     try:
         user = User.objects.get(id=uid)
-        try:
-            address = Address.objects.get(user=user)
-            return Response({'success': True,
+        return Response({'success': True,
                         'message': 'Get profile successfully.',
                         'data': {
                             'id': user.id,
@@ -381,23 +374,7 @@ def get_profile(request, *args, **kwargs):
                             'phone': user.phone,
                             'is_active': user.is_active,
                             'date_joined': user.date_joined,
-                            'address': address.address,
-                            'verified': user.verified,
-                            'avatar': get_base_url(request) + user.image.url,
-                        }
-                        }, status=status.HTTP_200_OK)
-        except Address.DoesNotExist:
-            return Response({'success': True,
-                        'message': 'Get profile successfully.',
-                        'data': {
-                            'id': user.id,
-                            'username': user.username,
-                            'full_name': user.full_name,
-                            'email': user.email,
-                            'phone': user.phone,
-                            'is_active': user.is_active,
-                            'date_joined': user.date_joined,
-                            'address': "Not have",
+                            'address': user.address,
                             'verified': user.verified,
                             'avatar': get_base_url(request) + user.image.url,
                         }

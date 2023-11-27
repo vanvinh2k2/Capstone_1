@@ -6,7 +6,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+    return 'user_{0}/{1}'.format(instance.id, filename)
 
 
 def dish_directory_path(instance, filename):
@@ -60,16 +60,18 @@ class Category(models.Model):
 class Restaurant(models.Model):
     rid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="res", alphabet="abcdefgh12345")
     title = models.CharField(max_length=100, default="No have")
+    username = models.CharField(max_length=150, null=True)
+    email = models.EmailField(unique=True)
     image = models.ImageField(upload_to=user_directory_path)
     description = RichTextUploadingField(null=True, blank=True)
-    contact = models.CharField(max_length=100, default="+(84) 344 342 295")
+    address = models.CharField(max_length=100, null=True)
+    phone = models.CharField(max_length=100, default="+(84) 344 342 295")
+    password = models.CharField(max_length=120)
     address = models.CharField(max_length=500, null=True, blank=True)
     time_open = models.TimeField()
     time_close = models.TimeField()
     is_hot = models.BooleanField(default=False)
     like = models.IntegerField(default=0)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-
     class Meta:
         # dat lai hien name
         verbose_name_plural = "Restaurants"
@@ -88,7 +90,6 @@ class Dish(models.Model):
     description = RichTextUploadingField(null=True, blank=True, default="This is product")
     price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
     old_price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
-    specifications = RichTextUploadingField(null=True, blank=True)
     product_status = models.CharField(choices=STATUS, default="not_paid_yet", max_length=50)
     featured = models.BooleanField(default=False)
     digital = models.BooleanField(default=False)
@@ -222,20 +223,10 @@ class Wishlist(models.Model):
         return self.restaurant.title
 
 
-class Address(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    address = models.CharField(max_length=100, null=True)
-    status = models.BooleanField(default=False)
-
-    class Meta:
-        # dat lai hien name
-        verbose_name_plural = "Address"
-
-
 class ChatMessage(models.Model):
     body = models.CharField(max_length=500)
     msg_sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-    msg_receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    msg_receiver = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='receiver')
     seen = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
 

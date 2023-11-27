@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from core.models import Restaurant
 
 
 class RegisterSerializers(serializers.ModelSerializer):
@@ -15,4 +16,11 @@ class LoginSerializes(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        fields = ['email', 'password']
+
+class LoginRestaurantSerializes(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
+    class Meta:
+        model = Restaurant
         fields = ['email', 'password']

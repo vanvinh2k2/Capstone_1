@@ -54,11 +54,11 @@ function BillUser(props) {
                         </div>
                         <div className="bill__item">
                             <p className="bill__item__title">Phone : </p>
-                            <p className="bill__item__content">{order&&order.restaurant?order.restaurant.user.phone:""}</p>
+                            <p className="bill__item__content">{order&&order.restaurant?order.restaurant.phone:""}</p>
                         </div>
                         <div className="bill__item">
                             <p className="bill__item__title">Email : </p>
-                            <p className="bill__item__content">{order&&order.restaurant?order.restaurant.user.email:""}</p>
+                            <p className="bill__item__content">{order&&order.restaurant?order.restaurant.email:""}</p>
                         </div>
                     </div>
                 </div>      

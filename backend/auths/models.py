@@ -12,8 +12,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=15, null=True, blank=True)
     provider = models.CharField(max_length=50, default="Email")
     verified = models.BooleanField(default=False)
-    is_restaurant = models.BooleanField(default=False)
     password_token = models.CharField(max_length=50, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

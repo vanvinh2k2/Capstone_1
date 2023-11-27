@@ -4,8 +4,8 @@ import notmessageimg from '../../assets/images/no_message.png';
 
 function ChatMessage(props) {
     const [isClose, setIsClose] = useState(true);
-    let token = localStorage.getItem("token");
-    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/chat/?token=${token}`), [token]);
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTcwMDc2OCwiaWF0IjoxNzAxMDk1OTY4LCJqdGkiOiIxOWExYTgxNWUzZGI0OGIwYmNiZGY0ZGQ3YzcxZTUyOSIsInVzZXJfaWQiOiJyZXMzaGFnYmZnZmJnIiwiZW1haWwiOiJuZ292Njc2OUBnbWFpbC5jb20ifQ.EzA6zJ7MEBgTQJC175U3RPepmzKZV6SnmjMQDqGIl4Y";
+    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/ws/chat/res3hagbfgfbg/`), [token]);
     const [message, setMessage] = useState('');
     const [listMessage, setListMessage] = useState([]);
     const [isConnect, setIsConnect] = useState(false);
