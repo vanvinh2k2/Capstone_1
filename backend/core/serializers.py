@@ -125,8 +125,8 @@ class ReceiverSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    msg_sender = SenderSerializers(read_only=True)
-    msg_receiver = ReceiverSerializer(read_only=True)
+    msg_user = SenderSerializers(read_only=True)
+    msg_restaurant = ReceiverSerializer(read_only=True)
     class Meta:
         model = ChatMessage
-        fields = ['body', 'msg_sender', 'msg_receiver', 'seen', 'date']
+        fields = ['body', 'msg_user', 'msg_restaurant', 'sender', 'seen', 'date']

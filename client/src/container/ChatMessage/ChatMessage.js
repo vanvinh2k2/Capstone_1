@@ -4,8 +4,8 @@ import notmessageimg from '../../assets/images/no_message.png';
 
 function ChatMessage(props) {
     const [isClose, setIsClose] = useState(true);
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwMTcwMDc2OCwiaWF0IjoxNzAxMDk1OTY4LCJqdGkiOiIxOWExYTgxNWUzZGI0OGIwYmNiZGY0ZGQ3YzcxZTUyOSIsInVzZXJfaWQiOiJyZXMzaGFnYmZnZmJnIiwiZW1haWwiOiJuZ292Njc2OUBnbWFpbC5jb20ifQ.EzA6zJ7MEBgTQJC175U3RPepmzKZV6SnmjMQDqGIl4Y";
-    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/ws/chat/res3hagbfgfbg/`), [token]);
+    let uid = localStorage.getItem("iduser");
+    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/ws/chat/${uid}/`), [uid]);
     const [message, setMessage] = useState('');
     const [listMessage, setListMessage] = useState([]);
     const [isConnect, setIsConnect] = useState(false);
@@ -49,7 +49,7 @@ function ChatMessage(props) {
     function sendMessage() {
           if (message.trim() === '') return;
           client.send(JSON.stringify({ 
-            source: 'message',
+            source: 'message-user',
             friend: props.username,
             message: message
           }));
@@ -83,13 +83,13 @@ function ChatMessage(props) {
                     <div className="position-relative shadow-b">
                         <div className="chat-messages px-1 py-2" ref={scrollContainerRef}>
                             {listMessage&&listMessage.length>0?listMessage.map((item, index)=>{
-                                if(item.msg_sender.username === localStorage.getItem("username")){
+                                if(item.sender === "user"){
                                     return(
                                         <div className="chat-message-right mw-65 mt-2">
                                             <div className="flex-shrink-1 py-2 px-3 mr-3">{item.body}</div>
                                         </div>
                                     )
-                                }else if(item.msg_receiver.username === localStorage.getItem("username") && listMessage[index+1] && listMessage[index+1].msg_receiver.username === item.msg_receiver.username){
+                                }else if(item.sender === "restaurant" && listMessage[index+1] && listMessage[index+1].sender === item.sender){
                                     return(
                                         <div className="d-flex chat-message-left mw-65 mt-2 ml-40">
                                             <div className="flex-shrink-1 py-2 px-3 ml-3 message">{item.body}</div>

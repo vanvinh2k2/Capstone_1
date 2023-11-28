@@ -4,8 +4,8 @@ import notmessageimg from '../../../assets/images/no_message.png';
 import { w3cwebsocket } from 'websocket';
 
 function ContentChat(props) {
-    let token = localStorage.getItem("token");
-    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/chat/?token=${token}`), [token]);
+    let rid = localStorage.getItem("rid");
+    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/ws/chat/${rid}/`), [rid]);
     const [message, setMessage] = useState('');
     const [listMessage, setListMessage] = useState([]);
     const [isConnect, setIsConnect] = useState(false);
@@ -36,7 +36,7 @@ function ContentChat(props) {
     useEffect(()=>{
         if(isConnect === true && props.friend && Object.keys(props.friend).length > 0){
           client.send(JSON.stringify({
-            source: 'message-list',
+            source: 'message-list-restaurant',
             friend: props.friend.username
           }));
         }
@@ -45,7 +45,7 @@ function ContentChat(props) {
     function sendMessage() {
         if (message.trim() === '') return;
         client.send(JSON.stringify({ 
-          source: 'message',
+          source: 'message-restaurant',
           friend: props.friend.username,
           message: message
         }));
@@ -74,13 +74,13 @@ function ContentChat(props) {
         <div className="position-relative">
           <div className="chat-messages p-4" ref={scrollContainerRef}>
             {listMessage&&listMessage.length>0?listMessage.map((item, index)=>{
-              if(item.msg_sender.username === localStorage.getItem("username")){
+              if(item.sender === "restaurant"){
                 return(
                   <div className="chat-message-right pb-1 mw-65 mt-1">
                     <div className="flex-shrink-1 py-2 px-3 mr-3 message2">{item.body}</div>
                   </div>
                 )
-              }else if(item.msg_receiver.username === localStorage.getItem("username") && listMessage[index+1] && listMessage[index+1].msg_receiver.username === item.msg_receiver.username){
+              }else if(item.sender === "user" && listMessage[index+1] && listMessage[index+1].sender === item.sender){
                 return(
                   <div className="chat-message-left pb-1 mw-65 mt-1 ml-40">
                     <div className="flex-shrink-1 bg-#ccc py-2 px-3 ml-3 message">{item.body}</div>
@@ -90,8 +90,7 @@ function ContentChat(props) {
               else{
                 return(
                   <div className="chat-message-left pb-1 mw-65 mt-1 align-items-end">
-                      <img
-                        src={`http://127.0.0.1:8000${item.msg_sender.image}`} className="rounded-circle mr-1" width={40} height={40}/>
+                    <img src={`http://127.0.0.1:8000${item.msg_user.image}`} className="rounded-circle mr-1" width={40} height={40}/>
                     <div className="flex-shrink-1 bg-#ccc py-2 px-3 ml-3 message">{item.body}</div>
                   </div>
                 )

@@ -35,7 +35,7 @@ class WishlistAdmin(admin.ModelAdmin):
 
 
 class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ['body', 'msg_sender', 'msg_receiver', 'seen']
+    list_display = ['body', 'msg_user', 'msg_restaurant', 'sender', 'seen']
 
 
 class TableAdmin(admin.ModelAdmin):

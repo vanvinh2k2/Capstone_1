@@ -225,8 +225,9 @@ class Wishlist(models.Model):
 
 class ChatMessage(models.Model):
     body = models.CharField(max_length=500)
-    msg_sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-    msg_receiver = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='receiver')
+    msg_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    msg_restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='receiver')
+    sender = models.CharField(max_length=50)
     seen = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
 

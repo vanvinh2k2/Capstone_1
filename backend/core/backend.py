@@ -466,16 +466,16 @@ def search_dishes(request):
 
 @api_view(['GET'])
 def friend_chat(request, *args, **kwargs):
-    uid = kwargs.get('uid')
+    rid = kwargs.get('rid')
     result=[]
-    user = User.objects.get(id=uid)
-    friends = User.objects.filter(is_staff=False).exclude(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    friends = User.objects.filter(is_staff=False)
     for friend in friends:
         friend_instance = User.objects.get(id=friend.id)
         print(friend.id)
         data_ok = ChatMessage.objects.filter(
-            (Q(msg_sender=user) & Q(msg_receiver=friend_instance)) |
-            (Q(msg_sender=friend_instance) & Q(msg_receiver=user))
+           msg_user=friend_instance,
+           msg_restaurant=restaurant
         ).order_by('-date')
         if data_ok.exists():
             final_data = MessageSerializer(data_ok[0], context={'request': request}).data

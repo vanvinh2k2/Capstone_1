@@ -16,7 +16,7 @@ function ChatMessage() {
 
     useEffect(()=>{
       async function getFriend(){
-        const action  = await friend_chat(localStorage.getItem('iduser'));
+        const action  = await friend_chat(localStorage.getItem('rid'));
         dispatch(action);
     }
     getFriend();
@@ -25,8 +25,10 @@ function ChatMessage() {
     useEffect(()=>{
       setDisplayUser(friends);
       if(friends.length>0){
-        if(friends[0].msg_sender.username === localStorage.getItem("username")) setFriend(friends[0].msg_receiver);
-        else setFriend(friends[0].msg_sender);
+        // if(friends[0].msg_user.username === localStorage.getItem("username")) 
+        // setFriend(friends[0].msg_receiver);
+        // else 
+        setFriend(friends[0].msg_user);
       }
       
     }, [friends])
@@ -38,10 +40,12 @@ function ChatMessage() {
     function handleConnect(e) {
       const clickedUsername = e.currentTarget.getAttribute('data-user');
       const newFriend = friends.find((item) => {
-        return item.msg_sender.username === clickedUsername || item.msg_receiver.username === clickedUsername;
+        return item.msg_user.username === clickedUsername;
+        
       });
+      console.log(newFriend)
       if (newFriend) {
-        const friendToSet = (newFriend.msg_sender.username === clickedUsername) ? newFriend.msg_sender : newFriend.msg_receiver;
+        const friendToSet = newFriend.msg_user;
         setFriend(friendToSet);
       }
     }
@@ -49,7 +53,7 @@ function ChatMessage() {
     useEffect(()=>{
       if (query !== '') {
         const lowercaseQuery = query.toLowerCase();
-        const filteredUsers = friends.filter(user => user.msg_sender.username.toLowerCase().includes(lowercaseQuery) | user.msg_receiver.username.toLowerCase().includes(lowercaseQuery));
+        const filteredUsers = friends.filter(user => user.msg_user.username.toLowerCase().includes(lowercaseQuery));
         setDisplayUser(filteredUsers);
       } else {
         setDisplayUser(friends);
@@ -85,16 +89,13 @@ function ChatMessage() {
                       </div>
                       <div className='px-4 d-none d-md-block'>
                         {displayUser && displayUser.length>0?displayUser.map((item, index)=>{
-                          let user = {};
-                          if(item.msg_sender.username === localStorage.getItem("username")) user = item.msg_receiver;
-                          else user = item.msg_sender
                           return (
                             <div className="list-group-item list-group-item-action border-0 mb-2" 
-                            data-user={user.username} onClick={handleConnect} key={index}>
+                            data-user={item.msg_user.username} onClick={handleConnect} key={index}>
                             <div className="d-flex align-items-start">
-                              <img src={`${user.image}`} className="rounded-circle avatar" width={40} height={40}/>
+                              <img src={`${item.msg_user.image}`} className="rounded-circle avatar" width={40} height={40}/>
                               <div className='flex-grow-1'>
-                                <h6 className='m-0'>{user.username}</h6>
+                                <h6 className='m-0'>{item.msg_user.username}</h6>
                                 <div className='d-flex'>
                                   <p className='fs-14'>{item.body}</p>
                                   <p className='fs-10'>{moment.utc(item.date).local().startOf('seconds').fromNow()}</p>

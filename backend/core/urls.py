@@ -71,7 +71,7 @@ urlpatterns = [
     path('api/delete-table/<rid>/<tid>/', delete_table, name='delete-table'),
     path('api/reviews-restaurant/<rid>/', review_restaurant, name='review-restaurant'),
     path('api/manage-order/<rid>/', manage_order_by_date, name='manage-order'),
-    path('api/friend-chat/<uid>/', friend_chat, name='friend-chat'),
+    path('api/friend-chat/<rid>/', friend_chat, name='friend-chat'),
 
     # For AI
     path('api/search-ai/', search_restaurant_image, name='search-restaurant-image'),
