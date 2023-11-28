@@ -131,9 +131,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = data.get('friend')
         user = await self.get_restaurant_from_identifier()
         friend = await self.get_user_from_name(username)
-        print(user, friend);
         chatmessage = await self.get_list_message(friend, user)
-        print(chatmessage)
         if chatmessage is not None:
             await self.send_group(self.username, 'message-list', chatmessage)
             await self.send_group(username, 'message-list', chatmessage)

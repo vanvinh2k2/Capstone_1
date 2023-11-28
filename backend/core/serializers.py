@@ -81,13 +81,6 @@ class ContactUsSerializers(serializers.ModelSerializer):
     class Meta:
         model = ContactUs
         fields = "__all__"
-        
-
-# class AddressSerializers(serializers.ModelSerializer):
-#     user = UserSerializers(read_only=True)
-#     class Meta:
-#         model = Address
-#         fields = "__all__"
 
 class OrderCartSerializers(serializers.ModelSerializer):
     restaurant = RestaurantSerializers(read_only=True)

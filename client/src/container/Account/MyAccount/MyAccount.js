@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 import { get_account, change_account } from '../../../action/account';
 
-function MyAccount(props) {
+function MyAccount() {
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [img, setImg] = useState(null);

@@ -25,9 +25,6 @@ function ChatMessage() {
     useEffect(()=>{
       setDisplayUser(friends);
       if(friends.length>0){
-        // if(friends[0].msg_user.username === localStorage.getItem("username")) 
-        // setFriend(friends[0].msg_receiver);
-        // else 
         setFriend(friends[0].msg_user);
       }
       

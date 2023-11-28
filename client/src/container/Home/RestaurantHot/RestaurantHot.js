@@ -2,10 +2,8 @@ import React from 'react';
 import Slider from 'react-slick'
 import '../../../sass/components/Slick/slick.css';
 import '../../../sass/components/Slick/slick-theme.css';
-import resimg from '../../../assets/images/res.png'
 import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {getRestaurantHot, postLike} from '../../../action/restaurant'
 
 
@@ -47,10 +45,8 @@ function RestaurantHot(props) {
       }
     ]
     }
-
     const dispatch = useDispatch();
     const restaurants = useSelector(state=>state.restaurant.restaurant_hot)
-    
     useEffect(()=>{
         const fetchData = async () => {
             const action = await getRestaurantHot();

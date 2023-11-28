@@ -16,13 +16,13 @@ function Sidebar() {
   }
 
   async function handelLogout(e){
-    const action = await logout(localStorage.getItem('token'));
+    const action = await logout();
     dispatch(action);
     setIsLogout(true);
   }
 
   useEffect(()=>{
-    if(isLogout === true && localStorage.getItem("token")===null){
+    if(isLogout === true){
       navigate("/");
     }
   }, [isLogout])

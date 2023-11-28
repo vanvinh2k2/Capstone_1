@@ -90,7 +90,7 @@ function Speciality() {
                                             </div>
                                         </div>
                                         <div className="featured__item__view">
-                                            <button><a href='/detail-dish'>View Detail</a></button>
+                                            <button><a href={`/detail-dish/${dish.did}`}>View Detail</a></button>
                                         </div>
                                     </div>
                                 </div>

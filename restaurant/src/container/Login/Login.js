@@ -29,7 +29,7 @@ function Login() {
     }
     
     useEffect(()=>{
-        if(localStorage.getItem("token") !== null) navigate("/restaurant");
+        if(localStorage.getItem("rid") !== null) navigate("/restaurant");
     }, [])
 
     return ( 
