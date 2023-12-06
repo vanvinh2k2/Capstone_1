@@ -50,8 +50,8 @@
         padding: 30px;
         background: white;
         border-radius: 10px;
-        height: 601px;
-        overflow: auto;
+        height: 684px;
+        // overflow: auto;
         h3{
             text-align: center;
             border-bottom: 1px solid #ccc;
@@ -151,6 +151,7 @@
     }
     .btn{
         margin: 15px auto 0;
+        width: fit-content;
         a{
             color: white;
         }
@@ -162,7 +163,6 @@
     border: none;
     padding: 5px 25px;
     font-weight: 600;
-    max-width: min-content;
     color: white;
     background: var(--color_button) !important;
     border-radius: 4px;
@@ -177,4 +177,9 @@
     color: white;
     background: #b89296 !important;
     border-radius: 4px;
+}
+.order__restaurant__dish__detail__content{
+    height: 100%;
+    overflow: auto;
+    max-height: 510px;
 }

@@ -8,6 +8,8 @@ import { useNavigate} from 'react-router-dom'
 import Time from '../../../components/Time/Time';
 import { checkOrder } from '../../../action/order';
 import { CHECK_ORDER } from '../../../action/types';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function OrderRestaurant(props) {
     const tables = useSelector(state=>state.restaurant.tables);
@@ -179,26 +181,29 @@ function OrderRestaurant(props) {
 
     function checkInput(){
         if(orderItems.length<=0){
-            alert("Please choice Dishes!");
+            toast.error("Please choice Dishes!");
             return false;
-        }else
-        if(orderUser.name === ""){
-            alert("Please input Name!");
+        }else if(orderUser.name === ""){
+            toast.error("Please input Name!");
             return false;
-        }else if(orderUser.people === ""){
-            alert("Please input number of People!");
+        }else if(orderUser.number_people === ""){
+            toast.error("Please input number of People!");
             return false;
         }else if(orderUser.phone === ""){
-            alert("Please input Phone!");
+            toast.error("Please input Phone!");
             return false;
-        }else if(orderUser.table === ""){
-            alert("Please choice Table!");
+        }else if(orderUser.tid === ""){
+            toast.error("Please choice Table!");
             return false;
         }else if(orderUser.time_from === "0"){
-            alert("Please input time from!");
+            toast.error("Please input time from!");
             return false;
         }else if(orderUser.time_to === "0"){
-            alert("Please input time to!");
+            toast.error("Please input time to!");
+            return false;
+        }
+        else if(orderUser.order_date === ""){
+            toast.error("Please input Order date!");
             return false;
         }
         return true;
@@ -356,6 +361,7 @@ function OrderRestaurant(props) {
                             <div className="col-lg-12 col-sm-12">
                                 <button className="btn" onClick={handelSubmit}>Next</button>
                             </div>
+                            <ToastContainer/>
                         </div>
                     </div>
                 </div>

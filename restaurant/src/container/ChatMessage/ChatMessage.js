@@ -27,7 +27,6 @@ function ChatMessage() {
       if(friends.length>0){
         setFriend(friends[0].msg_user);
       }
-      
     }, [friends])
 
     function handleSearch(e){

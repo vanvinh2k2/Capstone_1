@@ -14,7 +14,7 @@ def default(request):
         num_top_restaurant.append(order_count['num_restaurant'])
 
     num_top_order = []
-    orders_chart = Order.objects.annotate(month=ExtractMonth("order_date")).values("month").annotate(count=Count("id")).values('month', 'count')
+    orders_chart = Order.objects.annotate(month=ExtractMonth("order_date")).values("month").annotate(count=Count("oid")).values('month', 'count')
     for i in range(1,13):
         for order_chart in orders_chart:
             if i == order_chart['month']:

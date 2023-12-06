@@ -8,7 +8,7 @@ from operator import itemgetter
 from rest_framework import status, permissions, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from datetime import datetime
+from rest_framework.pagination import PageNumberPagination
 
 def convert_time(time):
     time = str(time)[:5]
@@ -35,24 +35,7 @@ class RestaurantHotAPI(generics.ListAPIView, generics.RetrieveAPIView):
     serializer_class = RestaurantSerializers
     permission_classes = [permissions.AllowAny]
     lookup_field = 'rid'
-
-    def get(self, request, *args, **kwargs):
-        rid = kwargs.get('rid')
-        if rid is None:
-            queryset = self.get_queryset()
-            serialize = self.serializer_class(queryset, many=True, context={'request': request})
-
-            return Response({'success': True,
-                             'message': 'Get list restaurant hot successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
-        else:
-            instance = self.get_object()
-            serialize = RestaurantSerializers(instance, context={'request': request})
-            return Response({'success': True,
-                             'message': 'Get detail restaurant hot successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
+    pagination_class = PageNumberPagination
 
 
 class RestaurantAPI(generics.ListAPIView, generics.RetrieveAPIView):
@@ -60,23 +43,7 @@ class RestaurantAPI(generics.ListAPIView, generics.RetrieveAPIView):
     serializer_class = RestaurantSerializers
     permission_classes = [permissions.AllowAny]
     lookup_field = 'rid'
-
-    def get(self, request, *args, **kwargs):
-        rid = kwargs.get('rid')
-        if rid is None:
-            queryset = self.get_queryset()
-            serialize = self.serializer_class(queryset, many=True, context={'request': request})
-            return Response({'success': True,
-                             'message': 'Get list restaurants successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
-        else:
-            instance = self.get_object()
-            serialize = RestaurantSerializers(instance, context={'request': request})
-            return Response({'success': True,
-                             'message': 'Get detail restaurant successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
+    pagination_class = PageNumberPagination
 
 
 class DishesHotAPI(generics.ListAPIView, generics.RetrieveAPIView):
@@ -84,23 +51,7 @@ class DishesHotAPI(generics.ListAPIView, generics.RetrieveAPIView):
     serializer_class = DishesSerializers
     permission_classes = [permissions.AllowAny]
     lookup_field = 'did'
-
-    def get(self, request, *args, **kwargs):
-        did = kwargs.get('did')
-        if did is None:
-            query_set = self.get_queryset()
-            serialize = self.serializer_class(query_set, context={'request': request}, many=True)
-            return Response({'success': True,
-                             'message': 'Get list dish featured successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
-        else:
-            instance = self.get_object()
-            serialize = DishesSerializers(instance, context={'request': request})
-            return Response({'success': True,
-                             'message': 'Get detail dish featured successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
+    pagination_class = PageNumberPagination
 
 
 class DishesAPI(generics.ListAPIView, generics.RetrieveAPIView):
@@ -108,23 +59,7 @@ class DishesAPI(generics.ListAPIView, generics.RetrieveAPIView):
     serializer_class = DishesSerializers
     permission_classes = [permissions.AllowAny]
     lookup_field = 'did'
-
-    def get(self, request, *args, **kwargs):
-        did = kwargs.get('did')
-        if did is None:
-            query_set = self.get_queryset()
-            serialize = self.serializer_class(query_set, context={'request': request}, many=True)
-            return Response({'success': True,
-                             'message': 'Get list dish successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
-        else:
-            instance = self.get_object()
-            serialize = DishesSerializers(instance, context={'request': request})
-            return Response({'success': True,
-                             'message': 'Get detail dish successfully.',
-                             'data': serialize.data
-                             }, status=status.HTTP_200_OK)
+    pagination_class = PageNumberPagination
 
 
 class CategoryAPI(generics.ListAPIView):
@@ -139,6 +74,28 @@ class CategoryAPI(generics.ListAPIView):
                          'message': 'Get category successfully.',
                          'data': serialize.data
                          }, status=status.HTTP_200_OK)
+    
+
+@api_view(['GET'])
+def dish_detail(request, *args, **kwargs):
+    did =kwargs.get("did")
+    dish = Dish.objects.get(did=did)
+    serialize = DishesSerializers(dish, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get dish successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def restaurant_detail(request, *args, **kwargs):
+    rid =kwargs.get("rid")
+    restaurant = Restaurant.objects.get(rid=rid)
+    serialize = RestaurantSerializers(restaurant, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get restaurant successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -249,7 +206,7 @@ def add_order(request, *args, **kwargs):
             dish = Dish.objects.get(did=item['did'])
             OrderItem.objects.create(
                 order=order,
-                invoice_no="invoice_no_%s" %(order.id),
+                invoice_no="invoice_no_%s" %(order.oid),
                 quantity=item['quantity'],
                 total=item['total'],
                 dish=dish
@@ -469,10 +426,9 @@ def friend_chat(request, *args, **kwargs):
     rid = kwargs.get('rid')
     result=[]
     restaurant = Restaurant.objects.get(rid=rid)
-    friends = User.objects.filter(is_staff=False)
+    friends = User.objects.filter()
     for friend in friends:
         friend_instance = User.objects.get(id=friend.id)
-        print(friend.id)
         data_ok = ChatMessage.objects.filter(
            msg_user=friend_instance,
            msg_restaurant=restaurant
@@ -494,16 +450,17 @@ def add_review(request, *args, **kwargs):
     rid = kwargs.get("rid")
     review = request.data.get('review')
     rating = request.data.get('rating')
-    print(uid, rid, review, rating)
     user = User.objects.get(id=uid)
     restaurant = Restaurant.objects.get(rid=rid)
-    print(user, restaurant)
-    restaurantReview = RestaurantReview.objects.filter(
-        user=user, 
-        restaurant=restaurant
-    )
-
-    if restaurantReview is None:
+    try:
+        RestaurantReview.objects.get(
+            user=user, 
+            restaurant=restaurant
+        )
+        return Response({'success': False,
+            'message': 'Already evaluated!'
+        }, status=status.HTTP_200_OK)
+    except:
         RestaurantReview.objects.create(
             user=user, 
             restaurant=restaurant, 
@@ -511,12 +468,8 @@ def add_review(request, *args, **kwargs):
             rating=rating
         )
         return Response({'success': True,
-        'message': 'Review successfully.'
+            'message': 'Review successfully.'
         }, status=status.HTTP_200_OK)
-
-    return Response({'success': False,
-        'message': 'Already evaluated!'
-    }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])

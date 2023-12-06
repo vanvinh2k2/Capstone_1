@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch} from "react-redux";
 import { listLike, deleteLike } from "../../action/restaurant";
-import img from '../../assets/images/empty2.png'
+import img from '../../assets/images/empty2.png';
+import 'react-toastify/dist/ReactToastify.css';
+import { DEL_LIKE } from "../../action/types";
+import { toast, ToastContainer } from "react-toastify";
 
 function LikeRestaurant() {
     const dispatch = useDispatch();
@@ -19,6 +22,8 @@ function LikeRestaurant() {
             localStorage.getItem("iduser"),
             e.currentTarget.getAttribute('value')
         );
+        if(action.type === DEL_LIKE) toast.success("Delete like successfully.");
+        else toast.error("Like not exists!");
         dispatch(action);
     }
     return ( 
@@ -64,6 +69,7 @@ function LikeRestaurant() {
                     </table>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
      );
 }

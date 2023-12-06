@@ -50,8 +50,6 @@
         padding: 30px;
         background: white;
         border-radius: 10px;
-        max-height: 600px;
-        overflow: auto;
         margin-bottom: 15px;
         margin-top: 20px;
         h3{
@@ -158,4 +156,10 @@
             color: white;
         }
     }
+}
+
+.order__restaurant__dish__detail__content{
+    overflow: auto;
+    max-height: 460px;
+    margin-bottom: 20px;
 }

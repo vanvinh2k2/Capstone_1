@@ -10,11 +10,14 @@ def user_directory_path(instance, filename):
 
 
 def dish_directory_path(instance, filename):
-    return 'dish_{0}/{1}'.format(instance.id, filename)
+    return 'dish_{0}/{1}'.format(instance.did, filename)
+
+def restaurant_directory_path(instance, filename):
+    return 'restaurant_{0}/{1}'.format(instance.rid, filename)
 
 
 def order_dish_directory_path(instance, filename):
-    return 'order_dish_{0}/{1}'.format(instance.order.id, filename)
+    return 'order_dish_{0}/{1}'.format(instance.order.oid, filename)
 
 
 STATUS_CHOICE = (
@@ -42,7 +45,7 @@ RATING = (
 
 # Create your models here.
 class Category(models.Model):
-    cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="cat", alphabet="abcdefgh12345")
+    cid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="cat", alphabet="abcdefgh12345", primary_key=True)
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to="category")
 
@@ -58,14 +61,14 @@ class Category(models.Model):
 
 
 class Restaurant(models.Model):
-    rid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="res", alphabet="abcdefgh12345")
+    rid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="res", alphabet="abcdefgh12345", primary_key=True)
     title = models.CharField(max_length=100, default="No have")
     username = models.CharField(max_length=150, null=True)
     email = models.EmailField(unique=True)
-    image = models.ImageField(upload_to=user_directory_path)
+    image = models.ImageField(upload_to=restaurant_directory_path)
     description = RichTextUploadingField(null=True, blank=True)
     address = models.CharField(max_length=100, null=True)
-    phone = models.CharField(max_length=100, default="+(84) 344 342 295")
+    phone = models.CharField(max_length=100)
     password = models.CharField(max_length=120)
     address = models.CharField(max_length=500, null=True, blank=True)
     time_open = models.TimeField()
@@ -84,7 +87,7 @@ class Restaurant(models.Model):
 
 
 class Dish(models.Model):
-    did = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
+    did = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345", primary_key=True)
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to=dish_directory_path)
     description = RichTextUploadingField(null=True, blank=True, default="This is product")
@@ -115,7 +118,7 @@ class Dish(models.Model):
 
 
 class Table(models.Model):
-    tid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
+    tid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345", primary_key=True)
     title = models.CharField(max_length=100)
     number_seat = models.IntegerField(default=2)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
@@ -125,7 +128,7 @@ class Table(models.Model):
 
 
 class Order(models.Model):
-    oid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
+    oid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345", primary_key=True)
     order_date = models.DateField()
     full_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=15)
@@ -150,7 +153,7 @@ class Order(models.Model):
 
 
 class OrderCart(models.Model):
-    ocid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
+    ocid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345", primary_key=True)
     full_name = models.CharField(max_length=200)
     order_date = models.DateField()
     phone = models.CharField(max_length=15)
@@ -177,7 +180,6 @@ class OrderCartItem(models.Model):
 
 
 class OrderItem(models.Model):
-    oiid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefgh12345")
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     invoice_no = models.CharField(max_length=200)
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)

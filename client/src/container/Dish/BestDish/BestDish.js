@@ -1,19 +1,20 @@
 import { getDishes } from "../../../action/dish";
 import { useEffect, useState } from "react";
-import {useDispatch, useSelector} from 'react-redux'
-
+import {useDispatch, useSelector} from 'react-redux';
+import Pagniation from '../../../components/Pagniation/Pagniation';
 
 function BestDish() {
     const dispatch = useDispatch();
-    const dishes = useSelector(state=>state.dish.dishes);
-
+    const dishes = useSelector(state=>state.dish.dishes.results);
+    const num_res = useSelector(state=>state.dish.dishes.count)
+    const [page, setPage] = useState(1);
     useEffect(()=>{
         async function getdishes(){
-            const action = await getDishes();
+            const action = await getDishes(page);
             dispatch(action);
         }
         getdishes();
-    },[])
+    },[page])
 
     return ( 
         <div className="container menu__dish">
@@ -21,7 +22,7 @@ function BestDish() {
                 <h3>The Best Dishes</h3>
             </div>
             <div className="row">
-                {dishes.map((dish, index)=>{
+                {dishes&&dishes.map((dish, index)=>{
                     return(
                         <div className="col-lg-4 col-sm-6 col-md-6" key={index}>
                             <div className="featured__content">
@@ -48,13 +49,15 @@ function BestDish() {
                                         </div>
                                     </div>
                                     <div className="featured__item__view">
-                                        <button><a href={`/detail-dish/${dish.did}`}>View Detail</a></button>
+                                        <button><a href={`/detail-dish/${dish.did}`} className="text-light">View Detail</a></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     )
                 })}
+                {num_res>11?<Pagniation page={page} setPage={setPage} count={num_res}/>:""}
+                
             </div>
         </div>
      );

@@ -4,6 +4,8 @@ import { getBill } from '../../action/bill';
 import { useParams } from 'react-router-dom';
 import { cancelOrder } from "../../action/order";
 import { addReview } from "../../action/restaurant";
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function DetailHistory() {
     const {order, orderItems} = useSelector(state=>state.bill.bill);
@@ -28,7 +30,7 @@ function DetailHistory() {
 
     async function handleCancel(){
         const action = await cancelOrder(oid);
-        alert(action.payload);
+        toast.info(action.payload);
         window.location.reload();
     }
 
@@ -40,9 +42,9 @@ function DetailHistory() {
                 rating, 
                 review
             );
-            alert(action.payload);
+            toast.success(action.payload);
             setReview("");
-        }else alert('Please input content!');
+        }else toast.error('Please input content!');
     }
 
     return ( 
@@ -177,6 +179,7 @@ function DetailHistory() {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
      );
 }

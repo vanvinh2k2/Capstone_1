@@ -1,4 +1,3 @@
-import resimg from '../../../assets/images/res.png'
 import Slider from 'react-slick'
 import '../../../sass/components/Slick/slick.css';
 import '../../../sass/components/Slick/slick-theme.css';
@@ -6,7 +5,6 @@ import { useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { getDishesOfRestaurant } from '../../../action/dish';
 import {useParams} from 'react-router-dom'
-
 
 function Speciality() {
     const settings = {
@@ -90,7 +88,7 @@ function Speciality() {
                                             </div>
                                         </div>
                                         <div className="featured__item__view">
-                                            <button><a href={`/detail-dish/${dish.did}`}>View Detail</a></button>
+                                            <button><a className="text-light" href={`/detail-dish/${dish.did}`}>View Detail</a></button>
                                         </div>
                                     </div>
                                 </div>

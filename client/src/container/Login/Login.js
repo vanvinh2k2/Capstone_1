@@ -9,6 +9,8 @@ import {FacebookLoginButton} from 'react-social-login-buttons'
 import { LOGIN_SUCCESS } from "../../action/types";
 import Google from "../../components/Google/Google";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import Animation from "../../components/Animation/animation";
 
 function Login(props) {
@@ -77,7 +79,7 @@ function Login(props) {
                                     <FacebookLoginButton/>
                                 </LoginSocialFacebook>
                             </button>
-                           
+                           <ToastContainer/>
                     <div className="login__other">
                         <span>Don't have an Account?</span>
                         <a href="/sign-up">Sign up</a>

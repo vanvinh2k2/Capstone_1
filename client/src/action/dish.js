@@ -21,14 +21,12 @@ const config2 = {
     }
 }
 
-export const getDishes= async()=>{
+export const getDishes= async(page)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dish/`, config)
-        if(res.data.success == true){
-            return {
-                type: GET_DISHES,
-                payload: res.data.data
-            }
+        const res = await axios.get(`http://127.0.0.1:8000/api/dish/?page=${page}`, config)
+        return {
+            type: GET_DISHES,
+            payload: res.data
         }
 
     }catch(e){
@@ -42,11 +40,9 @@ export const getDishes= async()=>{
 export const getDish= async(did)=>{
     try{
         const res = await axios.get(`http://127.0.0.1:8000/api/dish/${did}`, config)
-        if(res.data.success == true){
-            return {
-                type: GET_DISH_DETAIL,
-                payload: res.data.data
-            }
+        return {
+            type: GET_DISH_DETAIL,
+            payload: res.data.data
         }
 
     }catch(e){

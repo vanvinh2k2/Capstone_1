@@ -1,26 +1,35 @@
-import resimg from '../../../assets/images/res.png'
+
 import {useDispatch, useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {getRestaurant, postLike} from '../../../action/restaurant'
+import Pagniation from '../../../components/Pagniation/Pagniation'
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { POST_LIKE } from '../../../action/types';
 
 function AllRestaurant() {
     const dispatch = useDispatch();
-    const restaurants = useSelector(state=>state.restaurant.restaurant)
-    
+    const restaurants = useSelector(state=>state.restaurant.restaurant.results)
+    const num_res = useSelector(state=>state.restaurant.restaurant.count)
+    const [page, setPage] = useState(1);
+
     useEffect(()=>{
         const fetchData = async () => {
-            const action = await getRestaurant();
+            const action = await getRestaurant(page);
             dispatch(action);
         };
         fetchData();
-    }, [])
+    }, [page])
 
     async function handelLike(e){
         const action = await postLike(
             localStorage.getItem("iduser"),
             e.currentTarget.getAttribute('value')
         );
+        if(action.type === POST_LIKE){
+            toast.success("Add like successfully.")
+        }
+        else toast.error("Added previously!")
         dispatch(action);
     }
     return ( 
@@ -34,7 +43,7 @@ function AllRestaurant() {
                 </div>
             </div>
             <div className="row">
-                {restaurants.map((restaurant, index)=>{
+                {restaurants&&restaurants.map((restaurant, index)=>{
                     return (
                         <div className="col-lg-3 col-md-4 col-sm-6" key={index}>
                             <div className="featured__content">
@@ -72,8 +81,10 @@ function AllRestaurant() {
                         </div>
                     )
                 })}
+                <Pagniation page={page} setPage={setPage} count={num_res}/>
             </div>
         </div>
+        <ToastContainer/>
     </section>
      );
 }

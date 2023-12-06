@@ -9,7 +9,7 @@ function Fillter() {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(100);
     const dispatch = useDispatch();
-    const restaurants = useSelector(state=>state.restaurant.restaurant);
+    const restaurants = useSelector(state=>state.restaurant.restaurant.results);
     const categorys = useSelector(state=>state.restaurant.categorys);
 
     const handleInput = (e)=>{
@@ -24,7 +24,7 @@ function Fillter() {
         }
 
         async function getrestaurant(){
-            const action = await getRestaurant();
+            const action = await getRestaurant(1);
             dispatch(action);
         }
 
@@ -34,56 +34,56 @@ function Fillter() {
 
     return ( 
         <div className="sidebar">
-                        <div className="sidebar__item">
-                            <h3 data='' value=''>By Restaurant</h3>
-                            {restaurants.map((restaurant, index)=>{
-                                return(
-                                    <label htmlFor={restaurant.rid} key={index}>
-                                        <input className="filter-checkbox" type="checkbox" id={restaurant.rid} value={restaurant.rid}/>
-                                        <p>{restaurant.title}</p>
-                                    </label>
-                                )
-                            })} 
-                        </div>
-                        <div className="sidebar__item">
-                            <div className="separate"></div>
-                            <h3>By Category</h3>
-                            <div className="sidebar__item__vendor">
-                                {categorys.map((category, index)=> {
-                                    return(
-                                        <label htmlFor={category.cid}>
-                                            <input className="filter-checkbox" type="checkbox" id={category.cid} value={category.cid}/>
-                                            <p>{category.title}</p>
-                                        </label>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                        <div className="sidebar__item view-top">
-                            <div className="separate"></div>
-                            <h3>By price</h3>
-                            <div className="price-range-wrap">
-                                <MutiRangeSlider
-                                    min={0}
-                                    max={0}
-                                    step={5}
-                                    minValue={minValue}
-                                    maxValue={maxValue}
-                                    onInput={(e) =>{
-                                        handleInput(e);
-                                    }}
-                                />
-                                <div className="price-range-content">
-                                    <span>10$</span>
-                                    <span>-</span>
-                                    <span>100$</span>
-                                </div>
-                                <div className="range-confirm">
-                                    <button className="btn">Apply</button>
-                                </div>
-                            </div>
-                        </div>
+            <div className="sidebar__item">
+                <h3 data='' value=''>By Restaurant</h3>
+                {restaurants&&restaurants.map((restaurant, index)=>{
+                    return(
+                        <label htmlFor={restaurant.rid} key={index}>
+                            <input className="filter-checkbox" type="checkbox" id={restaurant.rid} value={restaurant.rid}/>
+                            <p>{restaurant.title}</p>
+                        </label>
+                    )
+                })} 
+            </div>
+            <div className="sidebar__item">
+                <div className="separate"></div>
+                <h3>By Category</h3>
+                <div className="sidebar__item__vendor">
+                    {categorys.map((category, index)=> {
+                        return(
+                            <label htmlFor={category.cid}>
+                                <input className="filter-checkbox" type="checkbox" id={category.cid} value={category.cid}/>
+                                <p>{category.title}</p>
+                            </label>
+                        )
+                    })}
+                </div>
+            </div>
+            <div className="sidebar__item view-top">
+                <div className="separate"></div>
+                <h3>By price</h3>
+                <div className="price-range-wrap">
+                    <MutiRangeSlider
+                        min={0}
+                        max={0}
+                        step={5}
+                        minValue={minValue}
+                        maxValue={maxValue}
+                        onInput={(e) =>{
+                            handleInput(e);
+                        }}
+                    />
+                    <div className="price-range-content">
+                        <span>10$</span>
+                        <span>-</span>
+                        <span>100$</span>
                     </div>
+                    <div className="range-confirm">
+                        <button className="btn">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
      );
 }
 

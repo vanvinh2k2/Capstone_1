@@ -99,7 +99,7 @@ def find_similarities(dataRestaurant, dataOrder):
     data = data.sort_values(by='order_date', ascending=False)
     # Lấy 5 sản phẩm được đặt nhiều nhất
     top_products = [item[0] for item in Counter(data['product_name']).most_common(5)]
-    # print(top_products)
+    print(top_products)
     result = []
     for product in top_products:
         all_data = dataRestaurant['dataAll'] + [product]
@@ -147,6 +147,7 @@ def suggest_food(request, *args, **kwargs):
     print(dataRestaurant['dataAll'])
     print(dataOrder)
     data = find_similarities(dataRestaurant, dataOrder)
+    print(data)
 
     return Response({
             'success': True,

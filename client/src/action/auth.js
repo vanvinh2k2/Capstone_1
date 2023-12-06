@@ -22,7 +22,6 @@ export const login = async (email, password)=>{
     try{
         const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/`, body, config)
         if(res.data.success === true){
-            alert(res.data.message)
             const result = {
                 type: LOGIN_SUCCESS,
                 payload: res.data.data
@@ -30,7 +29,6 @@ export const login = async (email, password)=>{
             return result
         }
         else{
-            alert(res.data.message)
             return {
                 type: LOGIN_FAIL,
                 payload: res.data.message
@@ -38,7 +36,6 @@ export const login = async (email, password)=>{
         }
         
     } catch(e){
-        alert("Error!")
         return {
             type: LOGIN_FAIL,
             payload: e
@@ -94,14 +91,12 @@ export const logout = async(refresh) =>{
     try{
         const res = await axios.post(`http://127.0.0.1:8000/auth/api/logout/`, body, config);
         if(res.data.success == true){
-            alert(res.data.message)
             return {
                 type: LOGOUT,
                 payload: res.data
             }
         }
         else{
-            alert(res.data.message)
             return {
                 type: GET_ERROR,
                 payload: res.data.message

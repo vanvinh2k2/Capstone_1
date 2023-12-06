@@ -12,7 +12,7 @@ import {
 
 const initialState = {
     restaurant_hot: [],
-    restaurant: [],
+    restaurant: {},
     restaurant_detail: {},
     tables: [],
     categorys: [],

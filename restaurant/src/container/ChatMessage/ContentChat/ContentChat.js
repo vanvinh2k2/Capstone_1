@@ -18,7 +18,7 @@ function ContentChat(props) {
     useEffect(() => {
       if(props.friend !== null){
         client.onopen = () => {
-          console.log('WebSocket Client Connected');
+          console.log('WebSocket Client Connected'+ 'ws://127.0.0.1:8000/ws/chat/'+rid);
           if(client.OPEN) setIsConnect(true);
         };
         client.onmessage = (event) => {

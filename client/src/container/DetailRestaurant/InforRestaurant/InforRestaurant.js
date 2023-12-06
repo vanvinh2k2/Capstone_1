@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getRestaurantDetail } from '../../../action/restaurant';
 import ChatMessage from '../../ChatMessage/ChatMessage';
 
-function InforRestaurant(props) {
+function InforRestaurant() {
     const dispatch = useDispatch();
     const {rid} = useParams();
     const restaurant = useSelector(state=>state.restaurant.restaurant_detail);
@@ -16,6 +16,8 @@ function InforRestaurant(props) {
         }else setIsChat(true);
     }
 
+    console.log(restaurant);
+
     useEffect(()=>{
         async function getDetail(rid){
             const action = await getRestaurantDetail(rid);
@@ -26,7 +28,8 @@ function InforRestaurant(props) {
 
     return ( 
         <div className="container">
-            <div className="row product__details">
+            {restaurant?
+                <div className="row product__details">
                 <h3>Detail about Restaurant</h3>
                 <div className="col-lg-5 col-sm-12 col-md-6">
                     <img src={`${restaurant.image}`}/>
@@ -75,6 +78,7 @@ function InforRestaurant(props) {
                     </div>
                 </div>
             </div>
+            : ""}
         </div>
      );
 }

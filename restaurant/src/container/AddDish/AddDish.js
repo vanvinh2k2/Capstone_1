@@ -137,7 +137,7 @@ function AddDish() {
                                                             <span class="text-red">* </span>
                                                         </label>
                                                         <div class=" col-sm-7 field-price">
-                                                            <input onChange={handelChange} className="input" type="number" name="price"/>
+                                                            <input onChange={handelChange} className="input" min="1" type="number" name="price"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -148,7 +148,7 @@ function AddDish() {
                                                                 <span class="text-red">* </span>
                                                             </label>
                                                             <div class="col-sm-7 field-old_price">
-                                                                <input onChange={handelChange} className="input" type="number" name="old_price"/>
+                                                                <input onChange={handelChange} className="input" min="1" type="number" name="old_price"/>
                                                             </div>
                                                     </div>
                                                 </div>

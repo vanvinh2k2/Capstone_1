@@ -23,7 +23,7 @@ export const getRestaurantHot= async()=>{
         const res = await axios.get(`http://127.0.0.1:8000/api/restaurant-hot/`, config)
         return {
             type: RES_HOT_VIEW,
-            payload: res.data.data
+            payload: res.data.results
         }
     } catch(e){
         return {
@@ -33,12 +33,12 @@ export const getRestaurantHot= async()=>{
     }
 }
 
-export const getRestaurant= async()=>{
+export const getRestaurant= async(page)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/?page=${page}`, config)
         return {
             type: RES_VIEW,
-            payload: res.data.data
+            payload: res.data
         }
     } catch(e){
         return {
@@ -112,13 +112,11 @@ export const postLike = async(uid, rid)=>{
     try{
         const res = await axios.get(`http://127.0.0.1:8000/api/add-like/${uid}/${rid}/`, config)
         if(res.data.success === true){
-            alert(res.data.message)
             return {
                 type: POST_LIKE,
                 payload: res.data.data
             }
         }else{
-            alert(res.data.message)
             return {
                 type: GET_ERROR,
                 payload: res.data.message
@@ -136,13 +134,11 @@ export const deleteLike = async(uid, rid)=>{
     try{
         const res = await axios.get(`http://127.0.0.1:8000/api/delete-like/${uid}/${rid}/`, config)
         if(res.data.success == true){
-            alert(res.data.message)
             return {
                 type: DEL_LIKE,
                 payload: res.data.data
             }
         }else{
-            alert(res.data.message)
             return {
                 type: GET_ERROR,
                 payload: res.data.message
@@ -163,7 +159,7 @@ export const addReview = async(uid, rid, rating, review)=>{
         if(res.data.success == true){
             return {
                 type: REVIEW,
-                payload: res.data.data
+                payload: res.data.message
             }
         }else{
             return {

@@ -1,5 +1,5 @@
 import { getDishesOfRestaurant } from "../../../action/dish";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector} from 'react-redux';
 
 function OtherDish(props) {
@@ -50,7 +50,7 @@ function OtherDish(props) {
                                         </div>
                                     </div>
                                     <div className="featured__item__view">
-                                        <button><a href={`${dish.did}`}>View Detail</a></button>
+                                        <button><a className="text-light" href={`${dish.did}`}>View Detail</a></button>
                                     </div>
                                 </div>
                             </div>

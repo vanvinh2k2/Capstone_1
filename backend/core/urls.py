@@ -9,7 +9,7 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     get_table, update_table, delete_table, detail_table, get_profile, get_order_cart_res,\
     add_order_cart, delete_order_cart, bill_order, review_restaurant, manage_order_by_date,\
     friend_chat, check_order, add_review, update_order_item, delete_order_item, update_status_order,\
-    statistics
+    statistics, restaurant_detail, dish_detail
 
 urlpatterns = [
     path('', index, name='index'),
@@ -17,11 +17,11 @@ urlpatterns = [
     path('api/restaurant-hot/', RestaurantHotAPI.as_view(), name='restaurant-hot'),
     path('api/restaurant-hot/<rid>/', RestaurantHotAPI.as_view(), name='restaurant-hot-detail'),
     path('api/restaurant/', RestaurantAPI.as_view(), name='restaurant'),
-    path('api/restaurant/<rid>/', RestaurantAPI.as_view(), name='restaurant-detail'),
+    path('api/restaurant/<rid>/', restaurant_detail, name='restaurant-detail'),
     path('api/dish-featured/', DishesHotAPI.as_view(), name='dish-featured'),
     path('api/dish-featured/<did>/', DishesHotAPI.as_view(), name='dish-featured-detail'),
     path('api/dish/', DishesAPI.as_view(), name='dish'),
-    path('api/dish/<did>/', DishesAPI.as_view(), name='dish-detail'),
+    path('api/dish/<did>/', dish_detail, name='dish-detail'),
     path('api/restaurant/dish-by-category/<rid>/<cid>/', dish_by_category, name='dish-by-category'),
     path('api/category/', CategoryAPI.as_view(), name='category'),
     path('api/add-order/<uid>/<rid>/', add_order, name='add-order'),

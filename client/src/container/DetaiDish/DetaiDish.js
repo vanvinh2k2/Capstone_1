@@ -18,7 +18,6 @@ function DetailDish() {
         getdish();
     }, [])
     
-    
     return ( 
         <div className="container">
             <InforDish dish = {dish}/>
