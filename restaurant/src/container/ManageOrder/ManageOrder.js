@@ -99,14 +99,14 @@ function ManageOrder() {
   return (
     <div>
       <nav className='nav-header'>
-        <i class="fas fa-list"></i>
-        <i class="fa-solid fa-user"></i>
+        <i className="fas fa-list"></i>
+        <i className="fa-solid fa-user"></i>
       </nav>
       <nav className='nav-middle'>
       <div className="view-link">
           <p className='top'>Dashboard</p>
           <p><a href="/restaurant">Home</a></p>
-          <i class="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right"></i>
           <p>Manage Order</p>
       </div>
       <div className="add-table">

@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import { login } from "../../action/auth";
 import { useSelector, useDispatch} from "react-redux";
 import { useNavigate } from 'react-router-dom';
-
-import { LoginSocialFacebook } from 'reactjs-social-login';
-import {FacebookLoginButton} from 'react-social-login-buttons'
+import Facebook from "../../components/Facebook/Facebook";
 import { LOGIN_SUCCESS } from "../../action/types";
 import Google from "../../components/Google/Google";
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -51,11 +49,11 @@ function Login(props) {
                     <form action="" onSubmit={(e) => onSubmit(e)}>
                         <div className="item">
                             <p>Email</p>
-                            <input type="text" name='email' onChange={(e)=> changeData(e)}/>
+                            <input type="text" name='email' placeholder="example@gmail.com" onChange={(e)=> changeData(e)}/>
                         </div>
                         <div className="item">
                             <p>Password</p>
-                            <input type="password" name='password' onChange={(e)=> changeData(e)}/>
+                            <input type="password" name='password' placeholder="12345At/" onChange={(e)=> changeData(e)}/>
                         </div>
                         <div className="item">
                             <a href="/forget-password">Forgot password?</a>
@@ -68,17 +66,7 @@ function Login(props) {
                                     <Google/>
                                 </GoogleOAuthProvider>
                             </button>
-                            <button className="facebook">
-                                <LoginSocialFacebook appId='858875865717157'
-                                onResolve={(res)=>{
-                                    console.log(res);
-                                }}
-                                onReject={(err)=>{
-                                    console.log(err);
-                                }}>
-                                    <FacebookLoginButton/>
-                                </LoginSocialFacebook>
-                            </button>
+                            <Facebook/>
                            <ToastContainer/>
                     <div className="login__other">
                         <span>Don't have an Account?</span>

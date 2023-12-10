@@ -91,6 +91,7 @@ REST_FRAMEWORK = {
     # ),
 }
 
+
 WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
@@ -176,6 +177,10 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'auths.User'
+
+REST_FRAMEWORK_SIMPLEJWT = {
+    'USER_ID_FIELD': 'uid',
+}
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 # Default primary key field type
@@ -227,7 +232,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

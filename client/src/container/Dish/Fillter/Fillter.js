@@ -2,19 +2,33 @@ import MutiRangeSlider from "multi-range-slider-react"
 import { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { getCategory, getRestaurant } from "../../../action/restaurant";
-import restaurant from "../../../reducers/restaurant";
 
-
-function Fillter() {
-    const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(100);
+function Fillter({min_price, max_price, setMinPrice, setMaxPrice, setCategorys, setRestaurants}) {
     const dispatch = useDispatch();
-    const restaurants = useSelector(state=>state.restaurant.restaurant.results);
-    const categorys = useSelector(state=>state.restaurant.categorys);
+    const list_restaurant = useSelector(state=>state.restaurant.restaurant.results);
+    const list_category = useSelector(state=>state.restaurant.categorys);
 
     const handleInput = (e)=>{
-        setMinValue(e.minValue)
-        setMaxValue(e.maxValue)
+        setMinPrice(e.minValue)
+        setMaxPrice(e.maxValue)
+    }
+
+    function handelRes(e){
+        const rid = e.target.value;
+        if (e.target.checked) {
+            setRestaurants((prevSelected) => [...prevSelected, {"rid": rid}]);
+        } else {
+            setRestaurants((prevSelected) => prevSelected.filter(restaurant => restaurant['rid'] !== rid));
+        }
+    }
+
+    function handelCat(e){
+        const cid = e.target.value;
+        if (e.target.checked) {
+            setCategorys((prevSelected) => [...prevSelected, {"cid": cid}]);
+        } else {
+            setCategorys((prevSelected) => prevSelected.filter(category => category['cid'] !== cid));
+        }
     }
 
     useEffect(()=>{
@@ -36,10 +50,14 @@ function Fillter() {
         <div className="sidebar">
             <div className="sidebar__item">
                 <h3 data='' value=''>By Restaurant</h3>
-                {restaurants&&restaurants.map((restaurant, index)=>{
+                {list_restaurant&&list_restaurant.map((restaurant, index)=>{
                     return(
                         <label htmlFor={restaurant.rid} key={index}>
-                            <input className="filter-checkbox" type="checkbox" id={restaurant.rid} value={restaurant.rid}/>
+                            <input className="filter-checkbox" 
+                                type="checkbox" rid={restaurant.rid} 
+                                value={restaurant.rid} 
+                                onChange={handelRes}
+                            />
                             <p>{restaurant.title}</p>
                         </label>
                     )
@@ -49,10 +67,13 @@ function Fillter() {
                 <div className="separate"></div>
                 <h3>By Category</h3>
                 <div className="sidebar__item__vendor">
-                    {categorys.map((category, index)=> {
+                    {list_category.map((category, index)=> {
                         return(
-                            <label htmlFor={category.cid}>
-                                <input className="filter-checkbox" type="checkbox" id={category.cid} value={category.cid}/>
+                            <label htmlFor={category.cid} key={index}>
+                                <input className="filter-checkbox" 
+                                    type="checkbox" cid={category.cid} 
+                                    value={category.cid}
+                                    onChange={handelCat}/>
                                 <p>{category.title}</p>
                             </label>
                         )
@@ -67,8 +88,8 @@ function Fillter() {
                         min={0}
                         max={0}
                         step={5}
-                        minValue={minValue}
-                        maxValue={maxValue}
+                        minValue={min_price}
+                        maxValue={max_price}
                         onInput={(e) =>{
                             handleInput(e);
                         }}
@@ -78,9 +99,9 @@ function Fillter() {
                         <span>-</span>
                         <span>100$</span>
                     </div>
-                    <div className="range-confirm">
-                        <button className="btn">Apply</button>
-                    </div>
+                    {/* <div className="range-confirm">
+                        <button className="btn" onClick={handelPrice}>Apply</button>
+                    </div> */}
                 </div>
             </div>
         </div>

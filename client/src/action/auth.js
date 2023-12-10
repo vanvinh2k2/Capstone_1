@@ -52,12 +52,6 @@ export const signup = async(username, email, password, password2) =>{
         }
     }
 
-    const config = {
-        headers: {
-            "Content-type": 'application/json',
-        }
-    }
-
     const body = JSON.stringify({username, email, password})
     try{
         const res = await axios.post(`http://127.0.0.1:8000/auth/api/register/`, body, config);
@@ -140,8 +134,56 @@ export const forget_password = async(email) =>{
     }  
 }
 
-export const get_account = (uid)=>{
-    const body = JSON.stringify({uid})
 
+export const login_google = async(username, email, image, full_name, id) =>{
+    const body = JSON.stringify({username, email, image, full_name, id})
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/google/`, body, config);
+        if(res.data.success == true){
+            return {
+                type: LOGIN_SUCCESS,
+                payload: res.data.data
+            }
+        }
+        else{
+            return {
+                type: GET_ERROR,
+                payload: res
+            }
+        }
+    }
+    catch (e){
+        alert("Error!")
+        return {
+            type: LOGIN_FAIL,
+            payload: e
+        }
+    }
 }
 
+export const login_facebook = async(username, email, image, full_name, id) =>{
+
+    const body = JSON.stringify({username, email, image, full_name, id})
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/facebook/`, body, config);
+        if(res.data.success == true){
+            return {
+                type: LOGIN_SUCCESS,
+                payload: res.data.data
+            }
+        }
+        else{
+            return {
+                type: GET_ERROR,
+                payload: res
+            }
+        }
+    }
+    catch (e){
+        alert("Error!")
+        return {
+            type: LOGIN_FAIL,
+            payload: e
+        }
+    }
+}

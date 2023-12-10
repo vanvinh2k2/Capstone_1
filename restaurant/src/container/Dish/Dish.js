@@ -25,59 +25,59 @@ function Dish() {
     return ( 
         <div>
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Dishes</p>
                     <p><NavLink to="/restaurant">Home</NavLink></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>The Dishes</p>
                 </div>
                 <div className="add-dish">
                     <NavLink className="btn" to="/restaurant/add-dish" style={{color: "white"}}>
-                        <i class="fa-solid fa-circle-plus" style={{margin: "0 10px 0 0"}}></i>
+                        <i className="fa-solid fa-circle-plus" style={{margin: "0 10px 0 0"}}></i>
                         Add Dish
                     </NavLink>
                 </div>
             </nav>
             <div className="card table-responsive">
-                <table id="result_list" class="table table-striped">
+                <table id="result_list" className="table table-striped">
                     <thead>
                         <tr>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Did</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Title</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Dish Image</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Price</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Date</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Featured</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p>Action</p>
                                 </div>
                             </th>
@@ -86,7 +86,7 @@ function Dish() {
                     <tbody>
                         {dishes&&dishes.length>0?dishes.map((item, index)=>{
                             return (
-                                <tr role="row" class="even" key={index}>
+                                <tr role="row" className="even" key={index}>
                                     <th>
                                         <NavLink to={`/restaurant/update-dish/${item.did}`}>{item.did}</NavLink>
                                     </th>
@@ -96,11 +96,11 @@ function Dish() {
                                     </td>
                                     <td>{item.price}$</td>
                                     <td>{item.date.substring(0,10)}</td>
-                                    <td class="nowrap">
-                                        {item.featured?<i class="fa-solid fa-circle-check" style={{color: "green"}}></i>
-                                        :<i class="fa-solid fa-circle-xmark" style={{color: "red"}}></i>}
+                                    <td className="nowrap">
+                                        {item.featured?<i className="fa-solid fa-circle-check" style={{color: "green"}}></i>
+                                        :<i className="fa-solid fa-circle-xmark" style={{color: "red"}}></i>}
                                     </td>
-                                    <td class="nowrap"><i onClick={handelDelete} id-dish={item.did} class="fa-solid fa-trash"></i></td>
+                                    <td className="nowrap"><i onClick={handelDelete} id-dish={item.did} className="fa-solid fa-trash"></i></td>
                                 </tr>
                             )
                         }):<tr role="row">

@@ -1,21 +1,24 @@
-import { getDishesOfRestaurant } from "../../../action/dish";
-import { useEffect } from "react";
+import { getDishesOfRestaurant2 } from "../../../action/dish";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector} from 'react-redux';
+import Pagniation from '../../../components/Pagniation/Pagniation';
 
 function OtherDish(props) {
     const rid = props.rid;
-    const dishes = useSelector(state=>state.dish.dishes_res);
+    const dishes = useSelector(state=>state.dish.dishes_res2.results);
+    const num_res = useSelector(state=>state.dish.dishes_res2.count)
+    const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     
     useEffect(()=>{
         async function getdish(){
             if(rid !== null){
-                const action = await getDishesOfRestaurant(rid);
+                const action = await getDishesOfRestaurant2(rid, page);
                 dispatch(action);
             }
         }
         getdish();
-    }, [rid])
+    }, [rid, page])
 
     return ( 
         <div className="container menu__dish">
@@ -23,7 +26,7 @@ function OtherDish(props) {
                 <h3>The Other Dishes of Restaurant</h3>
             </div>
             <div className="row">
-                {dishes.map((dish, index)=>{
+                {dishes&&dishes.map((dish, index)=>{
                     return (
                         <div className="col-lg-3 col-md-6" key={index}>
                             <div className="featured__content">
@@ -57,7 +60,7 @@ function OtherDish(props) {
                         </div>
                     )
                 })}
-                
+                <Pagniation page={page} setPage={setPage} count={num_res}/>
             </div>
         </div>
      );

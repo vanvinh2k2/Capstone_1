@@ -16,8 +16,6 @@ function InforRestaurant() {
         }else setIsChat(true);
     }
 
-    console.log(restaurant);
-
     useEffect(()=>{
         async function getDetail(rid){
             const action = await getRestaurantDetail(rid);

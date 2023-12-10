@@ -76,20 +76,20 @@ function ContentChat(props) {
             {listMessage&&listMessage.length>0?listMessage.map((item, index)=>{
               if(item.sender === "restaurant"){
                 return(
-                  <div className="chat-message-right pb-1 mw-65 mt-1">
+                  <div className="chat-message-right pb-1 mw-65 mt-1" key={index}>
                     <div className="flex-shrink-1 py-2 px-3 mr-3 message2">{item.body}</div>
                   </div>
                 )
               }else if(item.sender === "user" && listMessage[index+1] && listMessage[index+1].sender === item.sender){
                 return(
-                  <div className="chat-message-left pb-1 mw-65 mt-1 ml-40">
+                  <div className="chat-message-left pb-1 mw-65 mt-1 ml-40" key={index}>
                     <div className="flex-shrink-1 bg-#ccc py-2 px-3 ml-3 message">{item.body}</div>
                   </div>
                 )
               }
               else{
                 return(
-                  <div className="chat-message-left pb-1 mw-65 mt-1 align-items-end">
+                  <div className="chat-message-left pb-1 mw-65 mt-1 align-items-end" key={index}>
                     <img src={`http://127.0.0.1:8000${item.msg_user.image}`} className="rounded-circle mr-1" width={40} height={40}/>
                     <div className="flex-shrink-1 bg-#ccc py-2 px-3 ml-3 message">{item.body}</div>
                   </div>

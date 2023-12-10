@@ -16,7 +16,6 @@ function Review() {
 
     useEffect(()=>{
         async function getreviews(){
-            console.log(localStorage.getItem('rid'))
             const action  = await getReviews(localStorage.getItem('rid'))
             dispatch(action);
         }
@@ -26,14 +25,14 @@ function Review() {
     return ( 
         <div>
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
             <div className="view-link">
                     <p className='top'>Reviews</p>
                     <p><a href="/restaurant">Home</a></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>Reviews</p>
                 </div>
                 <div className="add-review">
@@ -41,31 +40,31 @@ function Review() {
                 </div>
             </nav>
             <div className="card table-responsive">
-                <table id="result_list" class="table table-striped">
+                <table id="result_list" className="table table-striped">
                     <thead>
                         <tr>
-                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p href="#">User</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p href="#">Email</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p href="#">Review</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p href="#">Rating</p>
                                 </div>
                             </th>
-                            <th class="sorting" tabIndex="0" rowSpan="1" colSpan="1">
-                                <div class="text">
+                            <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                <div className="text">
                                     <p href="#">Date</p>
                                 </div>
                             </th>
@@ -74,7 +73,7 @@ function Review() {
                     <tbody>
                         {reviews&&reviews.length>0? reviews.map((item, index)=>{
                             return (
-                                <tr role="row" class="even" key={index}>
+                                <tr role="row" className="even" key={index}>
                                     <th>{item.user.username}</th>
                                     <td>{item.user.email}</td>
                                     <td>{item.review}</td>

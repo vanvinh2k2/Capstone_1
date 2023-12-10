@@ -106,6 +106,18 @@ from io import BytesIO
 import requests
 from django.core.files.base import ContentFile
 
+import re
+import unicodedata
+
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+def convert_to_username(name):
+    # Xóa dấu cách và chuyển đổi tên sang dạng không dấu
+    username = re.sub(r'\s', '', remove_accents(name).lower())
+    return username
+
 @api_view(['POST'])
 def login_facebook(request):
     uid = request.data.get("id")
@@ -118,12 +130,12 @@ def login_facebook(request):
     image_io = BytesIO()
     image.save(image_io, format='PNG')  # Chọn định dạng phù hợp
     full_name = request.data.get('full_name')
-    username = request.data.get('username')
+    username = convert_to_username(request.data.get('username'))
     # Kiểm tra xem người dùng đã tồn tại hay chưa
     user, created = User.objects.get_or_create(
             email=email,
             defaults={
-                'id': uid,
+                'id': id,
                 'full_name': full_name,
                 'username': username,
                 'provider': "Facebook"
@@ -167,21 +179,27 @@ def login_google(request):
     image_io = BytesIO()
     image.save(image_io, format='PNG')  # Chọn định dạng phù hợp
     full_name = request.data.get('full_name')
-    username = request.data.get('username')
+    username = convert_to_username(request.data.get('username'))
+    user = None
     # Kiểm tra xem người dùng đã tồn tại hay chưa
-    user, created = User.objects.get_or_create(
+    if not User.objects.filter(email=email).exists():
+        original_username = username
+        counter = 1
+        while User.objects.filter(username=username).exists():
+            username = f"{original_username}{counter}"
+            counter += 1
+
+        user_new = User.objects.create(
             email=email,
-            defaults={
-                'id': uid,
-                'full_name': full_name,
-                'username': username,
-                'provider': "Google"
-            }
-    )
-    # Lưu hình ảnh vào trường ImageField
-    if created:
+            id= uid,
+            full_name= full_name,
+            username= username,
+            provider= "Google"
+        )
         image_file = ContentFile(image_io.getvalue(), name=f"{username}.jpg")
-        user.image.save(f"{username}.jpg", image_file, save=True)
+        user_new.image.save(f"{username}.jpg", image_file, save=True)
+        user = user_new
+    else: user = User.objects.get(email=email)
     # Tạo hoặc cập nhật thông tin người dùng
     user_data = {
         'id': user.id,

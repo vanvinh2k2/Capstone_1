@@ -54,34 +54,34 @@
 # result = search_restaurants(restaurants_array, "Mì Quảng VN")
 # print(result)
 #####################################################################################################
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
-from collections import Counter
+# import pandas as pd
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.metrics.pairwise import linear_kernel
+# from collections import Counter
 
-dataAll = ['Quang noodles', 'Fish ball vermicelli', 'Nem lui', 'Hue beef noodle soup', 'Goi spring rolls', 'Fish sauce hot pot', 'Pot pot rice', 'Bread', 'Mussels with rice paper', 'Rice paper rolls', 'Beef noodles']
+# dataAll = ['Quang noodles', 'Fish ball vermicelli', 'Nem lui', 'Hue beef noodle soup', 'Goi spring rolls', 'Fish sauce hot pot', 'Pot pot rice', 'Bread', 'Mussels with rice paper', 'Rice paper rolls', 'Beef noodles']
 
-dataOrder = {
-    'product_name': ['Quang noodles', 'Bun with fish balls', 'Nem lui', 'Quang noodles', 'Bun with fish balls', 'Bun with beef noodles', 'Nem lui', 'Quang noodles', 'Bun with fish balls', 'Spring rolls'],
-    'order_date': ['2023-11-01', '2023-11-01', '2023-11-02', '2023-11-02', '2023-11-03', '2023-11-03', '2023-11-04', '2023-11-04', '2023-11-05', '2023-11-05']
-}
+# dataOrder = {
+#     'product_name': ['Quang noodles', 'Bun with fish balls', 'Nem lui', 'Quang noodles', 'Bun with fish balls', 'Bun with beef noodles', 'Nem lui', 'Quang noodles', 'Bun with fish balls', 'Spring rolls'],
+#     'order_date': ['2023-11-01', '2023-11-01', '2023-11-02', '2023-11-02', '2023-11-03', '2023-11-03', '2023-11-04', '2023-11-04', '2023-11-05', '2023-11-05']
+# }
 
-df = pd.DataFrame(dataOrder)
-df['order_date'] = pd.to_datetime(df['order_date'])
+# df = pd.DataFrame(dataOrder)
+# df['order_date'] = pd.to_datetime(df['order_date'])
 
-# Sắp xếp DataFrame theo 'order_date' giảm dần
-df = df.sort_values(by='order_date', ascending=False)
+# # Sắp xếp DataFrame theo 'order_date' giảm dần
+# df = df.sort_values(by='order_date', ascending=False)
 
-# Lấy 5 sản phẩm được đặt nhiều nhất
-top_products = [item[0] for item in Counter(df['product_name']).most_common(5)]
-print(top_products)
+# # Lấy 5 sản phẩm được đặt nhiều nhất
+# top_products = [item[0] for item in Counter(df['product_name']).most_common(5)]
+# print(top_products)
 
-check = 'Beef noodle'
-all_data = dataAll + [check]
+# check = 'Beef noodle'
+# all_data = dataAll + [check]
 
-# Tạo ma trận TF-IDF cho các sản phẩm loại bỏ từ dừng vietnamese
-tfidf_vectorizer = TfidfVectorizer(stop_words='english')
-tfidf_matrix = tfidf_vectorizer.fit_transform(all_data)
+# # Tạo ma trận TF-IDF cho các sản phẩm loại bỏ từ dừng vietnamese
+# tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+# tfidf_matrix = tfidf_vectorizer.fit_transform(all_data)
 
 #################################################################
 # # Lấy danh sách các từ trong từ điển
@@ -101,15 +101,15 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(all_data)
 #####################################################################
 
 # Sử dụng linear_kernel để tính toán độ tương đồng giữa "Mì Quảng" và tất cả các sản phẩm khác
-cosine_similarities = linear_kernel(tfidf_matrix[-1], tfidf_matrix[:-1]).flatten()
-print(cosine_similarities)
+# cosine_similarities = linear_kernel(tfidf_matrix[-1], tfidf_matrix[:-1]).flatten()
+# print(cosine_similarities)
 
-# Xây dựng danh sách các cặp (tên món ăn, độ tương đồng cosine)
-similarities_with_names = list(zip(dataAll, cosine_similarities))
+# # Xây dựng danh sách các cặp (tên món ăn, độ tương đồng cosine)
+# similarities_with_names = list(zip(dataAll, cosine_similarities))
 
-# In ra danh sách các món ăn và độ tương đồng cosine tương ứng
-for name, similarity in similarities_with_names:
-    print(f"Độ tương đồng giữa 'mì quảng' và '{name}': {similarity}")
+# # In ra danh sách các món ăn và độ tương đồng cosine tương ứng
+# for name, similarity in similarities_with_names:
+#     print(f"Độ tương đồng giữa 'mì quảng' và '{name}': {similarity}")
 
 #####################################################################################
 
@@ -166,3 +166,31 @@ for name, similarity in similarities_with_names:
 # sorted_results = sorted(restaurant_results, key=lambda x: (x['specialty'], x['rating'], x['like']), reverse=True)
 # for result in sorted_results:
 #     print(result)
+
+import re
+import unicodedata
+
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+def convert_to_username(name, existing_usernames):
+    # Xóa dấu cách và chuyển đổi tên sang dạng không dấu
+    cleaned_name = re.sub(r'\s', '', remove_accents(name).lower())
+    
+    # Đảm bảo tính duy nhất của username
+    base_username = cleaned_name
+    username = base_username
+    counter = 1
+    while username in existing_usernames:
+        username = base_username + str(counter)
+        counter += 1
+    
+    return username
+
+# Example
+api_name_with_diacritics = "Cảnh Ngáo"
+existing_usernames = set(["canhngao", "canhngao1"])  # Danh sách username đã tồn tại trong database
+
+username = convert_to_username(api_name_with_diacritics, existing_usernames)
+print(username)

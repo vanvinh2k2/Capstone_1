@@ -60,14 +60,14 @@ function Dashboard() {
     return ( 
         <div>
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>Dashboard</p>
                     <p><a href="/restaurant">Home</a></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>Dashboard</p>
                 </div>
             </nav>
@@ -90,46 +90,46 @@ function Dashboard() {
                     <div className='col-lg-12 col-sm-12 col-md-12'>
                     <div className='content-order card'>
                             <h3>The current order</h3>
-                            <table id="result_list" class="table table-striped">
+                            <table id="result_list" className="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Oid</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Order Date</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Price</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Product Status</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Time from</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Time to</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Number People</p>
                                             </div>
                                         </th>
-                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                            <div class="text">
+                                        <th className="sorting" tabIndex="0" rowSpan="1" colSpan="1">
+                                            <div className="text">
                                                 <p>Deposit</p>
                                             </div>
                                         </th>
@@ -139,15 +139,15 @@ function Dashboard() {
                                     {orders&&orders.length>0?orders.map((item, index)=>{
                                         if(index<10)
                                         return (
-                                            <tr role="row" class="even" key={index}>
+                                            <tr role="row" className="even" key={index}>
                                                 <th><NavLink to={`/restaurant/history-detail/${item.oid}`} >{item.oid}</NavLink></th>
                                                 <td>{item.order_date.substring(0,10)}</td>
                                                 <td>{item.price}$</td>
                                                 <td>{status[item.product_status]}</td>
                                                 <td>{item.time_from.substring(0,5)}</td>
-                                                <td class="nowrap">{item.time_to.substring(0,5)}</td>
-                                                <td class="nowrap">{item.number_people}</td>
-                                                <td class="nowrap">{item.deposit}$</td>
+                                                <td className="nowrap">{item.time_to.substring(0,5)}</td>
+                                                <td className="nowrap">{item.number_people}</td>
+                                                <td className="nowrap">{item.deposit}$</td>
                                             </tr>
                                         )
                                     }): <tr role="row">

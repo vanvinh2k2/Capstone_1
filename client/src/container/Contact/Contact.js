@@ -11,7 +11,7 @@ function Contact() {
                     <div className="contact-content">
                         <div className="contact-infor">
                             <div className="contact-infor-icon">
-                                <i class="fa-solid fa-location-dot" style={{color: 'red'}}></i>
+                                <i className="fa-solid fa-location-dot" style={{color: 'red'}}></i>
                             </div>
                             <div className="contact-infor-label">
                                 <b>Address</b>
@@ -20,7 +20,7 @@ function Contact() {
                         </div>
                         <div className="contact-infor">
                             <div className="contact-infor-icon">
-                                <i class="fa-solid fa-phone" style={{color: 'green'}}></i>   
+                                <i className="fa-solid fa-phone" style={{color: 'green'}}></i>   
                             </div>
                             <div className="contact-infor-label">
                                 <b>Phone</b>
@@ -29,7 +29,7 @@ function Contact() {
                         </div>
                         <div className="contact-infor">
                             <div className="contact-infor-icon">
-                                <i class="fa-solid fa-envelope" style={{color: 'orange'}}></i>
+                                <i className="fa-solid fa-envelope" style={{color: 'orange'}}></i>
                             </div>
                             <div className="contact-infor-label">
                                 <b>Email</b>

@@ -46,7 +46,7 @@ function Sidebar() {
         </li>
         <li className={click === "manage-order" ? "active" : ""}>
           <NavLink to="/restaurant/manage-order" onClick={() => handleClick("manage-order")}>
-            <i class="fa-regular fa-calendar-days"></i>
+            <i className="fa-regular fa-calendar-days"></i>
             <span className="text">Manage Order</span>
           </NavLink>
         </li>
@@ -70,7 +70,7 @@ function Sidebar() {
         </li>
         <li className={click === "history" ? "active" : ""}>
           <NavLink to="/restaurant/history-order" onClick={() => handleClick("history")}>
-            <i class="fa-solid fa-clock-rotate-left"></i>
+            <i className="fa-solid fa-clock-rotate-left"></i>
             <span className="text">History Order</span>
           </NavLink>
         </li>
@@ -85,7 +85,7 @@ function Sidebar() {
       <ul className="side-menu">
         <li className={click === "contact" ? "active" : ""}>
           <NavLink to="/restaurant/contact-us" onClick={() => handleClick("contact")}>
-            <i class="fa-solid fa-headset"></i>
+            <i className="fa-solid fa-headset"></i>
             <span className="text">Contact Us</span>
           </NavLink>
         </li>

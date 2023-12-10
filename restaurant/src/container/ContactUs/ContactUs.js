@@ -2,14 +2,14 @@ function ContactUs() {
     return ( 
         <div>
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>Contact Us</p>
                     <p><a href="/restaurant">Home</a></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>Contact Us</p>
                 </div>
             </nav>
@@ -21,7 +21,7 @@ function ContactUs() {
                         <div className="contact-content">
                             <div className="contact-infor">
                                 <div className="contact-infor-icon">
-                                    <i class="fa-solid fa-location-dot" style={{color: 'red'}}></i>
+                                    <i className="fa-solid fa-location-dot" style={{color: 'red'}}></i>
                                 </div>
                                 <div className="contact-infor-label">
                                     <b>Address</b>
@@ -30,7 +30,7 @@ function ContactUs() {
                             </div>
                             <div className="contact-infor">
                                 <div className="contact-infor-icon">
-                                    <i class="fa-solid fa-phone" style={{color: 'green'}}></i>   
+                                    <i className="fa-solid fa-phone" style={{color: 'green'}}></i>   
                                 </div>
                                 <div className="contact-infor-label">
                                     <b>Phone</b>
@@ -39,7 +39,7 @@ function ContactUs() {
                             </div>
                             <div className="contact-infor">
                                 <div className="contact-infor-icon">
-                                    <i class="fa-solid fa-envelope" style={{color: 'orange'}}></i>
+                                    <i className="fa-solid fa-envelope" style={{color: 'orange'}}></i>
                                 </div>
                                 <div className="contact-infor-label">
                                     <b>Email</b>

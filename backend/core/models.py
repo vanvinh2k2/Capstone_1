@@ -6,11 +6,12 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/{1}'.format(instance.id, filename)
+    return 'user_{0}/{1}'.format(instance.uid, filename)
 
 
 def dish_directory_path(instance, filename):
     return 'dish_{0}/{1}'.format(instance.did, filename)
+
 
 def restaurant_directory_path(instance, filename):
     return 'restaurant_{0}/{1}'.format(instance.rid, filename)

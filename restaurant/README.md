@@ -3,6 +3,6 @@ order not same ok
 suggest food ok
 ai image ok
 search
-chart
+chart ok
 notify
-pagination
+pagination ok

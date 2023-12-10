@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detailTable, updateTable } from '../../action/restaurant';
 import {useParams} from 'react-router-dom'
 import { UPDATE_TABLE } from '../../action/type';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function UpdateTable() {
     const dispatch = useDispatch();
@@ -22,8 +24,8 @@ function UpdateTable() {
                 if(action.type === UPDATE_TABLE){
                     navigate('/restaurant/table')
                 }
-            }else alert("Number of Seat have to higher 0!");
-        }else alert("Please input Title or Number of Seat!");
+            }else toast.error("Number of Seat have to higher 0!");
+        }else toast.error("Please input Title or Number of Seat!");
         
     }
 
@@ -31,7 +33,6 @@ function UpdateTable() {
         setTitle(title)
         async function getDetailTable(){
             const action = await detailTable(tid);
-            // console.log(action);
             dispatch(action);
         }
         getDetailTable();
@@ -43,58 +44,58 @@ function UpdateTable() {
     }, [table])
 
     return ( 
-        <div class="content">
+        <div className="content">
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Tables</p>
                     <p><a href="/restaurant">Home</a></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p><NavLink to="/restaurant/table">The Tables</NavLink></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>Update Table</p>
                 </div>
                 <div className="add-dish">
                     
                 </div>
             </nav>
-            <div class="container-fluid">
-                <section class="content">
-                    <div class="row">
+            <div className="container-fluid">
+                <section className="content">
+                    <div className="row">
                         <div id="content-main">
                                 <input type="hidden"/>
-                                <div class="row">
-                                    <div class="col-12 col-lg-9">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="form-group field-did">
-                                                    <div class="row">
-                                                        <label class="col-sm-3 text-left" for="id_did">
+                                <div className="row">
+                                    <div className="col-12 col-lg-9">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <div className="form-group field-did">
+                                                    <div className="row">
+                                                        <label className="col-sm-3 text-left" for="id_did">
                                                             Tid
-                                                            <span class="text-red">* </span> 
+                                                            <span className="text-red">* </span> 
                                                         </label>
-                                                        <div class=" col-sm-7 field-did ">
+                                                        <div className=" col-sm-7 field-did ">
                                                             <input className="input" type="text" value={table?table.tid:""} disabled/>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group field-title">
-                                                    <div class="row">
-                                                        <label class="col-sm-3 text-left">
+                                                <div className="form-group field-title">
+                                                    <div className="row">
+                                                        <label className="col-sm-3 text-left">
                                                             Title
-                                                            <span class="text-red">* </span>  
+                                                            <span className="text-red">* </span>  
                                                         </label>
-                                                        <div class=" col-sm-7 field-title">
+                                                        <div className=" col-sm-7 field-title">
                                                             <input onChange={e=>setTitle(e.target.value)} value={title} className="input" type="text"/>
                                                         </div>
-                                                        <label class="col-sm-3 text-left" style={{marginTop: "15px"}}>
+                                                        <label className="col-sm-3 text-left" style={{marginTop: "15px"}}>
                                                             Number of Seat
-                                                            <span class="text-red">* </span>  
+                                                            <span className="text-red">* </span>  
                                                         </label>
-                                                        <div class=" col-sm-7 field-title" style={{marginTop: "15px"}}>
+                                                        <div className=" col-sm-7 field-title" style={{marginTop: "15px"}}>
                                                             <input onChange={e=>setNumberSeat(e.target.value)} value={numberSeat} className="input" type="number"/>
                                                         </div>
                                                     </div>
@@ -102,9 +103,9 @@ function UpdateTable() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-lg-3">
-                                        <div class="form-group">
-                                            <input onClick={handelSubmit} type="submit" value="Save" class="btn btn-success form-control"/>
+                                    <div className="col-12 col-lg-3">
+                                        <div className="form-group">
+                                            <input onClick={handelSubmit} type="submit" value="Save" className="btn btn-success form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -112,6 +113,7 @@ function UpdateTable() {
                     </div>
                 </section>
             </div>
+            <ToastContainer/>
         </div>
      );
 }

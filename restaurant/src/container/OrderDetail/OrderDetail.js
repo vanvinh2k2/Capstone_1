@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryDetail, getCategory, getDishesOfRestaurant } from '../../action/restaurant';
 import { useParams } from 'react-router-dom';
 import { changeStatus, deleteOrderItem, updateOrderItem } from '../../action/restaurant';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { CHANGE_STATUS } from '../../action/type';
 
 function OrderDetail() {
     const {order, orderItems} = useSelector(state=>state.restaurant.order);
@@ -16,9 +19,11 @@ function OrderDetail() {
     const [status, setStatus] = useState("");
     const [cid, setCid] = useState("0");
 
-    function handelChangeStatus(e){
+    async function handelChangeStatus(e){
         setStatus(e.target.value);
-        changeStatus(e.target.value, oid);
+        const action = await changeStatus(e.target.value, oid);
+        if(action.type === CHANGE_STATUS) toast.success("Change order status successfully.");
+        else toast.error("Order status change failed!");
     }
 
     useEffect(()=>{
@@ -251,6 +256,7 @@ function OrderDetail() {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
      );
 }

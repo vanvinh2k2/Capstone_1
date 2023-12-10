@@ -23,6 +23,7 @@ export const GET_DISHES = 'GET_DISHES';
 export const GET_DISHES_HOT = 'GET_DISHES_HOT';
 export const GET_DISH_DETAIL = 'GET_DISH_DETAIL';
 export const GET_DISH_OF_RES = 'GET_DISH_OF_RES';
+export const GET_DISH_OF_RES_2 = 'GET_DISH_OF_RES_2';
 
 export const ADD_ORDER_CART = 'ADD_ORDER_CART';
 export const GET_ORDER_CART = 'GET_ORDER_CART';
@@ -37,3 +38,4 @@ export const CANCEL_ORDER = "CANCEL_ORDER";
 export const REVIEW = "REVIEW";
 export const GET_DISH_AI = 'GET_DISH_AI';
 export const GET_DISH_SUGGETS = 'GET_DISH_SUGGETS';
+export const FILTER_DISH = 'FILTER_DISH';

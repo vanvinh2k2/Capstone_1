@@ -13,7 +13,6 @@ function HistoryDetail() {
     useEffect(()=>{
         async function gethistoryDetails(){
             const action  = await getHistoryDetail(oid)
-            console.log(action);
             dispatch(action);
         }
         gethistoryDetails();
@@ -22,16 +21,16 @@ function HistoryDetail() {
     return ( 
         <div>
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>History Detail</p>
                     <p><NavLink to="/restaurant">Home</NavLink></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p><NavLink to="/restaurant/history-order">History Order</NavLink></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>History Detail</p>
                 </div>
             </nav>

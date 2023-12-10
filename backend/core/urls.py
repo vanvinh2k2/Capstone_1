@@ -9,7 +9,7 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     get_table, update_table, delete_table, detail_table, get_profile, get_order_cart_res,\
     add_order_cart, delete_order_cart, bill_order, review_restaurant, manage_order_by_date,\
     friend_chat, check_order, add_review, update_order_item, delete_order_item, update_status_order,\
-    statistics, restaurant_detail, dish_detail
+    statistics, restaurant_detail, dish_detail, dishes_of_restaurant2, filter_product
 
 urlpatterns = [
     path('', index, name='index'),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/order-detail/<oid>/', order_detail, name='order-detail'),
     path('api/bill-order/<oid>/', bill_order, name='bill-order'),
     path('api/dishes-of-restaurant/<rid>/', dishes_of_restaurant, name='dishes-of-restaurant'),
+    path('api/dishes-of-restaurant2/<rid>/', dishes_of_restaurant2, name='dishes-of-restaurant'),
     path('api/list-like/<uid>/', list_like, name='list-like'),
     path('api/add-like/<uid>/<rid>/', add_like, name='add-like'),
     path('api/delete-like/<uid>/<rid>/', delete_like, name='delete-like'),
@@ -49,6 +50,7 @@ urlpatterns = [
     path('api/update-order-item/<oid>/<did>/', update_order_item, name='update-order-item'),
     path('api/delete-order-item/<oid>/<did>/', delete_order_item, name='delete-order-item'),
     path('api/statistics/<rid>/', statistics, name='statistics'),
+    path('api/filter-product/', filter_product, name='filter-product'),
 
     # For Restaurant
     path('api/add-restaurant/<uid>/', add_restaurant, name='add-restaurant'),

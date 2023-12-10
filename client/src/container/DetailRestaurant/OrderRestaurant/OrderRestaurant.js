@@ -23,7 +23,7 @@ function OrderRestaurant(props) {
     const [dishes, setDishes] = useState([]);
     const [dishesSuggest, setDishesSuggest] = useState([]);
     const [dishesDisplay, setDishesDisplay] = useState([]);
-    const [quantity, setQuantity] = useState(Array.from({ length: dishes.length }, () => 1));
+    const [quantity, setQuantity] = useState(dishes.length > 0 ? Array.from({ length: dishes.length }, () => 1) : []);
     const [stick, setStick] = useState([]);
     const [cid, setCid] = useState("0");
     const [orderItems, setOrderItems] = useState([]);
@@ -336,7 +336,7 @@ function OrderRestaurant(props) {
                                             </div> 
                                         </div>
                                         <div className="order__restaurant__dish__detail__content">
-                                            {dishesDisplay.map((dish, index)=>{
+                                            {quantity&&dishesDisplay.map((dish, index)=>{
                                                 return (
                                                     <div className="order__restaurant__dish__detail__item" key={index}>
                                                         <img src={`${dish.image}`}/>

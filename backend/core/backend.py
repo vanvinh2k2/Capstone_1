@@ -124,6 +124,18 @@ def dishes_of_restaurant(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+def dishes_of_restaurant2(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    dishes = Dish.objects.filter(restaurant=restaurant)
+    paginator = PageNumberPagination()
+    paginator.page_size = 12
+    result_page = paginator.paginate_queryset(dishes, request)
+    serialize = DishesSerializers(result_page, many=True, context={'request': request})
+    return paginator.get_paginated_response(serialize.data)
+
+
+@api_view(['GET'])
 def list_like(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
@@ -174,12 +186,12 @@ def check_order(request, **kwargs):
     # Check Order moi them vao co hop le ko
     new_from = convert_time(request.data.get('time_from'))
     new_to = convert_time(request.data.get('time_to'))
-    print(time_from, time_to)
-    print(clock)
-    print(time)
-    print(in_time)
-    print(out_time)
-    print(new_from, new_to)
+    # print(time_from, time_to)
+    # print(clock)
+    # print(time)
+    # print(in_time)
+    # print(out_time)
+    # print(new_from, new_to)
     if check_time(new_from, new_to, time, clock) == True:
         return Response({'success': True,
                             'message': 'Order valid.'
@@ -370,8 +382,9 @@ def manage_order_by_date(request, *args, **kwargs):
     rid = kwargs.get('rid')
     date = request.data.get("date")
     restaurant = Restaurant.objects.get(rid=rid)
-    orders = Order.objects.filter(restaurant=restaurant, order_date=date)
+    orders = Order.objects.filter(restaurant=restaurant, order_date=date).exclude(product_status='cancel')
     serialize = OrderSerializers(orders, many=True, context={'request': request})
+    print(orders)
     return Response({'success': True,
                      'message': 'Get list order successfully.',
                      'data': serialize.data
@@ -548,9 +561,8 @@ def add_order_cart(request, *args, **kwargs):
                             "order": serialize.data,
                             "orderDetail": serialize2.data
                         }
-                         }, status=status.HTTP_200_OK)
-    else:
-        return Response({'success': False,
+                        }, status=status.HTTP_200_OK)
+    else: return Response({'success': False,
                          'message': 'Error!'
                          }, status=status.HTTP_200_OK)
 
@@ -608,11 +620,44 @@ def delete_order_cart(request, *args, **kwargs):
                          }, status=status.HTTP_200_OK)
 
 
+import json
+@api_view(['POST'])
+def filter_product(request):
+    dishes = Dish.objects.filter(product_status='published')
+    =
+    if 'max_price' in request.data:
+        max_price = request.data.get('max_price')
+        dishes = dishes.filter(price__lte=max_price)
+
+    if 'min_price' in request.data:
+        min_price = request.data.get('min_price')
+        dishes = dishes.filter(price__gte=min_price)
+    
+    if 'categorys' in request.data:
+        categorys = request.data.get('categorys')
+        category_cids = [item['cid'] for item in categorys]
+        if len(category_cids) > 0:
+            dishes = dishes.filter(category__cid__in=category_cids)
+
+    if 'restaurants' in request.data:
+        restaurants = request.data.get('restaurants')
+        restaurant_cids = [item['rid'] for item in restaurants]
+        if len(restaurant_cids) > 0:
+            dishes = dishes.filter(restaurant__rid__in=restaurant_cids)
+
+    paginator = PageNumberPagination()
+    paginator.page_size = 12
+    result_page = paginator.paginate_queryset(dishes, request)
+    serialize = DishesSerializers(result_page, many=True, context={'request': request})
+    return paginator.get_paginated_response(serialize.data)
+
+#----------------------------------------------------------------------------------
+
 # API for Restaurant
 @api_view(['POST'])
 def add_restaurant(request, *args, **kwargs):
     uid = kwargs.get('uid')
-    user = User.objects.get(id=uid)
+    user = User.objects.get(uid=uid)
     serialize = RestaurantSerializers(data=request.data, context={'request': request})
     if serialize.is_valid():
         serialize.save(user=user)

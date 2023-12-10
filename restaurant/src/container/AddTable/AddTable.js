@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTable } from '../../action/restaurant';
 import { ADD_TABLE } from '../../action/type';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AddTable() {
     const [title, setTitle] = useState("");
@@ -19,55 +21,55 @@ function AddTable() {
                 if(action.type === ADD_TABLE){
                     navigate("/restaurant/table");
                 }
-            }else alert("Number of Seat have to higher 0!")
+            }else toast.error("Number of Seat have to higher 0!")
             
         }else{
-            alert("Please input Title or Number of Seat!");
+            toast.error("Please input Title or Number of Seat!");
         }
     }
 
     return ( 
-        <div class="content">
+        <div className="content">
             <nav className='nav-header'>
-                <i class="fas fa-list"></i>
-                <i class="fa-solid fa-user"></i>
+                <i className="fas fa-list"></i>
+                <i className="fa-solid fa-user"></i>
             </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Tables</p>
                     <p><NavLink to="/restaurant">Home</NavLink></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p><NavLink to="/restaurant/table">The Tables</NavLink></p>
-                    <i class="fas fa-chevron-right"></i>
+                    <i className="fas fa-chevron-right"></i>
                     <p>Add Table</p>
                 </div>
                 <div className="add-dish">
                     
                 </div>
             </nav>
-            <div class="container-fluid">
-                <section class="content">
-                    <div class="row">
+            <div className="container-fluid">
+                <section className="content">
+                    <div className="row">
                         <div id="content-main">
                                 <input type="hidden"/>
-                                <div class="row">
-                                    <div class="col-12 col-lg-9">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="form-group field-title">
-                                                    <div class="row">
-                                                        <label class="col-sm-3 text-left" for="id_title">
+                                <div className="row">
+                                    <div className="col-12 col-lg-9">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <div className="form-group field-title">
+                                                    <div className="row">
+                                                        <label className="col-sm-3 text-left" htmlFor="id_title">
                                                             Title
-                                                            <span class="text-red">* </span>  
+                                                            <span className="text-red">* </span>  
                                                         </label>
-                                                        <div class=" col-sm-7 field-title">
+                                                        <div className=" col-sm-7 field-title">
                                                             <input onChange={e=>setTitle(e.target.value)} className="input" type="text"/>
                                                         </div>
-                                                        <label class="col-sm-3 text-left" for="id_title" style={{marginTop: "15px"}}>
+                                                        <label className="col-sm-3 text-left" htmlFor="id_title" style={{marginTop: "15px"}}>
                                                             Number of Seat
-                                                            <span class="text-red">* </span>  
+                                                            <span className="text-red">* </span>  
                                                         </label>
-                                                        <div class=" col-sm-7" field-title style={{marginTop: "15px"}}>
+                                                        <div className=" col-sm-7" field-title style={{marginTop: "15px"}}>
                                                             <input onChange={e=>setNumberSeat(e.target.value)} className="input" type="number"/>
                                                         </div>
                                                     </div>
@@ -75,9 +77,9 @@ function AddTable() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-lg-3">
-                                        <div class="form-group">
-                                            <input onClick={handelSubmit} type="submit" value="Save" class="btn btn-success form-control"/>
+                                    <div className="col-12 col-lg-3">
+                                        <div className="form-group">
+                                            <input onClick={handelSubmit} type="submit" value="Save" className="btn btn-success form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -85,6 +87,7 @@ function AddTable() {
                     </div>
                 </section>
             </div>
+            <ToastContainer/>
         </div>
      );
 }

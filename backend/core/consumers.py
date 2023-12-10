@@ -10,10 +10,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.identifier = self.scope["url_route"]["kwargs"]["identifier"]
         user = None
-        if len(str(self.identifier)) > 3:
-            if str(self.identifier)[:3] == "res":
+        if str(self.identifier)[:3] == "res":
                 user = await self.get_restaurant_from_identifier()
         else: user = await self.get_user_from_identifier()
+
         if user is None:
             await self.close()
             return
@@ -28,7 +28,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_user_from_identifier(self):
         try:
-            user = User.objects.get(pk=self.identifier)
+            user = User.objects.get(id=self.identifier)
             return user if isinstance(user, User) else None
         except (User.DoesNotExist, ValueError):
             return None

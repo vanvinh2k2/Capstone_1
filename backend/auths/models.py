@@ -6,6 +6,7 @@ from django.utils.html import mark_safe
 
 # Create your models here.
 class User(AbstractUser):
+    id = ShortUUIDField(unique=True, length=10, max_length=25, prefix="user", alphabet="abcdefgh12345", primary_key=True)
     email = models.EmailField(unique=True)
     image = models.ImageField(upload_to="image", default="image/default.png")
     full_name = models.CharField(max_length=200, null=True, blank=True)

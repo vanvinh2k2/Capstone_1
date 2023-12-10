@@ -33,34 +33,34 @@ function Login() {
     }, [])
 
     return ( 
-        <div class="login">
-            <div class="login-box">
-                <div class="login-logo">
+        <div className="login">
+            <div className="login-box">
+                <div className="login-logo">
                     <img src={logo} alt="Restaurant Reservation"/>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                    <p class="login-box-msg">Welcome</p>
+                <div className="card">
+                    <div className="card-body">
+                    <p className="login-box-msg">Welcome</p>
                     <form onSubmit={(e)=>handleSubmit(e)}>
-                        <div class="input-group mb-3">
-                            <input type="text" onChange={handleForm} name="email" class="form-control" placeholder="Email"/>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-user"></span>
+                        <div className="input-group mb-3">
+                            <input type="text" onChange={handleForm} name="email" className="form-control" placeholder="Email"/>
+                            <div className="input-group-append">
+                                <div className="input-group-text">
+                                    <span className="fas fa-user"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="password" onChange={handleForm} name="password" class="form-control" placeholder="Password"/>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
+                        <div className="input-group mb-3">
+                            <input type="password" onChange={handleForm} name="password" className="form-control" placeholder="Password"/>
+                            <div className="input-group-append">
+                                <div className="input-group-text">
+                                    <span className="fas fa-lock"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-block">
+                        <div className="row">
+                            <div className="col-12">
+                                <button type="submit" className="btn btn-primary btn-block">
                                     Log in
                                 </button>
                             </div>

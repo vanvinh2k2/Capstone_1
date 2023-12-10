@@ -83,7 +83,6 @@ function Time() {
             <option value='22:30'>22:30</option>
             <option value='22:45'>22:45</option>
             <option value='23:00'>23:00</option>
-            
         </>
      );
 }

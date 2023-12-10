@@ -4,14 +4,16 @@ import {
     GET_DISH_DETAIL,
     GET_DISHES_HOT,
     GET_DISH_OF_RES,
+    GET_DISH_OF_RES_2,
     GET_DISH_AI,
-    GET_DISH_SUGGETS
+    GET_DISH_SUGGETS, FILTER_DISH
 } from "../action/types";
 
 const initialState = {
     dishes: [],
     dishes_hot: [],
     dishes_res: [],
+    dishes_res2: [],
     dishes_res_cat: [],
     dish: {},
     dishes_suggest: [],
@@ -20,7 +22,7 @@ const initialState = {
 export default function(state=initialState, action){
     const {type, payload} = action;
     switch(type){
-        case GET_DISHES:
+        case FILTER_DISH:
             return {
                 ...state,
                 dishes : payload
@@ -39,6 +41,11 @@ export default function(state=initialState, action){
             return {
                 ...state,
                 dishes_res : payload
+            }
+        case GET_DISH_OF_RES_2:
+            return {
+                ...state,
+                dishes_res2 : payload
             }
         case GET_DISH_AI:
             return {
