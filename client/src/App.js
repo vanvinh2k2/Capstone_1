@@ -1,10 +1,11 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes, Outlet} from 'react-router-dom'
 import LayoutDefault from './hocs/LayoutDefault';
 import styles from './sass/_main.scss'
-import { publicRouter } from './routers';
+import { privateRouter, publicRouter } from './routers';
 import { Fragment } from 'react';
 import { Provider } from "react-redux";
 import store from "./store";
+import PrivateRoute from './hocs/PrivateRouter';
 
 function App() {
   return (
@@ -24,6 +25,25 @@ function App() {
                 <Layout>
                   < route.component/>
                 </Layout>
+              } key={index}/>
+            })
+            
+          }
+          {
+            privateRouter.map((route, index)=>{
+              let Layout = LayoutDefault;
+              if(route.layout){
+                Layout = route.layout;
+              }else if(route.layout === null){
+                Layout = Fragment;
+              }
+              return <Route path={route.path} element={
+                <PrivateRoute element={
+                  <Layout>
+                  < route.component/>
+                </Layout>
+                }>
+                </PrivateRoute>
               } key={index}/>
             })
           }

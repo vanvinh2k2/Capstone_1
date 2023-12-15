@@ -24,10 +24,6 @@ function Dish() {
 
     return ( 
         <div>
-            <nav className='nav-header'>
-                <i className="fas fa-list"></i>
-                <i className="fa-solid fa-user"></i>
-            </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Dishes</p>

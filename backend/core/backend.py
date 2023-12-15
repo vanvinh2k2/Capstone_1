@@ -6,9 +6,11 @@ from .serializers import *
 from operator import itemgetter
 
 from rest_framework import status, permissions, generics
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 def convert_time(time):
     time = str(time)[:5]
@@ -77,6 +79,7 @@ class CategoryAPI(generics.ListAPIView):
     
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def dish_detail(request, *args, **kwargs):
     did =kwargs.get("did")
     dish = Dish.objects.get(did=did)
@@ -87,7 +90,9 @@ def dish_detail(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 
+
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def restaurant_detail(request, *args, **kwargs):
     rid =kwargs.get("rid")
     restaurant = Restaurant.objects.get(rid=rid)
@@ -98,7 +103,9 @@ def restaurant_detail(request, *args, **kwargs):
                      }, status=status.HTTP_200_OK)
 
 
+
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def dish_by_category(request, *args, **kwargs):
     category = Category.objects.get(cid=kwargs.get('cid'))
     restaurant = Restaurant.objects.get(rid=kwargs.get('rid'))
@@ -111,6 +118,7 @@ def dish_by_category(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def dishes_of_restaurant(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
@@ -124,6 +132,7 @@ def dishes_of_restaurant(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def dishes_of_restaurant2(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
@@ -234,6 +243,7 @@ def add_order(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def search_restaurant(request, *args, **kwargs):
     q = request.POST.get('q')
     restaurants = Restaurant.objects.filter(title__contains=q)
@@ -325,7 +335,6 @@ def edit_profile(request, *args, **kwargs):
             'avatar': get_base_url(request) + (user.image.url if user.image else ''),
         }
     }
-    
     return Response(response_data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -354,6 +363,7 @@ def get_profile(request, *args, **kwargs):
     
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def order_detail(request, *args, **kwargs):
     oid = kwargs.get('oid')
     order = Order.objects.get(oid=oid)
@@ -366,6 +376,7 @@ def order_detail(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def list_order(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
@@ -384,7 +395,6 @@ def manage_order_by_date(request, *args, **kwargs):
     restaurant = Restaurant.objects.get(rid=rid)
     orders = Order.objects.filter(restaurant=restaurant, order_date=date).exclude(product_status='cancel')
     serialize = OrderSerializers(orders, many=True, context={'request': request})
-    print(orders)
     return Response({'success': True,
                      'message': 'Get list order successfully.',
                      'data': serialize.data
@@ -392,6 +402,7 @@ def manage_order_by_date(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def bill_order(request, *args, **kwargs):
     oid = kwargs.get('oid')
     order = Order.objects.get(oid=oid)
@@ -424,6 +435,7 @@ def cancel_order(request, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def search_dishes(request):
     q = request.POST.get('q')
     dishes = Dish.objects.filter(title__contains=q)
@@ -435,6 +447,7 @@ def search_dishes(request):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def friend_chat(request, *args, **kwargs):
     rid = kwargs.get('rid')
     result=[]
@@ -498,7 +511,9 @@ def contact_us(request, *args, **kwargs):
                      'message': 'Send response fail.'
                      }, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def detail_table(request, *args, **kwargs):
     tid = kwargs.get('tid');
     table = Table.objects.get(tid=tid)
@@ -608,6 +623,7 @@ def update_order_cart(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def delete_order_cart(request, *args, **kwargs):
     rid = kwargs.get('rid')
     uid = kwargs.get('uid')
@@ -622,9 +638,9 @@ def delete_order_cart(request, *args, **kwargs):
 
 import json
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def filter_product(request):
     dishes = Dish.objects.filter(product_status='published')
-    =
     if 'max_price' in request.data:
         max_price = request.data.get('max_price')
         dishes = dishes.filter(price__lte=max_price)
@@ -655,6 +671,7 @@ def filter_product(request):
 
 # API for Restaurant
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def add_restaurant(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(uid=uid)
@@ -672,6 +689,7 @@ def add_restaurant(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def add_category(request, *args, **kwargs):
     serialize = CategorySerializers(data=request.data)
     if serialize.is_valid():
@@ -685,6 +703,7 @@ def add_category(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def delete_category(request, *args, **kwargs):
     cid = kwargs.get('cid')
     try:
@@ -700,6 +719,7 @@ def delete_category(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def update_category(request, *args, **kwargs):
     cid = kwargs.get('cid')
     category = Category.objects.get(cid=cid)
@@ -712,6 +732,7 @@ def update_category(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def wishlist_restaurant(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
@@ -724,6 +745,7 @@ def wishlist_restaurant(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def review_restaurant(request, *args, **kwargs):
     rid = kwargs.get("rid")
     restaurant = Restaurant.objects.get(rid=rid)
@@ -736,6 +758,7 @@ def review_restaurant(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def add_dish(request, *args, **kwargs):
     rid = kwargs.get('rid')
     cid = request.data.get('cid')
@@ -754,6 +777,7 @@ def add_dish(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def delete_dish(request, *args, **kwargs):
     did = kwargs.get('did')
     rid = kwargs.get('rid')
@@ -774,6 +798,7 @@ def delete_dish(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def update_dish(request, *args, **kwargs):
     did = kwargs.get('did')
     # try:
@@ -798,6 +823,7 @@ def update_dish(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def order_restaurant(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
@@ -810,6 +836,7 @@ def order_restaurant(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def add_table(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
@@ -826,6 +853,7 @@ def add_table(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def get_table(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
@@ -838,6 +866,7 @@ def get_table(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def update_table(request, *args, **kwargs):
     tid = kwargs.get('tid')
     try:
@@ -855,6 +884,7 @@ def update_table(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def delete_table(request, *args, **kwargs):
     tid = kwargs.get('tid')
     rid = kwargs.get('rid')
@@ -876,6 +906,7 @@ def delete_table(request, *args, **kwargs):
     
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def update_order_item(request, *args, **kwargs):
     oid = kwargs.get('oid')
     did = kwargs.get('did')
@@ -911,6 +942,7 @@ def update_order_item(request, *args, **kwargs):
         
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def delete_order_item(request, *args, **kwargs):
     oid = kwargs.get('oid')
     did = kwargs.get('did')
@@ -937,6 +969,7 @@ def delete_order_item(request, *args, **kwargs):
     
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def update_status_order(request, *args, **kwargs):
     oid = kwargs.get('oid')
     order = Order.objects.get(oid=oid)
@@ -951,6 +984,7 @@ from django.db.models import Count
 from django.db.models.functions import ExtractMonth
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def statistics(request, *args, **kwargs):
     rid = kwargs.get('rid')
     top_user = []

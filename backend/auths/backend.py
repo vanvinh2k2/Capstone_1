@@ -9,7 +9,7 @@ from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from core.models import *
 
@@ -64,7 +64,7 @@ class RegisterAPI(generics.CreateAPIView):
 class LoginAPI(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = LoginSerializes
-    permissions = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def create(self, request):
         serialize = self.get_serializer(data=request.data)
@@ -119,6 +119,7 @@ def convert_to_username(name):
     return username
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def login_facebook(request):
     uid = request.data.get("id")
     email = request.data.get('email')
@@ -168,6 +169,7 @@ def login_facebook(request):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def login_google(request):
     uid = request.data.get("id")
     email = request.data.get('email')
@@ -221,10 +223,11 @@ def login_google(request):
         'data': user_data
     }, status=status.HTTP_200_OK)
 
+
 class LoginRestaurantAPI(generics.CreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = LoginRestaurantSerializes
-    permissions = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def create(self, request):
         serialize = self.get_serializer(data=request.data)
@@ -256,26 +259,28 @@ class LoginRestaurantAPI(generics.CreateAPIView):
         }, status=status.HTTP_200_OK)
 
 
-class Logout(APIView):
-    def post(self, request):
-        refresh_token = request.data['refresh']
-        if refresh_token:
-            try:
-                token = RefreshToken(refresh_token)  # Tạo đối tượng RefreshToken từ chuỗi refresh_token
-                token.check_blacklist()  # Kiểm tra xem token đã tồn tại trong đen danh chưa
-            except (TokenError, InvalidToken) as e:
-                return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-            token.blacklist()
-            return Response({'success': True,
-                             'message': 'Logout successful.'
-                             }, status=status.HTTP_200_OK)
-        else:
-            return Response({'success': False,
-                             'message': 'Refresh token is required.'
-                             }, status=status.HTTP_400_BAD_REQUEST)
+# class Logout(APIView):
+#     @permission_classes([permissions.AllowAny])
+#     def post(self, request):
+#         refresh_token = request.data['refresh']
+#         if refresh_token:
+#             try:
+#                 token = RefreshToken(refresh_token)  # Tạo đối tượng RefreshToken từ chuỗi refresh_token
+#                 token.check_blacklist()  # Kiểm tra xem token đã tồn tại trong đen danh chưa
+#             except (TokenError, InvalidToken) as e:
+#                 return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+#             token.blacklist()
+#             return Response({'success': True,
+#                              'message': 'Logout successful.'
+#                              }, status=status.HTTP_200_OK)
+#         else:
+#             return Response({'success': False,
+#                              'message': 'Refresh token is required.'
+#                              }, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
+@permission_classes([permissions.AllowAny])
 def forget_password(request, *args, **kwargs):
     email = request.data.get('email')
     try:

@@ -5,7 +5,7 @@ import { logout } from '../../action/auth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-function Sidebar() {
+function Sidebar({isHidden}) {
   const [click, setClick] = useState("dashboard");
   const [isLogout, setIsLogout] = useState(false);
   const dispatch = useDispatch();
@@ -28,12 +28,12 @@ function Sidebar() {
   }, [isLogout])
 
   return ( 
-    <section id="sidebar">
+    <section id="sidebar" className={isHidden ? 'hidden' : ''}>
       <a href="/restaurant" className="brand">
         <img src={logo} alt="Logo" />
         <span className="text">Booking Restaurant</span>
       </a>
-      <a href="#" className="account">
+      <a href="/restaurant/account" className="account">
         <img src={localStorage.getItem("image")} alt="User" />
         <span className="text">{localStorage.getItem("username")}</span>
       </a>

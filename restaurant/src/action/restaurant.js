@@ -19,6 +19,7 @@ import {
     CHANGE_STATUS,
     UPDATE_ORDER_ITEM,
     DELETE_ORDER_ITEM,
+    RES_DETAIL,
 } from "../action/type";
 import axios from "axios";
 
@@ -229,8 +230,6 @@ export const updateDish = async(did, data) =>{
         digital, 
         cid 
     } = data;
-
-    // console.log(data);
     
     let formData = new FormData();
     if(image) formData.append('image', image);
@@ -462,5 +461,20 @@ export const changeStatus= async(product_status, oid)=>{
             type: GET_ERROR,
             payload: e
         }   
+    }
+}
+
+export const getRestaurantDetail= async(rid)=>{
+    try{
+        const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/${rid}`, config)
+        return {
+            type: RES_DETAIL,
+            payload: res.data.data
+        }
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: "ERROR!"
+        }
     }
 }

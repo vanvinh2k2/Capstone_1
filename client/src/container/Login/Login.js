@@ -9,9 +9,8 @@ import Google from "../../components/Google/Google";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Animation from "../../components/Animation/animation";
 
-function Login(props) {
+function Login() {
     let navigate = useNavigate()
     let [formData, setFormData] = useState({
         email: "",
@@ -33,11 +32,11 @@ function Login(props) {
         dispatch(action);
     }
 
-    useEffect(() => {
-        if (auth.token !== null) {
-            navigate('/');
-        }
-    }, [isChange]);
+    // useEffect(() => {
+    //     if (auth.access !== null) {
+    //         navigate('/');
+    //     }
+    // }, [isChange]);
     
     return (
         <div className="container">

@@ -30,14 +30,20 @@ function MyAccount() {
             phone,
             address,
             img,
-            localStorage.getItem('iduser')
+            localStorage.getItem('iduser'),
+            localStorage.getItem("access")
         );
         dispatch(action);
     }
 
     useEffect(()=>{
+        console.log(localStorage.getItem('iduser'), 
+        localStorage.getItem("access"))
         async function getAccount(){
-            const action = await get_account(localStorage.getItem('iduser'));
+            const action = await get_account(
+                localStorage.getItem('iduser'), 
+                localStorage.getItem("access")
+            );
             dispatch(action);
         }
         getAccount();

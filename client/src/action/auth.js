@@ -7,9 +7,18 @@ import {
     LOGOUT, 
     FORGET_USER, 
     GET_ERROR, 
-    CHANGE_ACCOUNT,
-    GET_ACCOUNT
-} from './types'
+    REFRESH_SUCCESS,
+    TOKEN_VALID
+} from './types';
+
+const yourAuthToken = localStorage.getItem("access");
+
+const config_auth = {
+    headers: {
+        "Content-type": "application/json",
+        'Authorization': `Bearer ${yourAuthToken?yourAuthToken:null}`,
+    }
+};
 
 const config = {
     headers: {
@@ -81,21 +90,19 @@ export const signup = async(username, email, password, password2) =>{
 }
 
 export const logout = async(refresh) =>{
-    const body = JSON.stringify({refresh})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/logout/`, body, config);
-        if(res.data.success == true){
+        // if(res.data.success == true){
             return {
                 type: LOGOUT,
-                payload: res.data
+                payload: null
             }
-        }
-        else{
+        // }
+        // else{
             return {
                 type: GET_ERROR,
-                payload: res.data.message
+                payload: null
             }
-        }
+        // }
     }
     catch (e){
         alert("Error!")
@@ -162,7 +169,6 @@ export const login_google = async(username, email, image, full_name, id) =>{
 }
 
 export const login_facebook = async(username, email, image, full_name, id) =>{
-
     const body = JSON.stringify({username, email, image, full_name, id})
     try{
         const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/facebook/`, body, config);
@@ -186,4 +192,37 @@ export const login_facebook = async(username, email, image, full_name, id) =>{
             payload: e
         }
     }
+}
+ 
+
+export const checkAccessToken = async(token) =>{
+    const body = JSON.stringify({token})
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/auth/api/token/verify/`, body, config);
+            return {
+                type: TOKEN_VALID,
+                payload: res.data
+            }
+    }
+    catch (e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
+    }
+}
+
+export const refreshToken = async(refresh) =>{
+    try {
+      const res = await axios.post('http://127.0.0.1:8000/auth/api/token/refresh/', {refresh: refresh}, config_auth);
+            return {
+                type: REFRESH_SUCCESS,
+                payload: res.data
+            }
+  }catch (e){
+    return {
+        type: GET_ERROR,
+        payload: e
+    }
+}
 }

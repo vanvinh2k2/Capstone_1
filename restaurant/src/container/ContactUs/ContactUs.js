@@ -1,10 +1,6 @@
 function ContactUs() {
     return ( 
         <div>
-            <nav className='nav-header'>
-                <i className="fas fa-list"></i>
-                <i className="fa-solid fa-user"></i>
-            </nav>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>Contact Us</p>
@@ -25,7 +21,7 @@ function ContactUs() {
                                 </div>
                                 <div className="contact-infor-label">
                                     <b>Address</b>
-                                    <p>Duy Xuyen, Quang Nam</p>
+                                    <p>Cam Le, Da Nang</p>
                                 </div>
                             </div>
                             <div className="contact-infor">
@@ -43,7 +39,7 @@ function ContactUs() {
                                 </div>
                                 <div className="contact-infor-label">
                                     <b>Email</b>
-                                    <p>ngov6769@gmail.com</p>
+                                    <p>Team_C1SE.37@gmail.com</p>
                                 </div>
                             </div>
                         </div>

@@ -26,3 +26,4 @@ export const GET_DISH_OF_RES = 'GET_DISH_OF_RES';
 export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const UPDATE_ORDER_ITEM = 'UPDATE_ORDER_ITEM';
 export const DELETE_ORDER_ITEM = 'DELETE_ORDER_ITEM';
+export const RES_DETAIL = 'RES_DETAIL';

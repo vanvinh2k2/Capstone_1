@@ -4,11 +4,13 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    FORGET_USER
+    FORGET_USER,
+    REFRESH_SUCCESS
 } from '../action/types';
 
 const initialState = {
-    token: localStorage.getItem('token'),
+    refresh: localStorage.getItem('refresh'),
+    access: localStorage.getItem('access'),
     idUser: localStorage.getItem('iduser'),
     email: localStorage.getItem('email'),
     avatar: localStorage.getItem('avatar'),
@@ -20,44 +22,56 @@ export default function(state = initialState, action) {
 
     switch(type) {
         case LOGIN_SUCCESS:
-            localStorage.setItem('token', payload.token.refresh);
+            localStorage.setItem('refresh', payload.token.refresh);
+            localStorage.setItem('access', payload.token.access);
             localStorage.setItem('iduser', payload.id);
             localStorage.setItem('email', payload.email);
             localStorage.setItem('avatar', payload.avatar);
             localStorage.setItem('username', payload.username);
             return {
                 ...state,
-                token: payload.token.access,
+                refresh: payload.token.refresh,
+                access: payload.token.access,
                 idUser: payload.id,
                 email: payload.email,
                 avatar: payload.avatar,
                 username: payload.username
             }
         case SIGNUP_SUCCESS:
-            localStorage.setItem('token', payload.token.refresh);
+            localStorage.setItem('refresh', payload.token.refresh);
+            localStorage.setItem('access', payload.token.access);
             localStorage.setItem('iduser', payload.id);
             localStorage.setItem('email', payload.email);
             localStorage.setItem('avatar', payload.avatar);
             localStorage.setItem('username', payload.username);
             return {
                 ...state,
-                token: payload.token.access,
+                refresh: payload.token.refresh,
+                access: payload.token.access,
                 idUser: payload.id,
                 email: payload.email,
                 avatar: payload.avatar,
                 username: payload.username
             }
+        case REFRESH_SUCCESS:
+            localStorage.setItem('access', payload.access);
+            return {
+                ...state,
+                access: payload.access,
+            }
         case SIGNUP_FAIL:
         case LOGIN_FAIL:
         case LOGOUT:
-            localStorage.removeItem('token');
+            localStorage.removeItem('refresh');
+            localStorage.removeItem('access');
             localStorage.removeItem('iduser');
             localStorage.removeItem('email');
             localStorage.removeItem('avatar');
             localStorage.removeItem('username');
             return {
                 ...state,
-                token: null,
+                refresh: null,
+                access: null,
                 idUser: null,
                 email: null,
                 avatar: null,

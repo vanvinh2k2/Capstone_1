@@ -19,6 +19,10 @@ import Dashboard from "../container/Dashboard/Dashboard";
 
 const publicRouter = [
     {path: '/', component: Login, layout: null},
+    {path: '*', component: NotFound}
+]
+
+const privateRouter = [
     {path: 'restaurant/', component: Dashboard},
     {path: 'restaurant/manage-order', component: ManageOrder},
     {path: 'restaurant/dish', component: Dish},
@@ -34,12 +38,7 @@ const publicRouter = [
     {path: 'restaurant/chat-message', component: ChatMessage},
     {path: 'restaurant/history-order', component: HistoryOrder},
     {path: 'restaurant/history-detail/:oid', component: HistoryDetail},
-    {path: 'account/', component: Account},
-    {path: '*', component: NotFound}
-]
-
-const privateRouter = [
-    {}
+    {path: 'restaurant/account', component: Account},
 ]
 
 export {publicRouter, privateRouter};

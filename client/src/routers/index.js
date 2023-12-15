@@ -15,27 +15,27 @@ import Contact from '../container/Contact/Contact';
 import LikeRestaurant from '../container/LikeRestaurant/LikeRestaurant';
 import DetailRestaurant from '../container/DetailRestaurant/DetaiRestaurant';
 
-
 const publicRouter = [
     {path: '/', component: Home},
     {path: '/login', component: Login},
     {path: '/sign-up', component: SignUp},
     {path: '/detail-restaurant/:rid', component: DetailRestaurant},
     {path: '/detail-dish/:did', component: DetailDish},
-    {path: '/detail-order/:rid', component: DetailOrder},
     {path: '/dish', component: Dish},
-    {path: '/bill/:oid', component: Bill},
     {path: '/search-ai', component: SearchAI},
-    {path: '/account', component: Account},
-    {path: '/love-restaurant', component: LikeRestaurant},
     {path: '/contact', component: Contact},
-    {path: '/history-order', component: HistoryOrder},
-    {path: '/forget-password', component: ForgetUser},
-    {path: '/detail-history-order/:oid', component: DetailHistory},
     {path: '*', component: NotFound},
 ]
 
-const privateRouter = [{}
+const privateRouter = [
+    {path: '/account', component: Account},
+    {path: '/detail-order/:rid', component: DetailOrder},
+    {path: '/detail-history-order/:oid', component: DetailHistory},
+    {path: '/history-order', component: HistoryOrder},
+    {path: '/forget-password', component: ForgetUser},
+    {path: '/love-restaurant', component: LikeRestaurant},
+    {path: '/bill/:oid', component: Bill},
+    {path: '/love-restaurant', component: LikeRestaurant},
 ]
 
 export {publicRouter, privateRouter};

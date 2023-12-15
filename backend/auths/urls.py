@@ -1,8 +1,10 @@
 
 from django.urls import path
-from .backend import RegisterAPI, LoginAPI, Logout, forget_password, LoginRestaurantAPI,\
-login_facebook, login_google
+from .backend import RegisterAPI, LoginAPI, forget_password,\
+login_facebook, login_google, LoginRestaurantAPI
+
 from .views import change_password
+from rest_framework_simplejwt.views import TokenVerifyView, TokenRefreshView
 
 urlpatterns = [
     path('api/register/', RegisterAPI.as_view(), name='register'),
@@ -10,7 +12,9 @@ urlpatterns = [
     path('api/login/facebook/', login_facebook, name='login-facebook'),
     path('api/login/google/', login_google, name='login-google'),
     path('api/login/restaurant/', LoginRestaurantAPI.as_view(), name='login-restaurant'),
-    path('api/logout/', Logout.as_view(), name='logout'),
+    # path('api/logout/', Logout.as_view(), name='logout'),
     path('api/send-email/', forget_password, name='send-email'),
-    path('change-password/<token>/', change_password, name='change-password')
+    path('change-password/<token>/', change_password, name='change-password'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

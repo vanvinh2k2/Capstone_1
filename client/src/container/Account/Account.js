@@ -4,6 +4,7 @@ import { useState } from "react";
 import { logout } from '../../action/auth'
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LOGOUT } from "../../action/types";
 
 function Account() {
     const [activeTab, setActiveTab] = useState('tab-0');
@@ -15,9 +16,9 @@ function Account() {
     };
 
     async function handelLogout(){
-        const action = await logout(localStorage.getItem('token'));
-        dispatch(action)
-        navigate("/login")
+        const action = await logout(localStorage.getItem('refresh'));
+        dispatch(action);
+        if(action.type === LOGOUT) navigate("/login");
     }
 
     return ( 

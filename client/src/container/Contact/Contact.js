@@ -15,7 +15,7 @@ function Contact() {
                             </div>
                             <div className="contact-infor-label">
                                 <b>Address</b>
-                                <p>Duy Xuyen, Quang Nam</p>
+                                <p>Cam Le, Da Nang</p>
                             </div>
                         </div>
                         <div className="contact-infor">
@@ -33,7 +33,7 @@ function Contact() {
                             </div>
                             <div className="contact-infor-label">
                                 <b>Email</b>
-                                <p>ngov6769@gmail.com</p>
+                                <p>Team_C1SE.37@gmail.com</p>
                             </div>
                         </div>
                     </div>

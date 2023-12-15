@@ -42,7 +42,7 @@ function HeaderTop() {
                                 <li><a href="/love-restaurant"><i className="fa fa-heart"></i><span>{likes.length}</span></a></li>
                                 <li><a href="/history-order"><i className="fas fa-clipboard-list"></i><span>3</span></a></li>
                                 <li className="account">
-                                    {localStorage.getItem("token") != null ? <a href="/account"><img src={`${localStorage.getItem("avatar")}`}/>
+                                    {localStorage.getItem("access") != null ? <a href="/account"><img src={`${localStorage.getItem("avatar")}`}/>
                                     {localStorage.getItem("username")}</a> 
                                     : <a href="/login"><img src={user}/>login</a>}
                                 </li>

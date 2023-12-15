@@ -1,5 +1,5 @@
 import MutiRangeSlider from "multi-range-slider-react"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { getCategory, getRestaurant } from "../../../action/restaurant";
 
@@ -95,9 +95,9 @@ function Fillter({min_price, max_price, setMinPrice, setMaxPrice, setCategorys, 
                         }}
                     />
                     <div className="price-range-content">
-                        <span>10$</span>
+                        <span>{min_price}$</span>
                         <span>-</span>
-                        <span>100$</span>
+                        <span>{max_price}$</span>
                     </div>
                     {/* <div className="range-confirm">
                         <button className="btn" onClick={handelPrice}>Apply</button>

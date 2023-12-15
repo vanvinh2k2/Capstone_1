@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ]
 
@@ -86,9 +86,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 12,
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 
@@ -102,11 +102,24 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3001',
 ]
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": {
+        "ENGINE": "mssql",
+        "NAME": "new4",
+        "HOST": "LAPTOP-AMQ9ETT3\SQLEXPRESS",
+        "PORT": "",
+        "OPTIONS": {
+            "driver": "ODBC Driver 17 for SQL Server",
+            'Trusted_Connection': 'Yes', 
+        },
+    },
 }
 
 # DATABASES = {
@@ -192,7 +205,7 @@ JAZZMIN_SETTINGS = {
     "site_header": "Restaurant Reservation",
     "site_brand": "Restaurant Reservation",
     "site_logo": "img/logo1.png",
-    "copyright": "vinhngo240302@gmail.com",
+    "copyright": "Team_C1SE.37@gmail.com",
 
     "icons": {
         "auths.ContactUs": "far fa-address-book",
@@ -229,7 +242,7 @@ CKEDITOR_CONFIGS = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 

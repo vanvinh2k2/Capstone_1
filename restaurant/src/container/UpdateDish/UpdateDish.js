@@ -101,11 +101,7 @@ function UpdateDish() {
         }
     }
     return ( 
-        <div className="content">
-            <nav className='nav-header'>
-                <i className="fas fa-list"></i>
-                <i className="fa-solid fa-user"></i>
-            </nav>
+        <div>
             <nav className='nav-middle'>
                 <div className="view-link">
                     <p className='top'>The Dishes</p>

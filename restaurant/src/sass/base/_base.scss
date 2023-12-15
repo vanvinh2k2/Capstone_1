@@ -34,3 +34,13 @@ body{
     -moz-osx-font-smoothing: antialiased;
     background: whitesmoke;
 }
+
+#sidebar.hidden{
+    width: 80px;
+}
+
+#sidebar.hidden ~ #content {
+    width: calc(100% - 80px);
+    left: 60px;
+    transition: 1s;
+}

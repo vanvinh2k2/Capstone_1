@@ -11,12 +11,14 @@ import {
     REVIEW
 } from "./types";
 import axios from "axios";
+// const yourAuthToken = localStorage.getItem("token");
 
 const config = {
-    hearders: {
-        "Content-type": "application/json"
+    headers: {
+        "Content-type": "application/json",
+        // 'Authorization': `Bearer ${yourAuthToken?yourAuthToken.access:null}`,
     }
-}
+};
 
 export const getRestaurantHot= async()=>{
     try{

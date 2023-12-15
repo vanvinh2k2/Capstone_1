@@ -92,8 +92,8 @@ class Dish(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to=dish_directory_path)
     description = RichTextUploadingField(null=True, blank=True, default="This is product")
-    price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
-    old_price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
+    price = models.DecimalField(decimal_places=2, max_digits=30, default=2)
+    old_price = models.DecimalField(decimal_places=2, max_digits=30, default=2)
     product_status = models.CharField(choices=STATUS, default="not_paid_yet", max_length=50)
     featured = models.BooleanField(default=False)
     digital = models.BooleanField(default=False)
@@ -133,13 +133,13 @@ class Order(models.Model):
     order_date = models.DateField()
     full_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=15)
-    price = models.DecimalField(decimal_places=2, max_digits=50, default=2)
+    price = models.DecimalField(decimal_places=2, max_digits=30, default=2)
     paid_status = models.BooleanField(default=True)
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=50, default="awaiting_confirmation")
     time_from = models.TimeField()
     time_to = models.TimeField()
     number_people = models.IntegerField(default=2)
-    deposit = models.DecimalField(decimal_places=2, max_digits=50)
+    deposit = models.DecimalField(decimal_places=2, max_digits=30)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='restaurant_order')
@@ -185,7 +185,7 @@ class OrderItem(models.Model):
     invoice_no = models.CharField(max_length=200)
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
-    total = models.DecimalField(decimal_places=2, max_digits=50, default=2)
+    total = models.DecimalField(decimal_places=2, max_digits=30, default=2)
 
     class Meta:
         # dat lai hien name
