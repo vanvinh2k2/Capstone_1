@@ -10,7 +10,6 @@ export default function(state = initalState, action){
     switch(type){
         case CHANGE_ACCOUNT:
             localStorage.setItem('avatar', payload.avatar)
-            alert("Update profile success.")
             return{
                 ...state,
                 account : payload

@@ -1,5 +1,5 @@
 import { CHANGE_ACCOUNT, GET_ACCOUNT, GET_ERROR } from "./types";
-import axios from 'axios'
+import axios from 'axios';
 
 function configAuth(yourAuthToken){
     return {
@@ -27,7 +27,6 @@ export const change_account = async(full_name, phone, address, image, uid, acces
     formData.append('address', address);
     try{
         const res = await axios.post(`http://127.0.0.1:8000/api/edit-profile/${uid}/`, formData, configAuth2(accessToken));
-        console.log(res);
         if(res.data.success === true){
             return {
                 type: CHANGE_ACCOUNT,

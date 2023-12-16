@@ -22,16 +22,18 @@ function AllRestaurant() {
     }, [page])
 
     async function handelLike(e){
-        const action = await postLike(
-            localStorage.getItem("iduser"),
-            e.currentTarget.getAttribute('value'),
-            localStorage.getItem("access")
-        );
-        if(action.type === POST_LIKE){
-            toast.success("Add like successfully.")
-        }
-        else toast.error("Added previously!")
-        dispatch(action);
+        if(localStorage.getItem("access") !== null){
+            const action = await postLike(
+                localStorage.getItem("iduser"),
+                e.currentTarget.getAttribute('value'),
+                localStorage.getItem("access")
+            );
+            dispatch(action);
+            if(action.type === POST_LIKE){
+                toast.success(action.payload);
+            } else toast.error(action.payload);
+        } else toast.error("Please login Account!")
+        
     }
     return ( 
         <section className="featured">

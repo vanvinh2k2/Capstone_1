@@ -25,11 +25,28 @@ function Login() {
     }
 
     const onSubmit = async(e) =>{
+        const {email, password} = formData;
+        e.preventDefault();
+        if(checkInput(formData)){
+            const action = await login(email, password);
+            if(action.type == LOGIN_SUCCESS){
+                setIsChange(true);
+            }else{
+                toast.error(action.payload)
+            }
+            dispatch(action);
+        }
+    }
+
+    function checkInput(formData){
         const {email, password} = formData
-        e.preventDefault()
-        const action = await login(email, password);
-        if(action.type == LOGIN_SUCCESS) setIsChange(true);
-        dispatch(action);
+        if(email === ""){
+            toast.error("Please input Email!");
+            return false;
+        }else if(password === ""){
+            toast.error("Please input Password!");
+            return false;
+        } return true;
     }
 
     useEffect(() => {
@@ -66,7 +83,6 @@ function Login() {
                                 </GoogleOAuthProvider>
                             </button>
                             <Facebook/>
-                           <ToastContainer/>
                     <div className="login__other">
                         <span>Don't have an Account?</span>
                         <a href="/sign-up">Sign up</a>
@@ -75,7 +91,7 @@ function Login() {
                     </div> 
                 </div>
             </div>
-            {/* <Animation /> */}
+            <ToastContainer/>
         </div>
     );
 }

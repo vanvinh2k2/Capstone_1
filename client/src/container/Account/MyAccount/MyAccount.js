@@ -1,6 +1,9 @@
 import {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 import { get_account, change_account } from '../../../action/account';
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { CHANGE_ACCOUNT } from '../../../action/types';
 
 function MyAccount() {
     const [name, setName] = useState("");
@@ -34,11 +37,12 @@ function MyAccount() {
             localStorage.getItem("access")
         );
         dispatch(action);
+        if(action.type === CHANGE_ACCOUNT){
+            toast.success("Successful change.");
+        }else toast.error(action.payload);
     }
 
     useEffect(()=>{
-        console.log(localStorage.getItem('iduser'), 
-        localStorage.getItem("access"))
         async function getAccount(){
             const action = await get_account(
                 localStorage.getItem('iduser'), 
@@ -93,6 +97,7 @@ function MyAccount() {
                        </div>
                    </div>
                </div>
+               <ToastContainer/>
            </div>
         </>
      );

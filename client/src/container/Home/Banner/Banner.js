@@ -1,4 +1,5 @@
-import banner from '../../../assets/images/restaurant-banner.jpeg'
+import banner from '../../../assets/images/restaurant-banner.jpeg';
+import banner2 from '../../../assets/images/banner2.jpg';
 
 function Banner() {
     return ( 
@@ -17,10 +18,10 @@ function Banner() {
                                     <img className="w-100 banner1" src={banner}/>
                                 </div>
                                 <div className="carousel-item">
-                                    <img className="w-100 banner1" src="https://t3.ftcdn.net/jpg/01/63/13/30/360_F_163133061_TlMOMqgxAvBuwzLAjxOQ8v1FQ3OexfRG.jpg"/>
+                                    <img className="w-100 banner1" src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/online-order-now-restaurant-discount-banner-design-template-c8abb6b3b188751b2cb637bc3871cbfb_screen.jpg?ts=1617107213"/>
                                 </div>
                                 <div className="carousel-item">
-                                    <img className="w-100 banner1" src="https://t3.ftcdn.net/jpg/01/63/13/30/360_F_163133061_TlMOMqgxAvBuwzLAjxOQ8v1FQ3OexfRG.jpg"/>
+                                    <img className="w-100 banner1" src={banner2}/>
                                 </div>
                             </div>
                             <button className="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">

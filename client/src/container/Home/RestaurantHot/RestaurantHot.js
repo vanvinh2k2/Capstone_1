@@ -5,9 +5,11 @@ import '../../../sass/components/Slick/slick-theme.css';
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect } from 'react';
 import {getRestaurantHot, postLike} from '../../../action/restaurant'
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { POST_LIKE } from '../../../action/types';
 
-
-function RestaurantHot(props) {
+function RestaurantHot() {
     const settings = {
         dots: false,
         infinite: false,
@@ -47,6 +49,7 @@ function RestaurantHot(props) {
     }
     const dispatch = useDispatch();
     const restaurants = useSelector(state=>state.restaurant.restaurant_hot)
+
     useEffect(()=>{
         const fetchData = async () => {
             const action = await getRestaurantHot();
@@ -56,12 +59,17 @@ function RestaurantHot(props) {
     }, [])
 
     async function handelLike(e){
-        const action = await postLike(
-            localStorage.getItem("iduser"),
-            e.currentTarget.getAttribute('value'),
-            localStorage.getItem("access")
-        );
-        dispatch(action);
+        if(localStorage.getItem("access") !== null){
+            const action = await postLike(
+                localStorage.getItem("iduser"),
+                e.currentTarget.getAttribute('value'),
+                localStorage.getItem("access")
+            );
+            dispatch(action);
+            if(action.type === POST_LIKE){
+                toast.success(action.payload);
+            }else toast.error(action.payload);
+        }else toast.error("Please login Account!")
     }
 
     return ( 
@@ -115,6 +123,7 @@ function RestaurantHot(props) {
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </section>
         
     );

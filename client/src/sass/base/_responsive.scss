@@ -21,6 +21,9 @@
 	.header__logo span, .header__menu{
 		display: none;
 	}
+	.content{
+		margin-top: 75px;
+	}
 	.header__bottom{
 		display: none !important;
 	}
@@ -123,6 +126,9 @@
 	}
 	.hero__item{
 		margin-top: 155px !important;
+	}
+	.content{
+		margin-top: 140px;
 	}
 	.humberger__open {
 		display: block !important;

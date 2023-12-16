@@ -27,7 +27,6 @@ function App() {
                 </Layout>
               } key={index}/>
             })
-            
           }
           {
             privateRouter.map((route, index)=>{
