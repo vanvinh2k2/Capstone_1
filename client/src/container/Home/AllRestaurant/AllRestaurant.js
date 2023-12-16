@@ -24,7 +24,8 @@ function AllRestaurant() {
     async function handelLike(e){
         const action = await postLike(
             localStorage.getItem("iduser"),
-            e.currentTarget.getAttribute('value')
+            e.currentTarget.getAttribute('value'),
+            localStorage.getItem("access")
         );
         if(action.type === POST_LIKE){
             toast.success("Add like successfully.")

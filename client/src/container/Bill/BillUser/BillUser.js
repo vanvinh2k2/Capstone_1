@@ -1,6 +1,5 @@
 function BillUser(props) {
     const order = props.order;
-    // console.log(order);
     return ( 
         <div className="row bill_2">
             <div className="col-lg-6 col-sm-6 col-md-12">

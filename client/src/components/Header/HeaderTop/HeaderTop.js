@@ -11,7 +11,7 @@ function HeaderTop() {
 
     useEffect(()=>{
         async function getLike(){
-            const action = await listLike(localStorage.getItem("iduser"));
+            const action = await listLike(localStorage.getItem("iduser"), localStorage.getItem("access"));
             dispatch(action);
         }
         getLike();

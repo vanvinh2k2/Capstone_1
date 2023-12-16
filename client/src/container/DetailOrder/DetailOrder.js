@@ -11,7 +11,7 @@ function DetailOrder() {
     const dispatch = useDispatch();
     useEffect(()=>{
         async function getordercart(){
-            const action = await getOrderCart(localStorage.getItem('iduser'), rid);
+            const action = await getOrderCart(localStorage.getItem('iduser'), rid, localStorage.getItem("access"));
             dispatch(action)
         }
         getordercart();

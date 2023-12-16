@@ -8,15 +8,18 @@ import {
 } from "./types";
 import axios from "axios";
 
-const config = {
-    headers: {
-        "Content-type": "application/json",
-    }
+function configAuth(yourAuthToken){
+    return {
+        headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${yourAuthToken?yourAuthToken:null}`,
+        }
+    };
 }
 
-export const getOrderCart= async(uid, rid)=>{
+export const getOrderCart= async(uid, rid, access)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/order-cart/${uid}/${rid}/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/order-cart/${uid}/${rid}/`, configAuth(access))
         if(res.data.success == true){
             return {
                 type: GET_ORDER_CART,
@@ -38,11 +41,11 @@ export const getOrderCart= async(uid, rid)=>{
     }
 }
 
-export const addOrderCart = async(orderUser, items, uid, rid)=>{
+export const addOrderCart = async(orderUser, items, uid, rid, access)=>{
     const {full_name, phone, tid, time_from, time_to, number_people, order_date} = orderUser
     const body = JSON.stringify({full_name, phone, tid, time_from, time_to, number_people, items, order_date});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/add-order-cart/${uid}/${rid}/`, body, config)
+        const res = await axios.post(`http://127.0.0.1:8000/api/add-order-cart/${uid}/${rid}/`, body, configAuth(access))
         if(res.data.success == true){
             return {
                 type: ADD_ORDER_CART,
@@ -64,11 +67,11 @@ export const addOrderCart = async(orderUser, items, uid, rid)=>{
     }
 }
 
-export const updateOrderCart = async(orderUser, items, uid, rid)=>{
+export const updateOrderCart = async(orderUser, items, uid, rid, access)=>{
     const {full_name, phone, tid, time_from, time_to, number_people, order_date} = orderUser
     const body = JSON.stringify({full_name, phone, tid, time_from, time_to, number_people, items,order_date});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/update-order-cart/${uid}/${rid}/`, body, config)
+        const res = await axios.post(`http://127.0.0.1:8000/api/update-order-cart/${uid}/${rid}/`, body, configAuth(access))
         if(res.data.success == true){
             return {
                 type: UPDATE_ORDER_CART,
@@ -90,10 +93,10 @@ export const updateOrderCart = async(orderUser, items, uid, rid)=>{
     }
 }
 
-export const checkOrder = async(time_to, time_from, order_date, tid, rid)=>{
+export const checkOrder = async(time_to, time_from, order_date, tid, rid, access)=>{
     const body = JSON.stringify({time_to, time_from, order_date, tid});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/check-order/${rid}/`, body, config)
+        const res = await axios.post(`http://127.0.0.1:8000/api/check-order/${rid}/`, body, configAuth(access))
         if(res.data.success == true){
             return {
                 type: CHECK_ORDER,
@@ -115,9 +118,9 @@ export const checkOrder = async(time_to, time_from, order_date, tid, rid)=>{
     }
 }
 
-export const cancelOrder = async(oid)=>{
+export const cancelOrder = async(oid, access)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/cancel-order/${oid}/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/cancel-order/${oid}/`, configAuth(access))
         if(res.data.success == true){
             return {
                 type: CANCEL_ORDER,

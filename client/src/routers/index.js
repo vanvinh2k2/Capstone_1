@@ -24,6 +24,7 @@ const publicRouter = [
     {path: '/dish', component: Dish},
     {path: '/search-ai', component: SearchAI},
     {path: '/contact', component: Contact},
+    {path: '/forget-password', component: ForgetUser},
     {path: '*', component: NotFound},
 ]
 
@@ -32,7 +33,6 @@ const privateRouter = [
     {path: '/detail-order/:rid', component: DetailOrder},
     {path: '/detail-history-order/:oid', component: DetailHistory},
     {path: '/history-order', component: HistoryOrder},
-    {path: '/forget-password', component: ForgetUser},
     {path: '/love-restaurant', component: LikeRestaurant},
     {path: '/bill/:oid', component: Bill},
     {path: '/love-restaurant', component: LikeRestaurant},

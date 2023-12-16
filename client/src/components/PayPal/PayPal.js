@@ -61,6 +61,7 @@ const ButtonWrapper = ({ currency, showSpinner, amount, pee, payload}) => {
                     const config = {
                         headers: {
                             "Content-type": "application/json",
+                            'Authorization': `Bearer ${localStorage.getItem("access")}`
                         }
                     }
                     const body = JSON.stringify({

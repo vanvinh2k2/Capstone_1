@@ -22,14 +22,14 @@ function DetailHistory() {
 
     useEffect(()=>{
         async function gethistoryDetails(){
-            const action  = await getBill(oid);
+            const action  = await getBill(oid, localStorage.getItem("access"));
             dispatch(action);
         }
         gethistoryDetails();
     }, [])
 
     async function handleCancel(){
-        const action = await cancelOrder(oid);
+        const action = await cancelOrder(oid, localStorage.getItem("access"));
         toast.info(action.payload);
         window.location.reload();
     }

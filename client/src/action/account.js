@@ -1,6 +1,5 @@
-import { CHANGE_ACCOUNT, GET_DASHBOARD, GET_ACCOUNT, GET_ERROR } from "./types";
+import { CHANGE_ACCOUNT, GET_ACCOUNT, GET_ERROR } from "./types";
 import axios from 'axios'
-const yourAuthToken = localStorage.getItem("access");
 
 function configAuth(yourAuthToken){
     return {

@@ -11,12 +11,19 @@ import {
     REVIEW
 } from "./types";
 import axios from "axios";
-// const yourAuthToken = localStorage.getItem("token");
+
+function configAuth(yourAuthToken){
+    return {
+        headers: {
+            "Content-type": "application/json",
+            'Authorization': `Bearer ${yourAuthToken?yourAuthToken:null}`,
+        }
+    };
+}
 
 const config = {
     headers: {
         "Content-type": "application/json",
-        // 'Authorization': `Bearer ${yourAuthToken?yourAuthToken.access:null}`,
     }
 };
 
@@ -95,9 +102,9 @@ export const getCategory = async() =>{
     }
 }
 
-export const listLike = async(uid) => {
+export const listLike = async(uid, access) => {
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/list-like/${uid}/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/list-like/${uid}/`, configAuth(access))
         return {
             type: LIST_LIKE,
             payload: res.data.data
@@ -110,9 +117,9 @@ export const listLike = async(uid) => {
     }
 }
 
-export const postLike = async(uid, rid)=>{
+export const postLike = async(uid, rid, access)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/add-like/${uid}/${rid}/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/add-like/${uid}/${rid}/`, configAuth(access))
         if(res.data.success === true){
             return {
                 type: POST_LIKE,
@@ -132,9 +139,9 @@ export const postLike = async(uid, rid)=>{
     }
 }
 
-export const deleteLike = async(uid, rid)=>{
+export const deleteLike = async(uid, rid, access)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/delete-like/${uid}/${rid}/`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/delete-like/${uid}/${rid}/`, configAuth(access))
         if(res.data.success == true){
             return {
                 type: DEL_LIKE,
@@ -154,10 +161,10 @@ export const deleteLike = async(uid, rid)=>{
     }
 }
 
-export const addReview = async(uid, rid, rating, review)=>{
+export const addReview = async(uid, rid, rating, review, access)=>{
     try{
         const res = await axios.post(`http://127.0.0.1:8000/api/add-review/${uid}/${rid}/`, 
-        {'rating': rating, 'review': review}, config)
+        {'rating': rating, 'review': review}, configAuth(access))
         if(res.data.success == true){
             return {
                 type: REVIEW,

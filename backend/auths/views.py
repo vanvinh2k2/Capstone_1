@@ -13,8 +13,8 @@ def change_password(request, token):
             renew_password = request.POST.get('re_password')
             user_id = request.POST.get('user_id')
 
-            if new_password != renew_password:
-                return redirect(f'/change-password/{token}/')
+            if (new_password != renew_password) or (len(new_password) < 6):
+                return redirect(f'/auth/change-password/{token}/')
             else:
                 user_obj = User.objects.get(id=user_id)
                 user_obj.set_password(new_password)

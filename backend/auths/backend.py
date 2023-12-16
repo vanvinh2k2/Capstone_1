@@ -289,6 +289,7 @@ def forget_password(request, *args, **kwargs):
         user.password_token = token
         user.save()
         send_forget_password_mail(user, token)
+        print('email')
         return Response({
             'success': True,
             'message': "Check your Email."

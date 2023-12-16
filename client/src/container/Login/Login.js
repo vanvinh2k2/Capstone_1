@@ -32,11 +32,11 @@ function Login() {
         dispatch(action);
     }
 
-    // useEffect(() => {
-    //     if (auth.access !== null) {
-    //         navigate('/');
-    //     }
-    // }, [isChange]);
+    useEffect(() => {
+        if (auth.access !== null) {
+            navigate('/');
+        }
+    }, [isChange]);
     
     return (
         <div className="container">

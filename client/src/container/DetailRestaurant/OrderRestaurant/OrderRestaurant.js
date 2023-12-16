@@ -40,7 +40,7 @@ function OrderRestaurant(props) {
 
     useEffect(()=>{
         async function getordercart(){
-            const action = await getOrderCart(localStorage.getItem('iduser'), rid);
+            const action = await getOrderCart(localStorage.getItem('iduser'), rid, localStorage.getItem("access"));
             dispatch(action)
         }
         getordercart();
@@ -212,14 +212,15 @@ function OrderRestaurant(props) {
     const handelSubmit = async(e)=>{
         e.preventDefault();
         if(checkInput() === true){
-            const action = await checkOrder(orderUser.time_to, orderUser.time_from, orderUser.order_date, orderUser.tid, rid)
+            const action = await checkOrder(orderUser.time_to, orderUser.time_from, orderUser.order_date, orderUser.tid, rid, localStorage.getItem("access"))
             if(action.type === CHECK_ORDER){
                 if(orderCart.length<=0){
                     const action = await addOrderCart(
                         orderUser, 
                         orderItems,
                         localStorage.getItem('iduser'),
-                        rid
+                        rid,
+                        localStorage.getItem("access")
                     );
                     dispatch(action)
                 }else{
@@ -227,7 +228,8 @@ function OrderRestaurant(props) {
                         orderUser, 
                         orderItems,
                         localStorage.getItem('iduser'),
-                        rid
+                        rid,
+                        localStorage.getItem("access")
                     );
                     dispatch(action)
                 }

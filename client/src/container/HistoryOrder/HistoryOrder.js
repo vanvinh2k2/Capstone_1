@@ -16,7 +16,7 @@ function HistoryOrder() {
 
     useEffect(()=>{
         async function getorderHistory(){
-            const action = await getOrderHistory();
+            const action = await getOrderHistory(localStorage.getItem("access"));
             dispatch(action);
         }
         getorderHistory();

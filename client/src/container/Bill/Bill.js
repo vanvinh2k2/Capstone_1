@@ -22,7 +22,7 @@ function Bill() {
 
     useEffect(()=>{
         async function getbill(){
-            const action = await getBill(oid);
+            const action = await getBill(oid, localStorage.getItem("access"));
             dispatch(action)
         }
         getbill();

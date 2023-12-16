@@ -91,18 +91,10 @@ export const signup = async(username, email, password, password2) =>{
 
 export const logout = async(refresh) =>{
     try{
-        // if(res.data.success == true){
-            return {
-                type: LOGOUT,
-                payload: null
-            }
-        // }
-        // else{
-            return {
-                type: GET_ERROR,
-                payload: null
-            }
-        // }
+        return {
+            type: LOGOUT,
+            payload: null
+        }
     }
     catch (e){
         alert("Error!")

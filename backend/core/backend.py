@@ -389,6 +389,7 @@ def list_order(request, *args, **kwargs):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def manage_order_by_date(request, *args, **kwargs):
     rid = kwargs.get('rid')
     date = request.data.get("date")

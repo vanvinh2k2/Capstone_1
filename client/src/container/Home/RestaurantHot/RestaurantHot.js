@@ -58,7 +58,8 @@ function RestaurantHot(props) {
     async function handelLike(e){
         const action = await postLike(
             localStorage.getItem("iduser"),
-            e.currentTarget.getAttribute('value')
+            e.currentTarget.getAttribute('value'),
+            localStorage.getItem("access")
         );
         dispatch(action);
     }

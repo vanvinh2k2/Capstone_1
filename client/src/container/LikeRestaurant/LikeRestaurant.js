@@ -20,7 +20,8 @@ function LikeRestaurant() {
     async function handelDelete(e){
         const action = await deleteLike(
             localStorage.getItem("iduser"),
-            e.currentTarget.getAttribute('value')
+            e.currentTarget.getAttribute('value'),
+            localStorage.getItem("access")
         );
         if(action.type === DEL_LIKE) toast.success("Delete like successfully.");
         else toast.error("Like not exists!");
