@@ -1,6 +1,5 @@
 import { Chart, BarElement, BarController, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-
 Chart.register(BarElement, BarController, CategoryScale, LinearScale, Tooltip, Legend);
 
 function Dashboard() {

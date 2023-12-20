@@ -2,8 +2,8 @@ import {
     GET_BILL,
     GET_ERROR,
     GET_ORDER_HISTORY
- } from '../action/types';
- import axios from 'axios';
+} from '../action/types';
+import axios from 'axios';
 
 function configAuth(yourAuthToken){
     return {

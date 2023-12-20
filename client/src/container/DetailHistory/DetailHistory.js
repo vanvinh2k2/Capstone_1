@@ -56,7 +56,7 @@ function DetailHistory() {
                         <div className="user card">
                             <h3 style={{marginBottom: "15px"}}>Information of User</h3>
                             <div className="separate"></div>
-                            <div className="content">
+                            <div>
                                 <div className="item">
                                     <p className="item__title">Name User : </p>
                                     <p className="item__content">{order?order.user.username:""}</p>

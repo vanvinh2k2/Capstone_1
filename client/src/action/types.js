@@ -7,6 +7,7 @@ export const FORGET_USER = 'FORGET_USER';
 export const TOKEN_VALID = 'TOKEN_VALID';
 export const REFRESH_SUCCESS = 'REFRESH_SUCCESS';
 export const REFRESH_FAIL = 'REFRESH_FAIL';
+export const CONTACT_US = "CONTACT_US";
 
 export const RES_HOT_VIEW = 'RES_HOT_VIEW';
 export const RES_VIEW = 'RES_VIEW';

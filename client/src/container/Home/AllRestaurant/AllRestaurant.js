@@ -1,25 +1,12 @@
-
-import {useDispatch, useSelector} from 'react-redux'
-import { useEffect, useState } from 'react';
-import {getRestaurant, postLike} from '../../../action/restaurant'
+import {useDispatch} from 'react-redux'
+import { postLike } from '../../../action/restaurant'
 import Pagniation from '../../../components/Pagniation/Pagniation'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { POST_LIKE } from '../../../action/types';
 
-function AllRestaurant() {
+function AllRestaurant({restaurants, num_res, page, setPage}) {
     const dispatch = useDispatch();
-    const restaurants = useSelector(state=>state.restaurant.restaurant.results)
-    const num_res = useSelector(state=>state.restaurant.restaurant.count)
-    const [page, setPage] = useState(1);
-
-    useEffect(()=>{
-        const fetchData = async () => {
-            const action = await getRestaurant(page);
-            dispatch(action);
-        };
-        fetchData();
-    }, [page])
 
     async function handelLike(e){
         if(localStorage.getItem("access") !== null){

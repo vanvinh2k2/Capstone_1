@@ -99,9 +99,6 @@ function Fillter({min_price, max_price, setMinPrice, setMaxPrice, setCategorys, 
                         <span>-</span>
                         <span>{max_price}$</span>
                     </div>
-                    {/* <div className="range-confirm">
-                        <button className="btn" onClick={handelPrice}>Apply</button>
-                    </div> */}
                 </div>
             </div>
         </div>

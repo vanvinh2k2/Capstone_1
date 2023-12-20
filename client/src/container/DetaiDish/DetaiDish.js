@@ -1,7 +1,7 @@
 import InforDish from "./InforDish/InforDish";
 import OtherDish from "./OtherDish/OtherDish";
 import { useParams } from 'react-router-dom'
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux"
 import { getDish } from "../../action/dish";
 

@@ -20,6 +20,7 @@ import {
     UPDATE_ORDER_ITEM,
     DELETE_ORDER_ITEM,
     RES_DETAIL,
+    CHANGE_RESTAURANT
 } from "../action/type";
 import axios from "axios";
 
@@ -469,6 +470,32 @@ export const getRestaurantDetail= async(rid)=>{
         const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/${rid}`, config)
         return {
             type: RES_DETAIL,
+            payload: res.data.data
+        }
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: "ERROR!"
+        }
+    }
+}
+
+export const change_account = async(form, img, rid)=>{
+    const {title, description, phone, address, time_open, time_close} = form;
+    const image = img;
+    const formData = new FormData();
+    if(image !== null) formData.append('image', image);
+    formData.append('phone', phone);
+    formData.append('title', title);
+    formData.append('address', address);
+    formData.append('description', description);
+    formData.append('time_open', time_open);
+    formData.append('time_close', time_close);
+
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/change-restaurant/${rid}/`, formData, config2)
+        return {
+            type: CHANGE_RESTAURANT,
             payload: res.data.data
         }
     } catch(e){

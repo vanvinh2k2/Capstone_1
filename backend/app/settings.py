@@ -102,25 +102,27 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3001',
 ]
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+# CORS_ORIGIN_ALLOW_ALL = True
 
 DATABASES = {
-    "default": {
-        "ENGINE": "mssql",
-        "NAME": "new4",
-        "HOST": "LAPTOP-AMQ9ETT3\SQLEXPRESS",
-        "PORT": "",
-        "OPTIONS": {
-            "driver": "ODBC Driver 17 for SQL Server",
-            'Trusted_Connection': 'Yes', 
-        },
-    },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "mssql",
+#         "NAME": "new4",
+#         "HOST": "LAPTOP-AMQ9ETT3\SQLEXPRESS",
+#         "PORT": "",
+#         "OPTIONS": {
+#             "driver": "ODBC Driver 17 for SQL Server",
+#             'Trusted_Connection': 'Yes', 
+#         },
+#     },
+# }
 
 # DATABASES = {
 #     'default': {

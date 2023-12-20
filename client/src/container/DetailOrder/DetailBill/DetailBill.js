@@ -2,27 +2,20 @@ import { useState , useEffect} from "react";
 import { useDispatch, useSelector} from "react-redux"
 import { getCategory } from "../../../action/restaurant";
 import {useParams} from 'react-router-dom';
-import { updateOrder, deleteOrder, getOrderCart } from "../../../action/order";
 import PayPal from "../../../components/PayPal/PayPal";
 
 function DetailBill(props) {
-    // const order_dish = useSelector(state=>state.order.order_dish)
     const categorys = useSelector(state=>state.restaurant.categorys);
     const {rid} = useParams();
     const dispatch = useDispatch();
     const orderDetail = props.orderDetail;
-    // const {orderDetail, order} = useSelector(state=>state.order.orderCart)
     const order = props.order;
     const [hide, setHide] = useState([]);
     const [orderDish, setOrderDish] = useState([]);
     const [sumPrice, setSumPrice] = useState(0);
-    const [ocid, setOcid] = useState("");
 
-    // console.log(orderDetail)
     useEffect(()=>{
         setOrderDish(orderDetail);
-        setOcid(order.ocid);
-        // console.log(orderDetail)
     }, [orderDetail])
 
     useEffect(()=>{
@@ -32,7 +25,6 @@ function DetailBill(props) {
             for(const orderItem of orderDish){
                 initSumPrice = initSumPrice + (orderItem.dish.price*orderItem.quantity);
             }
-            
             if (orderDish && orderDish.length > 0) {
                 for (const orderItem of orderDish) {
                     const categoryIndex = categorys.findIndex(category => category.cid === orderItem.dish.category.cid);
@@ -42,7 +34,6 @@ function DetailBill(props) {
                 }
             }
         }
-        // console.log("ok");
         setHide(initialHide);
         setSumPrice(initSumPrice);
     }, [orderDish])
@@ -60,16 +51,6 @@ function DetailBill(props) {
         const newOrderDish = [...orderDish];
         newOrderDish[index].quantity = quantity;
         setOrderDish(newOrderDish);
-        // const did = e.currentTarget.getAttribute("id-dish");
-        // for(let i=0;i<orderDetail.length;i++){
-        //     if(orderDetail[i].did === did){
-        //         let update = {...orderDetail[i]}
-        //         update.quantity = e.target.value;
-        //         update.total = e.target.value * update.price;
-        //         // const action = updateOrder(update);
-        //         // dispatch(action);
-        //     }
-        // }
     }
 
     const handelDelete = (did)=>{

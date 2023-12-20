@@ -14,7 +14,8 @@ function LikeRestaurant() {
             const action = await listLike(localStorage.getItem("iduser"));
             dispatch(action);
         }
-        getLikes();
+        
+        if(localStorage.getItem("access") !== null) getLikes();
     }, [])
 
     async function handelDelete(e){

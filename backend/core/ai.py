@@ -1,8 +1,8 @@
 from ultralytics import YOLO
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from PIL import Image
-from rest_framework import status
+from rest_framework import status, permissions
 from core.models import *
 from core.serializers import *
 from django.db.models import Avg
@@ -31,6 +31,7 @@ def avg_rating(restaurant):
     else: return 0
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def search_restaurant_image(request):
     uploaded_image = request.FILES.get('image')
     # Sử dụng PIL để chuyển đổi ảnh thành hình ảnh
@@ -119,6 +120,7 @@ def find_similarities(dataRestaurant, dataOrder):
     return result
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def suggest_food(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)

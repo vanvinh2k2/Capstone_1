@@ -27,7 +27,8 @@ function OrderRestaurant(props) {
     const [stick, setStick] = useState([]);
     const [cid, setCid] = useState("0");
     const [orderItems, setOrderItems] = useState([]);
-    const [num, setNum] = useState(0)
+    const [num, setNum] = useState(0);
+    const [maxTable, setMaxTable] = useState(0);
     const [orderUser, setOrderUser] = useState({
         full_name: "",
         phone: "",
@@ -96,7 +97,7 @@ function OrderRestaurant(props) {
     useEffect(()=>{
         setDishes(disheAll)
     }, [disheAll])
-
+    
     useEffect(()=>{
         if (orderCart && orderCart.order){
             setOrderUser({
@@ -108,7 +109,8 @@ function OrderRestaurant(props) {
                 time_to: orderCart.order.time_to.substring(0,5),
                 number_people: orderCart.order.number_people,
                 order_date: orderCart.order.order_date.substring(0,10),
-            })
+            });
+            setMaxTable(orderCart.order.table.number_seat);
         }
         if (orderCart && orderCart.orderDetail && orderCart.orderDetail.length > 0) {
             let newOrderItems = [];
@@ -144,7 +146,13 @@ function OrderRestaurant(props) {
     }, [cid])
 
     function handelChange(e){
-        setOrderUser({...orderUser, [e.target.name]: e.target.value})
+        setOrderUser({ ...orderUser, [e.target.name]: e.target.value });
+        if (e.target.name === "tid"){
+            const selectedOption = e.target.options[e.target.selectedIndex];
+            const numSeat = selectedOption.getAttribute("num-seat");
+            setMaxTable(numSeat);
+        }
+        
     }
 
     const handelAdd = (dish, index)=>{
@@ -204,6 +212,10 @@ function OrderRestaurant(props) {
         }
         else if(orderUser.order_date === ""){
             toast.error("Please input Order date!");
+            return false;
+        }
+        else if(orderUser.number_people > maxTable){
+            toast.error("The number of people exceeds the limit!");
             return false;
         }
         return true;
@@ -289,10 +301,10 @@ function OrderRestaurant(props) {
                                     <div className="item">
                                         <p>Table</p>
                                         <select value={orderUser.tid} onChange={handelChange} name='tid'>
-                                            <option value="0">Choice Table</option>
+                                            <option value="0" num-seat="0">Choice Table</option>
                                             {tables.map((table, index)=>{
                                                 return(
-                                                    <option value={table.tid} key={index}>{`${table.title} (${table.number_seat} person)`}</option>
+                                                    <option value={table.tid} num-seat={table.number_seat} key={index}>{`${table.title} (${table.number_seat} person)`}</option>
                                                 )
                                             })}
                                         </select>

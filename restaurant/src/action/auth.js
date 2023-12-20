@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, GET_ERROR, LOGOUT, FRIEND_CHAT } from "./type";
+import { LOGIN_SUCCESS, GET_ERROR, LOGOUT, FRIEND_CHAT, CONTACT_US } from "./type";
 import axios from 'axios';
 
 
@@ -52,6 +52,32 @@ export const friend_chat = async(uid) =>{
             const result = {
                 type: FRIEND_CHAT,
                 payload: res.data.data
+            }
+            return result
+        }
+        else{
+            return {
+                type: GET_ERROR,
+                payload: res.data.message
+            }
+        }
+        
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
+    }
+}
+
+export const contact_us = async(subject, message, full_name, email) =>{
+    const body = JSON.stringify({subject, message, full_name, email});
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/contact-us/`, body, config)
+        if(res.data.success === true){
+            const result = {
+                type: CONTACT_US,
+                payload: res.data.message
             }
             return result
         }

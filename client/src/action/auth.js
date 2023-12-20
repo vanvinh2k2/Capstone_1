@@ -8,7 +8,8 @@ import {
     FORGET_USER, 
     GET_ERROR, 
     REFRESH_SUCCESS,
-    TOKEN_VALID
+    TOKEN_VALID,
+    CONTACT_US
 } from './types';
 
 const yourAuthToken = localStorage.getItem("access");
@@ -89,7 +90,7 @@ export const signup = async(username, email, password, password2) =>{
     }
 }
 
-export const logout = async(refresh) =>{
+export const logout = async() =>{
     try{
         return {
             type: LOGOUT,
@@ -211,10 +212,37 @@ export const refreshToken = async(refresh) =>{
                 type: REFRESH_SUCCESS,
                 payload: res.data
             }
-  }catch (e){
+  }
+  catch (e){
     return {
         type: GET_ERROR,
         payload: e
     }
 }
+}
+
+export const contact_us = async(subject, message, full_name, email) =>{
+    const body = JSON.stringify({subject, message, full_name, email});
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/contact-us/`, body, config)
+        if(res.data.success === true){
+            const result = {
+                type: CONTACT_US,
+                payload: res.data.message
+            }
+            return result
+        }
+        else{
+            return {
+                type: GET_ERROR,
+                payload: res.data.message
+            }
+        }
+        
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
+    }
 }

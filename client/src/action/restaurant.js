@@ -44,7 +44,23 @@ export const getRestaurantHot= async()=>{
 
 export const getRestaurant= async(page)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/?page=${page}`, config)
+        const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/?page=${page}`, config);
+        return {
+            type: RES_VIEW,
+            payload: res.data
+        }
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: "ERROR!"
+        }
+    }
+}
+
+export const searchRestaurant= async(page, q)=>{
+    const body = JSON.stringify({q})
+    try{
+        const res = await axios.post(`http://127.0.0.1:8000/api/search-restaurant/?page=${page}`, body, config)
         return {
             type: RES_VIEW,
             payload: res.data

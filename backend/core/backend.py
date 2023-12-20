@@ -6,11 +6,11 @@ from .serializers import *
 from operator import itemgetter
 
 from rest_framework import status, permissions, generics
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth
 
 def convert_time(time):
     time = str(time)[:5]
@@ -101,7 +101,6 @@ def restaurant_detail(request, *args, **kwargs):
                      'message': 'Get restaurant successfully.',
                      'data': serialize.data
                      }, status=status.HTTP_200_OK)
-
 
 
 @api_view(['GET'])
@@ -245,13 +244,13 @@ def add_order(request, *args, **kwargs):
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def search_restaurant(request, *args, **kwargs):
-    q = request.POST.get('q')
+    q = request.data.get('q')
     restaurants = Restaurant.objects.filter(title__contains=q)
-    serialize = RestaurantSerializers(restaurants, many=True, context={'request': request})
-    return Response({'success': True,
-                     'message': 'Search restaurant successfully.',
-                     'data': serialize.data
-                     }, status=status.HTTP_200_OK)
+    paginator = PageNumberPagination()
+    paginator.page_size = 12
+    result_page = paginator.paginate_queryset(restaurants, request)
+    serialize = RestaurantSerializers(result_page, many=True, context={'request': request})
+    return paginator.get_paginated_response(serialize.data)
 
 
 @api_view(['GET'])
@@ -337,6 +336,7 @@ def edit_profile(request, *args, **kwargs):
     }
     return Response(response_data, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])
 def get_profile(request, *args, **kwargs):
     uid = kwargs.get('uid')
@@ -380,7 +380,7 @@ def order_detail(request, *args, **kwargs):
 def list_order(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
-    orders = Order.objects.filter(user=user)
+    orders = Order.objects.filter(user=user).order_by("-order_date")
     serialize = OrderSerializers(orders, many=True, context={'request': request})
     return Response({'success': True,
                      'message': 'Get list order successfully.',
@@ -981,9 +981,6 @@ def update_status_order(request, *args, **kwargs):
     }, status=status.HTTP_200_OK)
 
 
-from django.db.models import Count
-from django.db.models.functions import ExtractMonth
-
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
 def statistics(request, *args, **kwargs):
@@ -1011,3 +1008,53 @@ def statistics(request, *args, **kwargs):
                  "num_order": num_order
              }       
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def edit_profile_restaurant(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    restaurant = Restaurant.objects.get(rid=rid)
+    if 'address' in request.POST and request.POST['address']:
+        restaurant.address = request.POST.get('address')
+    
+    if 'image' in request.FILES and request.FILES['image']:
+        restaurant.image = request.FILES['image']
+    
+    if 'phone' in request.POST and request.POST['phone']:
+        restaurant.phone = request.POST.get('phone')
+    
+    if 'title' in request.POST and request.POST['title']:
+        restaurant.title = request.POST.get('title')
+
+    if 'description' in request.POST and request.POST['description']:
+        restaurant.description = request.POST.get('description')
+    
+    if 'time_open' in request.POST and request.POST['time_open']:
+        restaurant.time_open = request.POST.get('time_open')
+
+    if 'time_close' in request.POST and request.POST['time_close']:
+        restaurant.time_close = request.POST.get('time_close') 
+    
+    restaurant.save()
+    serialize = RestaurantSerializers(restaurant, context={'request': request})
+    return Response({'success': True,
+                     'message': 'Get restaurant successfully.',
+                     'data': serialize.data
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes([permissions.AllowAny])
+def contact_us(request, *args, **kwargs):
+    serialize = ContactUsSerializers(data=request.data)
+    if serialize.is_valid(raise_exception=True):
+        serialize.save()
+        return Response({
+            'success': True,
+            'message': "Submitted successfully."
+        })
+    else: return Response({
+            'success': False,
+            'message': "Sending failed!"
+        })

@@ -1,8 +1,8 @@
 import Fillter from "./Fillter/Fillter"
 import BestDish from "./BestDish/BestDish";
-import { getDishes, filterDish } from "../../action/dish";
+import { filterDish } from "../../action/dish";
 import { useEffect, useState } from "react";
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Dish() {
     const dispatch = useDispatch();
@@ -13,14 +13,6 @@ function Dish() {
     const [max_price, setMaxPrice] = useState(100);
     const [categorys, setCategorys] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
-
-    // useEffect(()=>{
-    //     async function getdishes(){
-    //         const action = await getDishes(page);
-    //         dispatch(action);
-    //     }
-    //     getdishes();
-    // },[page])
     
     useEffect(()=>{
         async function getdishes(){
@@ -41,14 +33,15 @@ function Dish() {
                         setMaxPrice={setMaxPrice}
                         setCategorys={setCategorys}
                         setRestaurants={setRestaurants}
-                        />
+                    />
                 </div>
                 <div className="col-lg-9 col-md-8 col-sm-12">
                     <BestDish 
                         dishes={dishes} 
                         num_res={num_res} 
                         page={page} 
-                        setPage={setPage}/>
+                        setPage={setPage}
+                    />
                 </div>
             </div>
         </div>

@@ -2,9 +2,9 @@ import React from "react";
 import HeaderBottom from "./HeaderBottom/HeaderBottom";
 import HeaderTop from "./HeaderTop/HeaderTop";
 import HeaderMenu from "./HeaderMenu/HeaderMenu";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-function Header() {
+function Header({q, setQ}) {
     
     useEffect(() => {
         const stick = document.querySelector(".humberger__open");
@@ -37,7 +37,7 @@ function Header() {
             <HeaderMenu/>
             <header className="header">
                 <div className="header__top">
-                    <HeaderTop/>
+                    <HeaderTop q={q} setQ={setQ}/>
                 </div>
                 <div className="header__bottom">
                     <HeaderBottom/>

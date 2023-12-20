@@ -1,6 +1,42 @@
-import img from "../../assets/images/contact_us.png"
+import { useState } from "react";
+import { ToastContainer, toast} from 'react-toastify';
+import { CONTACT_US } from "../../action/types";
+import { contact_us } from "../../action/auth";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Contact() {
+    const [subject, setSubject] = useState("");
+    const [message, setMessage] = useState("");
+
+    async function handelSubmit(){
+        if(checkInput()){
+            const action = await contact_us(
+                subject, 
+                message, 
+                localStorage.getItem("username"),
+                localStorage.getItem("email")
+            );
+    
+            if(action.type === CONTACT_US) toast.success(action.payload);
+            else toast.error(action.payload);
+            setMessage("");
+            setSubject("");
+        }
+       
+    }
+
+    function checkInput(){
+        if(subject === ""){
+            toast.error("Please input subject!");
+            return false;
+        }
+        else if(message === ""){
+            toast.error("Please input message!");
+            return false;
+        }
+        return true;
+    }
+
     return ( 
         <div className="container">
             <div className="row">
@@ -46,15 +82,18 @@ function Contact() {
                             </div>
                             <div className="contact__content">
                                 <label>Title</label>
-                                <input type="text"></input>
+                                <input type="text" value={subject} onChange={e=>setSubject(e.target.value)}></input>
                                 <label>Content</label>
-                                <textarea type="text" rows="5"></textarea>
-                                <button className="btn">Send</button>
+                                <textarea type="text" rows="5" value={message} onChange={e=>setMessage(e.target.value)}></textarea>
+                                <button className="btn" 
+                                onClick={handelSubmit}
+                                >Send</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
      );
 }

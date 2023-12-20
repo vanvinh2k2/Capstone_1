@@ -59,7 +59,6 @@ function MyAccount() {
         setAddress(account.address);
     }, [account]);
 
-
     return ( 
         <>
            <h3>My Profile</h3>

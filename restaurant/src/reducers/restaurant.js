@@ -14,7 +14,8 @@ import {
     GET_DISH_OF_RES,
     UPDATE_ORDER_ITEM,
     DELETE_ORDER_ITEM,
-    RES_DETAIL
+    RES_DETAIL,
+    CHANGE_RESTAURANT
 } from "../action/type";
 const initialState = {
     reviews: [],
@@ -107,6 +108,11 @@ export default function (state = initialState, action){
             return {
                 ...state,
                 dishes_res : payload
+            }
+        case CHANGE_RESTAURANT:
+            return {
+                ...state,
+                restaurant_detail : payload
             }
         case GET_ERROR:
         default: return state;

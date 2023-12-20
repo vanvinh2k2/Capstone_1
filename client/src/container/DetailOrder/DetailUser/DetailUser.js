@@ -10,31 +10,31 @@ function DetailUser(props) {
                 <h3>Information of User</h3>
                 <div className="item2">
                     <p className="title">Name :</p>
-                    <p className="content">{order? order.full_name: ""}</p>
+                    <p>{order? order.full_name: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">Email :</p>
-                    <p className="content">{localStorage.getItem("email")}</p>
+                    <p>{localStorage.getItem("email")}</p>
                 </div>
                 <div className="item2">
                     <p className="title">Phone :</p>
-                    <p className="content">{order? order.phone: ""}</p>
+                    <p>{order? order.phone: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">Date :</p>
-                    <p className="content">{order? order.order_date: ""}</p>
+                    <p>{order? order.order_date: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">From :</p>
-                    <p className="content">{order?order.time_from: ""}</p>
+                    <p>{order?order.time_from: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">To :</p>
-                    <p className="content">{order?order.time_to: ""}</p>
+                    <p>{order?order.time_to: ""}</p>
                 </div>
                 <div className="item2">
                     <p className="title">Number people :</p>
-                    <p className="content">{order? order.number_people: ""}</p>
+                    <p>{order? order.number_people: ""}</p>
                 </div>
             </div>
             <a className="btn" href={"/detail-restaurant/"+rid}>Back</a>

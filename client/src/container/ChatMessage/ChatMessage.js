@@ -17,48 +17,48 @@ function ChatMessage(props) {
     }, [listMessage]);
 
     useEffect(() => {
-          client.onopen = () => {
-            console.log('WebSocket Client Connected');
-            if(client.OPEN) setIsConnect(true);
-          };
-          client.onmessage = (event) => {
-            setListMessage(JSON.parse(event.data));
-            console.log(JSON.parse(event.data));
-          };
-          client.onerror = (e) => {
-            console.log(e);
-          };
-          client.onclose = () => {
-            console.log('WebSocket Client Closed');
-          };
-        }, [client]);
+      client.onopen = () => {
+        console.log('WebSocket Client Connected');
+        if(client.OPEN) setIsConnect(true);
+      };
+      client.onmessage = (event) => {
+        setListMessage(JSON.parse(event.data));
+        console.log(JSON.parse(event.data));
+      };
+      client.onerror = (e) => {
+        console.log(e);
+      };
+      client.onclose = () => {
+        console.log('WebSocket Client Closed');
+      };
+    }, [client]);
 
-        useEffect(()=>{
-            if(isConnect === true){
-              client.send(JSON.stringify({
-                source: 'message-list',
-                friend: props.username
-              }));
-            }
-          }, [isConnect])
+    useEffect(()=>{
+      if(isConnect === true){
+        client.send(JSON.stringify({
+          source: 'message-list',
+          friend: props.username
+        }));
+      }
+    }, [isConnect])
 
     function handelClose(){
         setIsClose(false);
     }
 
     function sendMessage() {
-          if (message.trim() === '') return;
-          client.send(JSON.stringify({ 
-            source: 'message-user',
-            friend: props.username,
-            message: message
-          }));
-          setMessage('')
-        };
+      if (message.trim() === '') return;
+      client.send(JSON.stringify({ 
+        source: 'message-user',
+        friend: props.username,
+        message: message
+      }));
+      setMessage('')
+    };
   
-      function handelSend(){
-        sendMessage();
-      }
+    function handelSend(){
+      sendMessage();
+    }
     
     return (
         isClose?(
@@ -124,8 +124,8 @@ function ChatMessage(props) {
                 </div>
             </div>
         </div>
-        ):null
-     );
+      ):null
+    );
 }
 
 export default ChatMessage;

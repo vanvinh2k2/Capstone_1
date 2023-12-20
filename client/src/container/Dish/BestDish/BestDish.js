@@ -1,7 +1,6 @@
 import Pagniation from '../../../components/Pagniation/Pagniation';
 
 function BestDish({dishes, num_res, page, setPage}) {
-    console.log(dishes);
     return ( 
         <div className="container menu__dish">
             <div className="row">

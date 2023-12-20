@@ -16,7 +16,7 @@ function Account() {
     };
 
     async function handelLogout(){
-        const action = await logout(localStorage.getItem('refresh'));
+        const action = await logout();
         dispatch(action);
         if(action.type === LOGOUT) navigate("/login");
     }

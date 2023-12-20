@@ -8,9 +8,7 @@ from .hepper import send_forget_password_mail
 from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.views import APIView
 from core.models import *
 
 
@@ -257,26 +255,6 @@ class LoginRestaurantAPI(generics.CreateAPIView):
             'success': False,
             'message': 'Enter a valid email address!'
         }, status=status.HTTP_200_OK)
-
-
-# class Logout(APIView):
-#     @permission_classes([permissions.AllowAny])
-#     def post(self, request):
-#         refresh_token = request.data['refresh']
-#         if refresh_token:
-#             try:
-#                 token = RefreshToken(refresh_token)  # Tạo đối tượng RefreshToken từ chuỗi refresh_token
-#                 token.check_blacklist()  # Kiểm tra xem token đã tồn tại trong đen danh chưa
-#             except (TokenError, InvalidToken) as e:
-#                 return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-#             token.blacklist()
-#             return Response({'success': True,
-#                              'message': 'Logout successful.'
-#                              }, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'success': False,
-#                              'message': 'Refresh token is required.'
-#                              }, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])

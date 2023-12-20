@@ -1,5 +1,5 @@
-import {NavLink} from 'react-router-dom'
-import { useState, useEffect } from "react";
+import { NavLink } from 'react-router-dom'
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryDetail } from '../../action/restaurant';
 import { useParams } from 'react-router-dom';
@@ -9,6 +9,12 @@ function HistoryDetail() {
     const {order, orderItems} = useSelector(state=>state.restaurant.order);
     const dispatch = useDispatch();
     const {oid} = useParams();
+    const status = {
+        "awaiting_confirmation": "Awaiting confirmation",
+        "confirmed": "Confirmed",
+        "complete": "Complete",
+        "cancel": "Cancel"
+    }
 
     useEffect(()=>{
         async function gethistoryDetails(){
@@ -17,7 +23,7 @@ function HistoryDetail() {
         }
         gethistoryDetails();
     }, [])
-
+    
     return ( 
         <div>
             <nav className='nav-middle'>
@@ -119,6 +125,7 @@ function HistoryDetail() {
                                     </tr>
                                 </tbody>
                             </table>
+                            <p className='my-2'>Status:<span className='mx-3'>{order?status[order.product_status]:""}</span></p>
                         </div>
                     </div>
                 </div>

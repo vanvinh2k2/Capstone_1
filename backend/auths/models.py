@@ -26,7 +26,6 @@ class User(AbstractUser):
 class ContactUs(models.Model):
     full_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    phone = models.CharField(max_length=200)
     subject = models.CharField(max_length=200)
     message = models.TextField(max_length=1000)
 
