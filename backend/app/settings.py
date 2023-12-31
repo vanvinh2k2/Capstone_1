@@ -128,7 +128,7 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'djongo',
 #         'NAME': 'Capstone_1',
-#         'ENFORCE_SCHEMA': False,
+#         'ENFORCE_SCHEMA': True,
 #         'CLIENT': {
 #             'host': 'mongodb+srv://ngov6769:2432002@cluster0.sv10xw9.mongodb.net/?retryWrites=true&w=majority',
 #             'port': 27017,

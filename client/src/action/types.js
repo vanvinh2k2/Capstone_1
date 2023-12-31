@@ -43,3 +43,4 @@ export const REVIEW = "REVIEW";
 export const GET_DISH_AI = 'GET_DISH_AI';
 export const GET_DISH_SUGGETS = 'GET_DISH_SUGGETS';
 export const FILTER_DISH = 'FILTER_DISH';
+export const ADD_ORDER_OK = 'ADD_ORDER_OK';

@@ -2,14 +2,15 @@ import { useSelector } from 'react-redux';
 import notfoundimg from '../../../assets/images/not_found.png';
 
 function RestaurantSearch() {
-    const dishes = useSelector(state=>state.dish.dishes);
-    console.log(dishes);
+    const dishes = useSelector(state=>state.dish.dishes.restaurant);
+    const result = useSelector(state=>state.dish.dishes.result);
     return ( 
         <>
             <div className="container menu__dish">
                 <div className="row">
                     <h3>The Best Dishes</h3>
                 </div>
+                {result!==""?<p>Searching with results "{result}"</p>:""}
                 <div className="row">
                     {dishes&&dishes.length>0?dishes.map((dish, index)=>{
                         return (
@@ -46,7 +47,7 @@ function RestaurantSearch() {
                                             </div>
                                         </div>
                                         <div className="featured__item__view">
-                                            <button><a href={`/detail-dish/`}>View Restaurant</a></button>
+                                            <button><a href={`/detail-restaurant/${dish.restaurant.rid}`}>View Restaurant</a></button>
                                         </div>
                                     </div>
                                 </div>

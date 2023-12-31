@@ -62,7 +62,6 @@ function OrderRestaurant(props) {
                 }
             }
         }
-        
         setQuantity(initialQuantity);
         setStick(initialStick);
     }, [dishesDisplay])
@@ -210,16 +209,56 @@ function OrderRestaurant(props) {
             toast.error("Please input time to!");
             return false;
         }
+        else if(orderUser.time_to < orderUser.time_from){
+            toast.error("Please input time from and time to valid!");
+            return false;
+        }
+        else if(convertTimeToDecimal(orderUser.time_to) - convertTimeToDecimal(orderUser.time_from) < 1.5){
+            toast.error("Please input time from > time to 90h!");
+            return false;
+        }
+        else if(convertTimeToDecimal(orderUser.time_to) - convertTimeToDecimal(orderUser.time_from) > 4){
+            toast.error("Please input time from and time to < 4h!");
+            return false;
+        }
         else if(orderUser.order_date === ""){
             toast.error("Please input Order date!");
             return false;
         }
-        else if(orderUser.number_people > maxTable){
+        else if(checkTime(orderUser.order_date, orderUser.time_from) === false){
+            toast.error("Please input time from > 1h!");
+            return false;
+        }
+        else if(Number(orderUser.number_people - maxTable) > 0){
+            console.log(orderUser.number_people - maxTable);
             toast.error("The number of people exceeds the limit!");
             return false;
         }
         return true;
     }
+
+    function convertTimeToDecimal(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const decimalTime = hours + minutes / 60;
+        return Number(decimalTime);
+      }
+
+    function checkTime(ngay, gio) {
+        var thoiDiemHienTai = new Date();
+    
+        var ngayVaGio = new Date(ngay);
+        if (ngayVaGio.getTime() - thoiDiemHienTai.getTime()>0) {
+          return false;
+        } 
+        if (ngayVaGio.getDate() === thoiDiemHienTai.getDate()) {
+            const inputHourDecimal = convertTimeToDecimal(gio);
+            const currentHourDecimal = convertTimeToDecimal(thoiDiemHienTai.getHours() + ':' + thoiDiemHienTai.getMinutes());
+            if (inputHourDecimal <= currentHourDecimal + 1) {
+                
+              return false;
+            }
+          }
+      }
 
     const handelSubmit = async(e)=>{
         e.preventDefault();

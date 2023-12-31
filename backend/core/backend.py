@@ -178,6 +178,7 @@ def check_order(request, **kwargs):
 
     # Lay thoi gian toi -> ve cua Order co san 
     time_now = request.data.get('order_date')
+    print(time_now)
     orders = Order.objects.filter(table=table, order_date=time_now)
     for order in orders:
         in_time.append(convert_time(order.time_from))
@@ -598,6 +599,7 @@ def update_order_cart(request, *args, **kwargs):
     order_cart.time_from = request.data.get('time_from')
     order_cart.time_to = request.data.get('time_to')
     order_cart.number_people = request.data.get('number_people')
+    order_cart.order_date = request.data.get("order_date")
     items = request.data.get('items')
     order_cart.save();
     serialize = OrderCartSerializers(order_cart)

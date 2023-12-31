@@ -2,13 +2,6 @@ function Time() {
     return ( 
         <>
             <option value="0">Choice Time</option>
-            <option value='03:00'>03:00</option>
-            <option value='03:15'>03:15</option>
-            <option value='03:30'>03:30</option>
-            <option value='03:45'>03:45</option>
-            <option value='04:00'>04:00</option>
-            <option value='04:15'>04:15</option>
-            <option value='04:30'>04:30</option>
             <option value='04:45'>04:45</option>
             <option value='05:00'>05:00</option>
             <option value='05:15'>05:15</option>

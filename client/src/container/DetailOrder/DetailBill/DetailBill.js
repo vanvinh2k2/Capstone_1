@@ -3,6 +3,9 @@ import { useDispatch, useSelector} from "react-redux"
 import { getCategory } from "../../../action/restaurant";
 import {useParams} from 'react-router-dom';
 import PayPal from "../../../components/PayPal/PayPal";
+import { addOrder } from "../../../action/order";
+import { ADD_ORDER_OK } from "../../../action/types";
+import {useNavigate} from 'react-router-dom';
 
 function DetailBill(props) {
     const categorys = useSelector(state=>state.restaurant.categorys);
@@ -13,6 +16,7 @@ function DetailBill(props) {
     const [hide, setHide] = useState([]);
     const [orderDish, setOrderDish] = useState([]);
     const [sumPrice, setSumPrice] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(()=>{
         setOrderDish(orderDetail);
@@ -44,7 +48,15 @@ function DetailBill(props) {
             dispatch(action);
         }
         getcategory();
-    }, [])
+    }, []);
+
+    const handelPayment = async()=>{
+        const data = {
+            order: order, orderDetail: orderDish, deposit: 0, price: sumPrice, rid: rid
+        }
+        const action = await addOrder(data, localStorage.getItem("access"));
+        if(action.type === ADD_ORDER_OK) navigate(`/bill/${action.payload}`);
+    }
 
     const handelQuantity = (e, index)=>{
         const quantity = e.target.value;
@@ -58,6 +70,7 @@ function DetailBill(props) {
         newOrderDish = newOrderDish.filter(order=>order.dish.did !== did);
         setOrderDish(newOrderDish);
     }
+    
     return ( 
         <div className="col-lg-7 col-sm-12 col-md-12">
             <div className="order__bill">
@@ -90,15 +103,23 @@ function DetailBill(props) {
                         <p className="title__total">Total :</p>
                         <p className="content_total">{sumPrice}$</p>
                     </div>
-                    <div className="order__bill__cost__price">
-                        <p className="title__total">Deposit :</p>
-                        <p className="content_total">{sumPrice*30/100}$</p>
-                    </div>
-                    <p><b>Note: </b>You need to pay a deposit to confirm the order</p>
-                    <PayPal amount={sumPrice*30/100} pee={"sb-4sokb27585707@business.example.com"} 
-                        payload ={{
-                            order: order, orderDetail: orderDish, deposit: sumPrice*30/100, price: sumPrice, rid: rid
-                    }}/>
+                    {sumPrice > 100?
+                    <>
+                        <div className="order__bill__cost__price">
+                            <p className="title__total">Deposit :</p>
+                            <p className="content_total">{sumPrice*30/100}$</p>
+                        </div>
+                        <p><b>Note: </b>You need to pay a deposit to confirm the order</p>
+                        <PayPal amount={sumPrice*30/100} pee={"sb-4sokb27585707@business.example.com"} 
+                            payload ={{
+                                order: order, orderDetail: orderDish, deposit: sumPrice*30/100, price: sumPrice, rid: rid
+                        }}/>
+                    </>
+                    : <>
+                    <button className="btn" onClick={handelPayment}>Confirm</button>
+                    </>
+                    }
+                    
                 </div>
             </div>
         </div>

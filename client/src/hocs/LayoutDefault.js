@@ -10,16 +10,22 @@ function LayoutDefault({children}) {
     const dispatch = useDispatch();
     const [q, setQ] = useState("");
 
-    useEffect(()=>{
-        let interval = setInterval(()=>{
-        if(refreshToken1!==null){
-          refreshToken(refreshToken1).then((res3)=>{
-          dispatch(res3)
+    function getNewAccess(){
+      if(refreshToken1!==null){
+        refreshToken(refreshToken1).then((res3)=>{
+        dispatch(res3)
         })
         .catch((error) => {
             console.error(error);
-          });}
-        }, 15000)
+        });
+      }
+    }
+
+    useEffect(()=>{
+        getNewAccess();
+        let interval = setInterval(()=>{
+          getNewAccess();
+        }, 58000)
         return ()=>clearInterval(interval);
       
     }, [])

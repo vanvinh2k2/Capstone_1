@@ -14,8 +14,8 @@ class RestaurantAdmin(admin.ModelAdmin):
     list_display = ['rid', 'title', 'restaurant_image', 'phone', 'time_open', 'time_close', 'is_hot']
 
 
-# class OrderAdmin(admin.ModelAdmin):
-#     list_display = ['oid', 'order_date', 'price', 'product_status', 'time_from', 'time_to', 'number_people', 'deposit']
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['oid', 'order_date', 'price', 'product_status', 'time_from', 'time_to', 'number_people', 'deposit']
 
 
 # class OrderItemAdmin(admin.ModelAdmin):
@@ -53,7 +53,7 @@ admin.site.register(RestaurantReview, RestaurantReviewAdmin)
 admin.site.register(Wishlist, WishlistAdmin)
 admin.site.register(ChatMessage, ChatMessageAdmin)
 # admin.site.register(Dish, DishAdmin)
-# admin.site.register(Order, OrderAdmin)
+admin.site.register(Order, OrderAdmin)
 # admin.site.register(OrderItem, OrderItemAdmin)
 # admin.site.register(Table, TableAdmin)
 # admin.site.register(OrderCart, CartOrderAdmin)

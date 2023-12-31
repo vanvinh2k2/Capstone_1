@@ -166,31 +166,3 @@
 # sorted_results = sorted(restaurant_results, key=lambda x: (x['specialty'], x['rating'], x['like']), reverse=True)
 # for result in sorted_results:
 #     print(result)
-
-import re
-import unicodedata
-
-def remove_accents(input_str):
-    nfkd_form = unicodedata.normalize('NFKD', input_str)
-    return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
-
-def convert_to_username(name, existing_usernames):
-    # Xóa dấu cách và chuyển đổi tên sang dạng không dấu
-    cleaned_name = re.sub(r'\s', '', remove_accents(name).lower())
-    
-    # Đảm bảo tính duy nhất của username
-    base_username = cleaned_name
-    username = base_username
-    counter = 1
-    while username in existing_usernames:
-        username = base_username + str(counter)
-        counter += 1
-    
-    return username
-
-# Example
-api_name_with_diacritics = "Cảnh Ngáo"
-existing_usernames = set(["canhngao", "canhngao1"])  # Danh sách username đã tồn tại trong database
-
-username = convert_to_username(api_name_with_diacritics, existing_usernames)
-print(username)

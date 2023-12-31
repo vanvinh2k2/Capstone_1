@@ -29,7 +29,10 @@ function ManageOrder() {
       const action = await manageOrder(localStorage.getItem('rid'), day, month, year);
       dispatch(action);
     }
-    manageorder();
+    let interval = setInterval(()=>{
+      manageorder();
+    }, 5000)
+    return ()=>clearInterval(interval);
   }, [day, month, year])
 
   useEffect(()=>{

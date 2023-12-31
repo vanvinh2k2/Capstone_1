@@ -21,7 +21,7 @@ def search_restaurants(restaurants, query):
     similarities_with_names = list(zip(restaurants['product_name'], restaurants['did'], restaurants['like'], restaurants['is_featured'], restaurants['rating'], cosine_similarities))
     result = []
     for name, pid, like, is_featured, rating, similarity in similarities_with_names:
-        if similarity > 0.4:
+        if similarity > 0.5:
             result.append({'product_name': name, 'did': pid, 'like': like, 'is_featured': is_featured, 'rating': rating})
     return result
 
@@ -63,9 +63,8 @@ def search_restaurant_image(request):
                 dataOrder['is_featured'].append(dish.featured)
                 dataOrder['like'].append(restaurant.like)
                 dataOrder['rating'].append(avg_rating(restaurant))
-        # print(dataOrder)
 
-        results = search_restaurants(dataOrder, "noodles")
+        results = search_restaurants(dataOrder, dish_data)
         sorted_results = sorted(results, key=lambda x: (x['is_featured'], x['rating'], x['like']), reverse=True)
         # print(sorted_results)
 

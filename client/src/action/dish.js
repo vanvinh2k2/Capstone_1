@@ -111,7 +111,7 @@ export const getDishesfromImage= async(image)=>{
         if(res.data.success == true){
             return {
                 type: GET_DISH_AI,
-                payload: res.data.data.restaurant
+                payload: res.data.data
             }
         }
     }catch(e){
