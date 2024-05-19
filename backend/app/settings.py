@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-gm===#j9k*ko@riu(kf=2hc)g9h(i2)c^yy)=xq_m9f-6_f$%b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'auths',
+    'chatterbot',
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
@@ -100,14 +101,25 @@ WSGI_APPLICATION = 'app.wsgi.application'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:3001',
+    'http://localhost:3002'
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'restaurant_booking',
+        'USER' : 'root',
+        'PASSWORD' : '',
+        'HOST' : 'localhost' 
     }
 }
 
@@ -244,7 +256,7 @@ CKEDITOR_CONFIGS = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 

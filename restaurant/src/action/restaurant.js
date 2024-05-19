@@ -20,7 +20,9 @@ import {
     UPDATE_ORDER_ITEM,
     DELETE_ORDER_ITEM,
     RES_DETAIL,
-    CHANGE_RESTAURANT
+    CHANGE_RESTAURANT,
+    STATISTICS,
+    BASE_URL
 } from "../action/type";
 import axios from "axios";
 
@@ -40,7 +42,7 @@ export const getReviews = async (rid)=>{
     const body = JSON.stringify({rid})
     
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/reviews-restaurant/${rid}/`, body, config)
+        const res = await axios.get(`http://${BASE_URL}/api/reviews-restaurant/${rid}/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: REVIEW_RESTAURANT,
@@ -63,11 +65,38 @@ export const getReviews = async (rid)=>{
     }
 }
 
+export const statistics = async (rid)=>{
+    const body = JSON.stringify({rid})
+    
+    try{
+        const res = await axios.get(`http://${BASE_URL}/api/statistics/${rid}/`, body, config)
+        if(res.data.success === true){
+            const result = {
+                type: STATISTICS,
+                payload: res.data.data
+            }
+            return result
+        }
+        else{
+            return {
+                type: GET_ERROR,
+                payload: "ERROR"
+            }
+        }
+        
+    } catch(e){
+        return {
+            type: GET_ERROR,
+            payload: e
+        }
+    }
+}
+
 export const getHistoryOrder = async (rid)=>{
     const body = JSON.stringify({rid})
     
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/order-restaurant/${rid}/`, body, config)
+        const res = await axios.get(`http://${BASE_URL}/api/order-restaurant/${rid}/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: ORDER_HISTORY,
@@ -94,7 +123,7 @@ export const getDishes = async (rid)=>{
     const body = JSON.stringify({rid})
     
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dishes-of-restaurant/${rid}/`, body, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dishes-of-restaurant/${rid}/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: GET_DISHES,
@@ -121,7 +150,7 @@ export const getTables = async (rid)=>{
     const body = JSON.stringify({rid})
     
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/get-table/${rid}/`, body, config)
+        const res = await axios.get(`http://${BASE_URL}/api/get-table/${rid}/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: GET_TABLE,
@@ -146,7 +175,7 @@ export const getTables = async (rid)=>{
 
 export const getHistoryDetail = async (oid)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/bill-order/${oid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/bill-order/${oid}/`, config)
         if(res.data.success === true){
             const result = {
                 type: ORDER_DETAIL,
@@ -194,8 +223,9 @@ export const addDish = async (rid, data)=>{
     formData.append('featured', featured);
     formData.append('digital', digital);
     formData.append('cid', cid);
+
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/add-dish/${rid}/`, formData, config2)
+        const res = await axios.post(`http://${BASE_URL}/api/add-dis/${rid}/`, formData, config2)
         if(res.data.success === true){
             const result = {
                 type: ADD_DISH,
@@ -244,7 +274,7 @@ export const updateDish = async(did, data) =>{
     formData.append('digital', digital);
     formData.append('cid', cid);
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/update-dish/${did}/`, formData, config2)
+        const res = await axios.post(`http://${BASE_URL}/api/update-dish/${did}/`, formData, config2)
         return {
             type: UPDATE_DISH,
             payload: res.data.data
@@ -260,7 +290,7 @@ export const updateDish = async(did, data) =>{
 export const addTable = async (rid, title, number_seat)=>{
     const body = JSON.stringify({title, number_seat});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/add-table/${rid}/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/add-table/${rid}/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: ADD_TABLE,
@@ -285,7 +315,7 @@ export const addTable = async (rid, title, number_seat)=>{
 
 export const getCategory = async() =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/category/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/category/`, config)
         return {
             type: GET_CATEGORY,
             payload: res.data.data
@@ -300,7 +330,7 @@ export const getCategory = async() =>{
 
 export const deleteDish = async(rid, did) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/delete-dish/${rid}/${did}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/delete-dish/${rid}/${did}/`, config)
         return {
             type: DELETE_DISH,
             payload: res.data.data
@@ -315,7 +345,7 @@ export const deleteDish = async(rid, did) =>{
 
 export const deleteTable = async(rid, tid) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/delete-table/${rid}/${tid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/delete-table/${rid}/${tid}/`, config)
         return {
             type: DELETE_TABLE,
             payload: res.data.data
@@ -332,7 +362,7 @@ export const manageOrder = async(rid, day, month, year) =>{
     const date = `${year}-${month}-${day}`;
     const body = JSON.stringify({date})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/manage-order/${rid}/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/manage-order/${rid}/`, body, config)
         return {
             type: MANAGE_ORDER,
             payload: res.data.data
@@ -348,7 +378,7 @@ export const manageOrder = async(rid, day, month, year) =>{
 export const updateTable = async(tid, title, number_seat) =>{
     const body = JSON.stringify({title, number_seat})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/update-table/${tid}/`, body, config);
+        const res = await axios.post(`http://${BASE_URL}/api/update-table/${tid}/`, body, config);
         console.log(res);
         return {
             type: UPDATE_TABLE,
@@ -364,7 +394,7 @@ export const updateTable = async(tid, title, number_seat) =>{
 
 export const detailTable = async(tid) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/detail-table/${tid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/detail-table/${tid}/`, config)
         return {
             type: DETAIL_TABLE,
             payload: res.data.data
@@ -379,7 +409,7 @@ export const detailTable = async(tid) =>{
 
 export const detailDish= async(did)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dish/${did}`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dish/${did}`, config)
         if(res.data.success == true){
             return {
                 type: DETAIL_DISH,
@@ -397,7 +427,7 @@ export const detailDish= async(did)=>{
 
 export const getDishesOfRestaurant= async(rid)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dishes-of-restaurant/${rid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dishes-of-restaurant/${rid}/`, config)
         if(res.data.success == true){
             return {
                 type: GET_DISH_OF_RES,
@@ -415,7 +445,7 @@ export const getDishesOfRestaurant= async(rid)=>{
 export const updateOrderItem= async(oid, did, quantity)=>{
     const body = JSON.stringify({quantity});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/update-order-item/${oid}/${did}/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/update-order-item/${oid}/${did}/`, body, config)
         if(res.data.success == true){
             return {
                 type: UPDATE_ORDER_ITEM,
@@ -432,7 +462,7 @@ export const updateOrderItem= async(oid, did, quantity)=>{
 
 export const deleteOrderItem= async(oid, did)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/delete-order-item/${oid}/${did}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/delete-order-item/${oid}/${did}/`, config)
         if(res.data.success == true){
             return {
                 type: DELETE_ORDER_ITEM,
@@ -450,7 +480,7 @@ export const deleteOrderItem= async(oid, did)=>{
 export const changeStatus= async(product_status, oid)=>{
     const body = JSON.stringify({product_status});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/update-status-order/${oid}/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/update-status-order/${oid}/`, body, config)
         if(res.data.success == true){
             return {
                 type: CHANGE_STATUS,
@@ -467,7 +497,7 @@ export const changeStatus= async(product_status, oid)=>{
 
 export const getRestaurantDetail= async(rid)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/restaurant/${rid}`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/restaurant/${rid}`, config)
         return {
             type: RES_DETAIL,
             payload: res.data.data
@@ -493,7 +523,7 @@ export const change_account = async(form, img, rid)=>{
     formData.append('time_close', time_close);
 
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/change-restaurant/${rid}/`, formData, config2)
+        const res = await axios.post(`http://${BASE_URL}/api/change-restaurant/${rid}/`, formData, config2)
         return {
             type: CHANGE_RESTAURANT,
             payload: res.data.data

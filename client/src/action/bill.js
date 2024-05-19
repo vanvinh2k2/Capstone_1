@@ -1,7 +1,8 @@
 import {
     GET_BILL,
     GET_ERROR,
-    GET_ORDER_HISTORY
+    GET_ORDER_HISTORY,
+    BASE_URL
 } from '../action/types';
 import axios from 'axios';
 
@@ -16,7 +17,7 @@ function configAuth(yourAuthToken){
 
 export const getBill = async(oid, access) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/bill-order/${oid}/`, configAuth(access))
+        const res = await axios.get(`http://${BASE_URL}/api/bill-order/${oid}/`, configAuth(access))
         if(res.data.success){
             return {
                 type: GET_BILL,
@@ -40,7 +41,7 @@ export const getBill = async(oid, access) =>{
 
 export const getOrderHistory = async(access) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/list-order/${localStorage.getItem('iduser')}/`, configAuth(access))
+        const res = await axios.get(`http://${BASE_URL}/api/list-order/${localStorage.getItem('iduser')}/`, configAuth(access))
         if(res.data.success){
             return {
                 type: GET_ORDER_HISTORY,

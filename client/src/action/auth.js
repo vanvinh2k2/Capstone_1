@@ -9,7 +9,8 @@ import {
     GET_ERROR, 
     REFRESH_SUCCESS,
     TOKEN_VALID,
-    CONTACT_US
+    CONTACT_US,
+    BASE_URL
 } from './types';
 
 const yourAuthToken = localStorage.getItem("access");
@@ -30,7 +31,7 @@ const config = {
 export const login = async (email, password)=>{
     const body = JSON.stringify({email, password})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/auth/api/login/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: LOGIN_SUCCESS,
@@ -64,7 +65,7 @@ export const signup = async(username, email, password, password2) =>{
 
     const body = JSON.stringify({username, email, password})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/register/`, body, config);
+        const res = await axios.post(`http://${BASE_URL}/auth/api/register/`, body, config);
         // console.log(res);
         if(res.data.success == true){
             alert(res.data.message)
@@ -109,7 +110,7 @@ export const logout = async() =>{
 export const forget_password = async(email) =>{
     const body = JSON.stringify({email})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/send-email/`, body, config);
+        const res = await axios.post(`http://${BASE_URL}/auth/api/send-email/`, body, config);
         if(res.data.success == true){
             alert(res.data.message)
             return {
@@ -138,7 +139,7 @@ export const forget_password = async(email) =>{
 export const login_google = async(username, email, image, full_name, id) =>{
     const body = JSON.stringify({username, email, image, full_name, id})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/google/`, body, config);
+        const res = await axios.post(`http://${BASE_URL}/auth/api/login/google/`, body, config);
         if(res.data.success == true){
             return {
                 type: LOGIN_SUCCESS,
@@ -164,7 +165,7 @@ export const login_google = async(username, email, image, full_name, id) =>{
 export const login_facebook = async(username, email, image, full_name, id) =>{
     const body = JSON.stringify({username, email, image, full_name, id})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/facebook/`, body, config);
+        const res = await axios.post(`http://${BASE_URL}/auth/api/login/facebook/`, body, config);
         if(res.data.success == true){
             return {
                 type: LOGIN_SUCCESS,
@@ -191,7 +192,7 @@ export const login_facebook = async(username, email, image, full_name, id) =>{
 export const checkAccessToken = async(token) =>{
     const body = JSON.stringify({token})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/token/verify/`, body, config);
+        const res = await axios.post(`http://${BASE_URL}/auth/api/token/verify/`, body, config);
             return {
                 type: TOKEN_VALID,
                 payload: res.data
@@ -207,7 +208,7 @@ export const checkAccessToken = async(token) =>{
 
 export const refreshToken = async(refresh) =>{
     try {
-      const res = await axios.post('http://127.0.0.1:8000/auth/api/token/refresh/', {refresh: refresh}, config_auth);
+      const res = await axios.post('http://${BASE_URL}/auth/api/token/refresh/', {refresh: refresh}, config_auth);
             return {
                 type: REFRESH_SUCCESS,
                 payload: res.data
@@ -224,7 +225,7 @@ export const refreshToken = async(refresh) =>{
 export const contact_us = async(subject, message, full_name, email) =>{
     const body = JSON.stringify({subject, message, full_name, email});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/contact-us/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/contact-us/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: CONTACT_US,

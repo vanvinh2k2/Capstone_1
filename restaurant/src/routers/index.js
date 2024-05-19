@@ -19,7 +19,7 @@ import Dashboard from "../container/Dashboard/Dashboard";
 
 const publicRouter = [
     {path: '/', component: Login, layout: null},
-    {path: '*', component: NotFound}
+    {path: '*', component: NotFound},
 ]
 
 const privateRouter = [

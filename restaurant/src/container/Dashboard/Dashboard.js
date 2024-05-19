@@ -4,16 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getHistoryOrder } from '../../action/restaurant';
 import {NavLink} from 'react-router-dom'
 import { useEffect } from "react";
-import img from '../../assets/images/empty.png'
+import img from '../../assets/images/empty.png';
+import { statistics } from '../../action/restaurant';
 Chart.register(BarElement, BarController, CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
 
 function Dashboard() {
+    const {top_user, num_top_user, num_order} = useSelector(state=>state.restaurant.statistics)
+    console.log(top_user, num_top_user, num_order);
     const data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
           {
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
+            label: 'Order',
+            data: num_order,
+            // [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56],
             fill: false,
             backgroundColor: '#b1f3b1',
             tension: 0.1
@@ -22,11 +26,13 @@ function Dashboard() {
     };
 
     const data2 = {
-        labels: ['January', 'February', 'March', 'April', 'May'],
+        labels: top_user,
+        // ['January', 'February', 'March', 'April', 'May'],
         datasets: [
           {
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56],
+            label: 'user',
+            data: num_top_user,
+            // [65, 59, 80, 81, 56],
             fill: true,
             backgroundColor: [
                 'rgba(75, 192, 192, 0.5)',
@@ -54,7 +60,12 @@ function Dashboard() {
             const action  = await getHistoryOrder(localStorage.getItem('rid'))
             dispatch(action);
         }
+        async function Fstatistics(){
+            const action  = await statistics(localStorage.getItem('rid'))
+            dispatch(action);
+        }
         gethistoryOrder();
+        Fstatistics();
     }, [])
 
     return ( 

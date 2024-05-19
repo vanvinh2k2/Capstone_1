@@ -15,7 +15,8 @@ import {
     UPDATE_ORDER_ITEM,
     DELETE_ORDER_ITEM,
     RES_DETAIL,
-    CHANGE_RESTAURANT
+    CHANGE_RESTAURANT,
+    STATISTICS
 } from "../action/type";
 const initialState = {
     reviews: [],
@@ -28,7 +29,8 @@ const initialState = {
     table: {},
     dish: {},
     dishes_res: [],
-    restaurant_detail: {}
+    restaurant_detail: {},
+    statistics: {}
 }
 
 export default function (state = initialState, action){
@@ -78,6 +80,11 @@ export default function (state = initialState, action){
             return {
                 ...state,
                 category: payload,
+            }
+        case STATISTICS:
+            return {
+                ...state,
+                statistics: payload,
             }
         case DELETE_DISH:
             return {

@@ -6,8 +6,8 @@ from .serializers import OrderSerializers
 
 def default(request):
 
-    top_restaurant = ["new", "old", "Ko", "Ok"]
-    num_top_restaurant = [1, 5, 8, 3]
+    top_restaurant = []
+    num_top_restaurant = []
     order = Order.objects.values('restaurant__title').annotate(num_restaurant=Count("restaurant")).order_by('-num_restaurant')[:5]
     for order_count in order:
         top_restaurant.append(order_count['restaurant__title'])

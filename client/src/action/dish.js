@@ -7,7 +7,8 @@ import {
     GET_DISH_OF_RES_2,
     GET_DISH_AI,
     GET_DISH_SUGGETS,
-    FILTER_DISH
+    FILTER_DISH,
+    BASE_URL
 } from "./types";
 import axios from "axios";
 
@@ -25,7 +26,7 @@ const config2 = {
 
 export const getDishes= async(page)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dish/?page=${page}`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dish/?page=${page}`, config)
         return {
             type: GET_DISHES,
             payload: res.data
@@ -41,7 +42,7 @@ export const getDishes= async(page)=>{
 
 export const getDish= async(did)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dish/${did}`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dish/${did}`, config)
         return {
             type: GET_DISH_DETAIL,
             payload: res.data.data
@@ -57,7 +58,7 @@ export const getDish= async(did)=>{
 
 export const getDishesHot= async()=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dish-featured/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dish-featured/`, config)
         if(res.data.success == true){
             return {
                 type: GET_DISHES_HOT,
@@ -75,7 +76,7 @@ export const getDishesHot= async()=>{
 
 export const getDishesOfRestaurant2= async(rid, page)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dishes-of-restaurant2/${rid}/?page=${page}`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dishes-of-restaurant2/${rid}/?page=${page}`, config)
         return {
             type: GET_DISH_OF_RES_2,
             payload: res.data
@@ -90,7 +91,7 @@ export const getDishesOfRestaurant2= async(rid, page)=>{
 
 export const getDishesOfRestaurant= async(rid)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/dishes-of-restaurant/${rid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/dishes-of-restaurant/${rid}/`, config)
         return {
             type: GET_DISH_OF_RES,
             payload: res.data.data
@@ -107,7 +108,7 @@ export const getDishesfromImage= async(image)=>{
     try{
         let formData = new FormData();
         formData.append('image', image);
-        const res = await axios.post(`http://127.0.0.1:8000/api/search-ai/`, formData, config2)
+        const res = await axios.post(`http://${BASE_URL}/api/search-ai/`, formData, config2)
         if(res.data.success == true){
             return {
                 type: GET_DISH_AI,
@@ -124,7 +125,7 @@ export const getDishesfromImage= async(image)=>{
 
 export const getDishesSuggest= async(rid, uid)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/suggest-food/${uid}/${rid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/suggest-food/${uid}/${rid}/`, config)
         if(res.data.success == true){
             return {
                 type: GET_DISH_SUGGETS,
@@ -142,7 +143,7 @@ export const getDishesSuggest= async(rid, uid)=>{
 export const filterDish= async(max_price, min_price, restaurants, categorys, page)=>{
     const body = JSON.stringify({max_price, min_price, restaurants, categorys})
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/filter-product/?page=${page}`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/filter-product/?page=${page}`, body, config)
         return {
             type: FILTER_DISH,
             payload: res.data

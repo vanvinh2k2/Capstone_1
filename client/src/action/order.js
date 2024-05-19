@@ -5,7 +5,8 @@ import {
     CANCEL_ORDER,
     CHECK_ORDER,
     GET_ERROR,
-    ADD_ORDER_OK
+    ADD_ORDER_OK,
+    BASE_URL
 } from "./types";
 import axios from "axios";
 
@@ -20,7 +21,7 @@ function configAuth(yourAuthToken){
 
 export const getOrderCart= async(uid, rid, access)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/order-cart/${uid}/${rid}/`, configAuth(access))
+        const res = await axios.get(`http://${BASE_URL}/api/order-cart/${uid}/${rid}/`, configAuth(access))
         if(res.data.success == true){
             return {
                 type: GET_ORDER_CART,
@@ -45,8 +46,9 @@ export const getOrderCart= async(uid, rid, access)=>{
 export const addOrderCart = async(orderUser, items, uid, rid, access)=>{
     const {full_name, phone, tid, time_from, time_to, number_people, order_date} = orderUser
     const body = JSON.stringify({full_name, phone, tid, time_from, time_to, number_people, items, order_date});
+    console.log(body);
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/add-order-cart/${uid}/${rid}/`, body, configAuth(access))
+        const res = await axios.post(`http://${BASE_URL}/api/add-order-cart/${uid}/${rid}/`, body, configAuth(access))
         if(res.data.success == true){
             return {
                 type: ADD_ORDER_CART,
@@ -71,8 +73,9 @@ export const addOrderCart = async(orderUser, items, uid, rid, access)=>{
 export const updateOrderCart = async(orderUser, items, uid, rid, access)=>{
     const {full_name, phone, tid, time_from, time_to, number_people, order_date} = orderUser
     const body = JSON.stringify({full_name, phone, tid, time_from, time_to, number_people, items,order_date});
+    console.log(body);
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/update-order-cart/${uid}/${rid}/`, body, configAuth(access))
+        const res = await axios.post(`http://${BASE_URL}/api/update-order-cart/${uid}/${rid}/`, body, configAuth(access))
         if(res.data.success == true){
             return {
                 type: UPDATE_ORDER_CART,
@@ -97,7 +100,7 @@ export const updateOrderCart = async(orderUser, items, uid, rid, access)=>{
 export const checkOrder = async(time_to, time_from, order_date, tid, rid, access)=>{
     const body = JSON.stringify({time_to, time_from, order_date, tid});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/check-order/${rid}/`, body, configAuth(access))
+        const res = await axios.post(`http://${BASE_URL}/api/check-order/${rid}/`, body, configAuth(access))
         if(res.data.success == true){
             return {
                 type: CHECK_ORDER,
@@ -121,7 +124,7 @@ export const checkOrder = async(time_to, time_from, order_date, tid, rid, access
 
 export const cancelOrder = async(oid, access)=>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/cancel-order/${oid}/`, configAuth(access))
+        const res = await axios.get(`http://${BASE_URL}/api/cancel-order/${oid}/`, configAuth(access))
         if(res.data.success == true){
             return {
                 type: CANCEL_ORDER,
@@ -172,12 +175,12 @@ export const addOrder = async(data, access)=>{
         order_date
     });
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/add-order/${localStorage.getItem("iduser")}/${rid}/`, body, configAuth(access));
+        const res = await axios.post(`http://${BASE_URL}/api/add-order/${localStorage.getItem("iduser")}/${rid}/`, body, configAuth(access));
         
                     
                         if (res.data.success === true) {
                             const oid = res.data.data.oid;
-                            const res2 = await axios.get(`http://127.0.0.1:8000/api/delete-order-cart/${localStorage.getItem("iduser")}/${rid}/`, configAuth(access))
+                            const res2 = await axios.get(`http://${BASE_URL}/api/delete-order-cart/${localStorage.getItem("iduser")}/${rid}/`, configAuth(access))
                             
                                 if (res2.data.success === true) {
                                     return {

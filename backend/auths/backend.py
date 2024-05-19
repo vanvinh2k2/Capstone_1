@@ -261,12 +261,13 @@ class LoginRestaurantAPI(generics.CreateAPIView):
 @permission_classes([permissions.AllowAny])
 def forget_password(request, *args, **kwargs):
     email = request.data.get('email')
+    print(email)
     try:
         user = User.objects.get(email=email)
         token = str(uuid4())
         user.password_token = token
         user.save()
-        send_forget_password_mail(user, token)
+        send_forget_password_mail(request, user, token)
         print('email')
         return Response({
             'success': True,
@@ -276,4 +277,29 @@ def forget_password(request, *args, **kwargs):
         return Response({
             'success': False,
             'message': "User is not Exist."
+        })
+    
+
+@api_view(["POST"])
+def update_password(request, *args, **kwargs):
+    try:
+        uid = kwargs.get("uid")
+        user = User.objects.get(id=uid)
+        old_password = request.data.get("old_password")
+        if user.check_password(old_password) :
+            user.set_password(request.data.get("new_password"))
+            user.save()
+            return Response({
+                'success': True,
+                'message': "Password changed successfully."
+            })
+        else:
+            return Response({
+                'success': False,
+                'message': "Old password invalid!"
+            })
+    except:
+        return Response({
+            'success': False,
+            'message': "Fail!"
         })

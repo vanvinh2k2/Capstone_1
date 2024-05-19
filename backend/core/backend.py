@@ -102,6 +102,66 @@ def restaurant_detail(request, *args, **kwargs):
                      'data': serialize.data
                      }, status=status.HTTP_200_OK)
 
+from django.db.models import Avg
+from rest_framework.response import Response
+from rest_framework import status
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_rating(request, *args, **kwargs):
+    rid = kwargs.get("rid")
+    try:
+        restaurant = Restaurant.objects.get(rid=rid)
+        avg_rating = RestaurantReview.objects.filter(restaurant=restaurant).aggregate(avg_rating=Avg('rating'))
+        num_review = RestaurantReview.objects.filter(restaurant=restaurant).aggregate(num_review=Count('review'))
+
+        if num_review['num_review'] is not None: num = num_review['num_review']
+        else: num = 0
+        
+        if avg_rating['avg_rating'] is not None:
+            return Response({
+                'success': True,
+                'message': 'Get restaurant rating successfully.',
+                'data': {'avg_rating': avg_rating['avg_rating'], "rid": rid, "num_review": num}
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'success': False,
+                'message': 'No ratings available for this restaurant.',
+                'data': {'avg_rating': 0, "rid": rid, "num_review": num}
+            }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': 'An error occurred while fetching restaurant rating.',
+            'data': {'avg_rating': None}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_rating_all(request, *args, **kwargs):
+    try:
+        restaurants = Restaurant.objects.all()
+        data = []
+        for res in restaurants:
+            restaurant = Restaurant.objects.get(rid=res.rid)
+            avg_rating = RestaurantReview.objects.filter(restaurant=restaurant).aggregate(avg_rating=Avg('rating'))
+            num_review = RestaurantReview.objects.filter(restaurant=restaurant).aggregate(num_review=Count('review'))
+            num = num_review['num_review'] if num_review['num_review'] is not None else 0
+            avg_rate = avg_rating['avg_rating'] if avg_rating['avg_rating'] is not None else 0
+            data.append({'avg_rating': avg_rate, "rid": res.rid, "num_review": num})
+
+        return Response({
+            'success': True,
+            'message': 'Get restaurant rating successfully.',
+            'data': data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            'success': False,
+            'message': 'An error occurred while fetching restaurant rating.',
+            'data': {'avg_rating': None}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
@@ -178,8 +238,9 @@ def check_order(request, **kwargs):
 
     # Lay thoi gian toi -> ve cua Order co san 
     time_now = request.data.get('order_date')
-    print(time_now)
+    # print(time_now)
     orders = Order.objects.filter(table=table, order_date=time_now)
+    print(orders, time_now)
     for order in orders:
         in_time.append(convert_time(order.time_from))
         out_time.append(convert_time(order.time_to))
@@ -223,6 +284,7 @@ def add_order(request, *args, **kwargs):
 
     if serialize.is_valid(raise_exception=True):
         order = serialize.save(user=user, table=table, restaurant=restaurant)
+        items = json.loads(items)
         for item in items:
             dish = Dish.objects.get(did=item['did'])
             OrderItem.objects.create(
@@ -237,7 +299,8 @@ def add_order(request, *args, **kwargs):
                         'data': serialize.data
                         }, status=status.HTTP_200_OK)
         
-    else: return Response({'success': False,
+    else: 
+        return Response({'success': False,
                          'message': 'Error!'
                          }, status=status.HTTP_200_OK)
 
@@ -271,6 +334,23 @@ def add_like(request, *args, **kwargs):
         return Response({'success': True,
                          'message': 'Add like successfully.',
                          'data': serialize.data
+                         }, status=status.HTTP_200_OK)
+    return Response({'success': False,
+                     'message': 'Added previously!'
+                     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def check_like(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    rid = kwargs.get('rid')
+    user = User.objects.get(id=uid)
+    restaurant = Restaurant.objects.get(rid=rid)
+    wishlist = Wishlist.objects.filter(user=user, restaurant=restaurant)
+    
+    if not wishlist.exists():
+        return Response({'success': True,
+                         'message': 'Add like successfully.'
                          }, status=status.HTTP_200_OK)
     return Response({'success': False,
                      'message': 'Added previously!'
@@ -377,7 +457,6 @@ def order_detail(request, *args, **kwargs):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.AllowAny])
 def list_order(request, *args, **kwargs):
     uid = kwargs.get('uid')
     user = User.objects.get(id=uid)
@@ -405,7 +484,7 @@ def manage_order_by_date(request, *args, **kwargs):
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
-def bill_order(request, *args, **kwargs):
+def bill_order(request, **kwargs):
     oid = kwargs.get('oid')
     order = Order.objects.get(oid=oid)
     orders = OrderItem.objects.filter(order=order)
@@ -421,6 +500,7 @@ def bill_order(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def cancel_order(request, **kwargs):
     oid = kwargs.get('oid')
     try:
@@ -527,6 +607,7 @@ def detail_table(request, *args, **kwargs):
 
 
 @api_view(['GET'])
+@permission_classes([permissions.AllowAny])
 def get_order_cart_res(request, *args, **kwargs):
     rid = kwargs.get('rid')
     uid = kwargs.get('uid')
@@ -548,6 +629,26 @@ def get_order_cart_res(request, *args, **kwargs):
                         'message': 'Get fail.',
                         }, status=status.HTTP_200_OK)
     
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def check_order_cart(request, *args, **kwargs):
+    rid = kwargs.get('rid')
+    uid = kwargs.get('uid')
+    try:
+        restaurant = Restaurant.objects.get(rid=rid)
+        user = User.objects.get(id=uid)
+        order_cart = OrderCart.objects.filter(restaurant=restaurant, user=user)
+        if len(order_cart) > 0:
+            return Response({'success': True,
+                        'message': 'Get success.'
+                        }, status=status.HTTP_200_OK)
+        else: return Response({'success': False,
+                        'message': 'Get ok.',
+                        }, status=status.HTTP_200_OK)
+    except: return Response({'success': False,
+                        'message': 'Get fail.',
+                        }, status=status.HTTP_200_OK)
+    
 
 @api_view(['POST'])
 def add_order_cart(request, *args, **kwargs):
@@ -561,6 +662,7 @@ def add_order_cart(request, *args, **kwargs):
     serialize = OrderCartSerializers(data=request.data, context={'request': request})
     if serialize.is_valid():
         order_cart = serialize.save(user=user, table=table, restaurant=restaurant)
+        items = json.loads(items)
         for item in items:
             dish = Dish.objects.get(did=item['did'])
             OrderCartItem.objects.create(
@@ -579,8 +681,9 @@ def add_order_cart(request, *args, **kwargs):
                             "orderDetail": serialize2.data
                         }
                         }, status=status.HTTP_200_OK)
-    else: return Response({'success': False,
-                         'message': 'Error!'
+    else: 
+        return Response({'success': False,
+                         'message': serialize.errors
                          }, status=status.HTTP_200_OK)
 
 
@@ -601,6 +704,7 @@ def update_order_cart(request, *args, **kwargs):
     order_cart.number_people = request.data.get('number_people')
     order_cart.order_date = request.data.get("order_date")
     items = request.data.get('items')
+    items = json.loads(items)
     order_cart.save();
     serialize = OrderCartSerializers(order_cart)
 
@@ -655,11 +759,14 @@ def filter_product(request):
     if 'categorys' in request.data:
         categorys = request.data.get('categorys')
         category_cids = [item['cid'] for item in categorys]
+        print(categorys)
         if len(category_cids) > 0:
             dishes = dishes.filter(category__cid__in=category_cids)
 
+
     if 'restaurants' in request.data:
         restaurants = request.data.get('restaurants')
+        print(restaurants)
         restaurant_cids = [item['rid'] for item in restaurants]
         if len(restaurant_cids) > 0:
             dishes = dishes.filter(restaurant__rid__in=restaurant_cids)
@@ -830,7 +937,7 @@ def update_dish(request, *args, **kwargs):
 def order_restaurant(request, *args, **kwargs):
     rid = kwargs.get('rid')
     restaurant = Restaurant.objects.get(rid=rid)
-    order = Order.objects.filter(restaurant=restaurant)
+    order = Order.objects.filter(restaurant=restaurant).order_by('-order_date')
     serialize = OrderSerializers(order, many=True, context={'request': request})
     return Response({'success': True,
                      'message': 'Get order successfully.',
@@ -995,12 +1102,17 @@ def statistics(request, *args, **kwargs):
         num_top_user.append(order_count['num_user'])
 
     num_order = []
-    orders_chart = Order.objects.filter(restaurant__rid=rid).annotate(month=ExtractMonth("order_date")).values("month").annotate(count=Count("id")).values('month', 'count')
-    for i in range(1,13):
+    orders_chart = Order.objects.filter(restaurant__rid=rid).annotate(month=ExtractMonth("order_date")).values("month").annotate(count=Count("oid")).values('month', 'count')
+    print(orders_chart)
+    for i in range(1, 13):
         for order_chart in orders_chart:
             if i == order_chart['month']:
                 num_order.append(order_chart['count'])
-            else : num_order.append(0)
+                break
+            else: num_order.append(0)
+
+    
+    print(num_order)
    
     return Response({'success': True,
              'message': 'Get success.',
@@ -1060,3 +1172,43 @@ def contact_us(request, *args, **kwargs):
             'success': False,
             'message': "Sending failed!"
         })
+    
+
+import requests
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def get_province(request):
+    response = requests.get('https://vapi.vnappmob.com/api/province/')
+    if response.status_code == 200:
+        data = response.json()
+        return Response({
+            'success': True,
+            'message': "Submitted successfully.",
+            'results': data['results']
+        })
+    else: return Response({
+            'success': False,
+            'message': "Sending failed!"
+        })
+    
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def count_order(request, *args, **kwargs):
+    uid = kwargs.get('uid')
+    try:
+        user = User.objects.get(id=uid)
+        count_like = Wishlist.objects.filter(user=user).count();
+        count_order = Order.objects.filter(user=user)\
+            .exclude(product_status="complete")\
+            .exclude(product_status="cancel")\
+            .count()
+
+        return Response({
+                    'success': True,
+                    'message': "Successfully!",
+                    'data': {'num_like': count_like, 'num_order': count_order}
+                })
+    except: return Response({
+                    'success': False,
+                    'message': "Fail!"
+                })

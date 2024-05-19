@@ -2,10 +2,11 @@
 import {useState, useEffect, useMemo, memo, useRef} from 'react';
 import notmessageimg from '../../../assets/images/no_message.png';
 import { w3cwebsocket } from 'websocket';
+import {BASE_URL} from '../../../action/type';
 
 function ContentChat(props) {
     let rid = localStorage.getItem("rid");
-    const client = useMemo(() => new w3cwebsocket(`ws://127.0.0.1:8000/ws/chat/${rid}/`), [rid]);
+    const client = useMemo(() => new w3cwebsocket(`ws://${BASE_URL}/ws/chat/${rid}/`), [rid]);
     const [message, setMessage] = useState('');
     const [listMessage, setListMessage] = useState([]);
     const [isConnect, setIsConnect] = useState(false);
@@ -18,7 +19,7 @@ function ContentChat(props) {
     useEffect(() => {
       if(props.friend !== null){
         client.onopen = () => {
-          console.log('WebSocket Client Connected'+ 'ws://127.0.0.1:8000/ws/chat/'+rid);
+          console.log('WebSocket Client Connected'+ 'ws://${BASE_URL}/ws/chat/'+rid);
           if(client.OPEN) setIsConnect(true);
         };
         client.onmessage = (event) => {

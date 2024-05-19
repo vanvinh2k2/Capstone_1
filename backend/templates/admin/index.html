@@ -71,8 +71,8 @@
                     <canvas id="myChart"></canvas>
                     <script>
                         const ctx = document.getElementById('myChart');
-                        const datas =  [100, 150, 56, 78, 214, 43, 168, 111, 29, 47, 11, 56];
-                        {% comment %} const datas =  {{num_top_order}} {% endcomment %}
+                        {% comment %} const datas =  [100, 150, 56, 78, 214, 43, 168, 111, 29, 47, 11, 56]; {% endcomment %}
+                        const datas =  {{num_top_order}}
                         const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                         new Chart(ctx, {
                             type: 'bar',

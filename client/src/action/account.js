@@ -1,4 +1,4 @@
-import { CHANGE_ACCOUNT, GET_ACCOUNT, GET_ERROR } from "./types";
+import { CHANGE_ACCOUNT, GET_ACCOUNT, GET_ERROR, BASE_URL } from "./types";
 import axios from 'axios';
 
 function configAuth(yourAuthToken){
@@ -26,7 +26,7 @@ export const change_account = async(full_name, phone, address, image, uid, acces
     formData.append('full_name', full_name);
     formData.append('address', address);
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/edit-profile/${uid}/`, formData, configAuth2(accessToken));
+        const res = await axios.post(`http://${BASE_URL}/api/edit-profile/${uid}/`, formData, configAuth2(accessToken));
         if(res.data.success === true){
             return {
                 type: CHANGE_ACCOUNT,
@@ -48,7 +48,7 @@ export const change_account = async(full_name, phone, address, image, uid, acces
 
 export const get_account = async(uid, accessToken) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/get-profile/${uid}/`, configAuth(accessToken));
+        const res = await axios.get(`http://${BASE_URL}/api/get-profile/${uid}/`, configAuth(accessToken));
         console.log(res.data);
         if(res.data.success === true){
             return {

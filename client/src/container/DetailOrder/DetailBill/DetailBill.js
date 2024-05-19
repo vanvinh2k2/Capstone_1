@@ -110,7 +110,9 @@ function DetailBill(props) {
                             <p className="content_total">{sumPrice*30/100}$</p>
                         </div>
                         <p><b>Note: </b>You need to pay a deposit to confirm the order</p>
-                        <PayPal amount={sumPrice*30/100} pee={"sb-4sokb27585707@business.example.com"} 
+                        <PayPal amount={sumPrice*30/100} 
+                        // pee={"dungtran240501@gmail.com"} 
+                            pee={localStorage.getItem("email")}
                             payload ={{
                                 order: order, orderDetail: orderDish, deposit: sumPrice*30/100, price: sumPrice, rid: rid
                         }}/>

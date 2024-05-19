@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, GET_ERROR, LOGOUT, FRIEND_CHAT, CONTACT_US } from "./type";
+import { LOGIN_SUCCESS, GET_ERROR, LOGOUT, FRIEND_CHAT, CONTACT_US, BASE_URL } from "./type";
 import axios from 'axios';
 
 
@@ -12,7 +12,7 @@ export const login = async (email, password)=>{
     const body = JSON.stringify({email, password})
     
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/auth/api/login/restaurant/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/auth/api/login/restaurant/`, body, config)
         if(res.data.success === true){
             alert(res.data.message)
             const result = {
@@ -47,7 +47,7 @@ export const logout = async() =>{
 
 export const friend_chat = async(uid) =>{
     try{
-        const res = await axios.get(`http://127.0.0.1:8000/api/friend-chat/${uid}/`, config)
+        const res = await axios.get(`http://${BASE_URL}/api/friend-chat/${uid}/`, config)
         if(res.data.success === true){
             const result = {
                 type: FRIEND_CHAT,
@@ -73,7 +73,7 @@ export const friend_chat = async(uid) =>{
 export const contact_us = async(subject, message, full_name, email) =>{
     const body = JSON.stringify({subject, message, full_name, email});
     try{
-        const res = await axios.post(`http://127.0.0.1:8000/api/contact-us/`, body, config)
+        const res = await axios.post(`http://${BASE_URL}/api/contact-us/`, body, config)
         if(res.data.success === true){
             const result = {
                 type: CONTACT_US,

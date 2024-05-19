@@ -28,7 +28,7 @@ function AllRestaurant({restaurants, num_res, page, setPage}) {
             <div className="row">
                 <div className="col-lg-12 col-md-12 col-sm-12">
                     <div className="section-title">
-                        <h3>Popular Restaurant</h3>
+                        <h3>All Restaurant</h3>
                     </div>
                 </div>
             </div>

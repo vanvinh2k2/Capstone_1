@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('auths.urls')),
     path('', include('core.urls')),
+    path('chatbot/', include('chatterbot.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
 

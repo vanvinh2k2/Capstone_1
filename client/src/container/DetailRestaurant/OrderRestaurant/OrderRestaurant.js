@@ -247,14 +247,15 @@ function OrderRestaurant(props) {
         var thoiDiemHienTai = new Date();
     
         var ngayVaGio = new Date(ngay);
-        if (ngayVaGio.getTime() - thoiDiemHienTai.getTime()>0) {
+        if (Number(ngayVaGio.getTime() - thoiDiemHienTai.getTime()) < 0) {
+            // console.log(ngayVaGio.getTime() - thoiDiemHienTai.getTime())
           return false;
+          
         } 
         if (ngayVaGio.getDate() === thoiDiemHienTai.getDate()) {
             const inputHourDecimal = convertTimeToDecimal(gio);
             const currentHourDecimal = convertTimeToDecimal(thoiDiemHienTai.getHours() + ':' + thoiDiemHienTai.getMinutes());
             if (inputHourDecimal <= currentHourDecimal + 1) {
-                
               return false;
             }
           }

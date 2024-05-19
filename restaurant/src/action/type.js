@@ -29,3 +29,6 @@ export const DELETE_ORDER_ITEM = 'DELETE_ORDER_ITEM';
 export const RES_DETAIL = 'RES_DETAIL';
 export const CHANGE_RESTAURANT = 'CHANGE_RESTAURANT';
 export const CONTACT_US = 'CONTACT_US';
+export const STATISTICS = "STATISTICS";
+
+export const BASE_URL = "192.168.1.135:8000";

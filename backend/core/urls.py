@@ -10,7 +10,7 @@ from .backend import RestaurantHotAPI, RestaurantAPI, DishesHotAPI, DishesAPI, C
     add_order_cart, delete_order_cart, bill_order, review_restaurant, manage_order_by_date,\
     friend_chat, check_order, add_review, update_order_item, delete_order_item, update_status_order,\
     statistics, restaurant_detail, dish_detail, dishes_of_restaurant2, filter_product, contact_us,\
-    edit_profile_restaurant
+    edit_profile_restaurant, check_like, get_province, count_order, check_order_cart, get_rating, get_rating_all
 
 urlpatterns = [
     path('', index, name='index'),
@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/list-like/<uid>/', list_like, name='list-like'),
     path('api/add-like/<uid>/<rid>/', add_like, name='add-like'),
     path('api/delete-like/<uid>/<rid>/', delete_like, name='delete-like'),
+    path('api/check-like/<uid>/<rid>/', check_like, name='check-like'),
     path('api/search-restaurant/', search_restaurant, name='search-restaurant'),
     path('api/search-dish/', search_dishes, name='search-dish'),
     path('api/edit-profile/<uid>/', edit_profile, name='edit-profile'),
@@ -53,6 +54,11 @@ urlpatterns = [
     path('api/statistics/<rid>/', statistics, name='statistics'),
     path('api/filter-product/', filter_product, name='filter-product'),
     path('api/contact-us/', contact_us, name='contact-us'),
+    path('api/province/', get_province, name='get-province'),
+    path('api/count/<uid>/', count_order, name='count'),
+    path('api/check-order-cart/<uid>/<rid>/', check_order_cart, name='check-order-cart'),
+    path('api/rating/<rid>/', get_rating, name='rating'),
+    path('api/rating-all/', get_rating_all, name='rating-all'),
 
     # For Restaurant
     path('api/add-restaurant/<uid>/', add_restaurant, name='add-restaurant'),
@@ -72,7 +78,6 @@ urlpatterns = [
     path('api/manage-order/<rid>/', manage_order_by_date, name='manage-order'),
     path('api/friend-chat/<rid>/', friend_chat, name='friend-chat'),
     path('api/change-restaurant/<rid>/', edit_profile_restaurant, name='change-account-restaurant'),
-    
 
     # For AI
     path('api/search-ai/', search_restaurant_image, name='search-restaurant-image'),

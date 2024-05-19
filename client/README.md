@@ -14,3 +14,4 @@ pip install django_channels_jwt_auth_middleware
 pip install scikit-learn
 pip install ultralytics
 pip install redis
+pip install mysqlclient
